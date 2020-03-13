@@ -1,0 +1,120 @@
+﻿General Command Form:
+
+	[address]Command[Operands]
+
+The address sets dot (the selection), then the command is 
+executed. See command description for its particular use of dot.
+
+Commands:
+
+------------------------------------------------------------
+Text Commands
+------------------------------------------------------------
+a/text/				Append text after dot.
+c/text/				Change text in dot.
+i/text/				Insert text before dot.
+d					Delete text in dot.
+s/regexpr/text/[g]	Substitute text for first match of
+					regular expression in dot. Use g for
+					all matches. Use & in text to refer to
+					text the search matched.
+m address			Move text in dot after address.
+t address			Copy text in dot after address.
+C [u|l|t|s|i]		Convert text to upper, lower, or title 
+					case or set search to case sensitive or
+					not.
+------------------------------------------------------------
+Display Commands
+------------------------------------------------------------
+p					Print contents of dot.
+=					Print value (line and character
+					numbers) of dot.
+h					Print hex dump of contents of dot.
+T [n]				Set tabs at n spaces intervals for
+					current file. Default is 4
+L [string]			Set end of line string for current
+					file. Default is \r\n.
+F [n]				Fix display line length. Default is
+					0, normal delimited lines.
+------------------------------------------------------------
+File Commands
+------------------------------------------------------------
+b filelist			Set current file to first one in list
+					that ss has in menu.
+B filelist			Same as b, but load new files.
+n					Print menu lines of all files.
+D filelist			Delete named files from ss.
+------------------------------------------------------------
+I/O Commands
+------------------------------------------------------------
+e [filename]		Replace current file with named disc
+					file.
+r [filename]		Replace dot with contents of named
+					disc file.
+w [filename]		Write file to named disc file.
+f [filename]		Set file name and print menu line.
+< OS command		Replace dot with output of OS
+					command.
+> OS command		Send dot to standard input of
+					command.
+| OS command		Replace dot by result of command
+					applied to dot.
+! OS command		Run OS command.
+------------------------------------------------------------
+Loops and Conditionals
+------------------------------------------------------------
+x/regexpr/ command	For each match of regexpr, set dot and 
+					run command.
+y/regexpr/ command	Between adjacent matches of regexpr,
+					set dot
+					and run command.
+X/regexpr/ command	Run command in each file whose menu
+					line 
+					matches regexpr.
+Y/regexpr/ command	Run command in each file whose menu
+					line does not match.
+g/regexpr/ command	If dot contains a match of regexpr, run
+					command.
+v/regexpr/ command	If dot does not contain a match, run
+					command.
+------------------------------------------------------------
+Miscellany
+------------------------------------------------------------
+k					Set address mark to value of dot.
+q					Quit.
+u [n]				Undo last n (default 1) changes.
+{ }					Braces group commands.
+------------------------------------------------------------
+
+
+
+Addresses:
+------------------------------------------------------------
+Simple Addresses
+------------------------------------------------------------
+#n					The empty string after character n.
+n					Line n.
+/regexpr/			The first following match of regexpr.
+-/regexpr/			The first previous match of regexpr.
+?regexpr?			Also the first previous match of regexpr.
+$					The end of file.
+.					Dot.
+'					The address mark, set by k command.
+"regexpr"			Dot in the file whose menu line
+					matches regexpr.
+------------------------------------------------------------
+Compound Addresses
+------------------------------------------------------------
+a1+a2				The address of a2 evaluated at right
+					of a1.
+a1-a2				a2 evaluated in the reverse direction
+					starting at left of a1.
+a1,a2				From the left of a1 to the right of a2
+					(default 0,$).
+a1;a2				Like , but sets dot after evaluating
+					a1.
+------------------------------------------------------------
+The operators + and - are high precedence, while , and ; are 
+low precedence. In both + and - forms, a2 defaults to 1 and a1 
+defaults to dot.
+------------------------------------------------------------

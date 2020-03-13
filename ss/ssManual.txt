@@ -1,0 +1,359 @@
+﻿=========================================================
+ss Text Editor Manual
+
+Getting started and reading this documentation:
+
+Right click anywhere on the main part of this window and 
+choose Wrap from the pop-up menu to turn on word-wrapping 
+for this window.
+
+ss' scroll bars are different from the Windows norm. On the lefthand side of the window is the vertical scroll bar. Left clicking on it will scroll down. Right clicking will scroll up. On the righthand side of the window is the horizontal scroll bar. Right and left clicking will scroll right and left, respectively. Note that in each case the distance from the top of the window determines the amount of scroll for the click. 
+
+The mouse wheel works the same way with respect to the distance from the top of the window the mouse is when the wheel is used.
+
+
+=========================================================
+Introduction to ss
+
+ss is a multi-file, multi-window (on a file) plain text editor in the Unix/Plan 9 style. In fact, it's really an implementation of Plan 9's Sam editor, written by Rob Pike, with some minor enhancements and adjustments to make it a bit more comfortable in Windows.
+
+Rob Pike gets all the credit for the conception and functional design while the code itself is a from-scratch implementation in C#, making heavy use of the .NET library.
+
+The user interface is purposefully sparse, mostly to reduce visual clutter. Controlling the editor is done in three different ways:
+
+	1. Typing text in the editing window.
+	2. Right-clicking on an editor window, and choosing from the pop-up menu.
+	3. Executing commands from the ssCmd window.
+	4. Executing commands via short-cut keys, along with mouse/key chording.
+
+
+=========================================================
+Installation
+
+Simply copy ss.exe, ssHelp.txt, and ssManual.txt to a directory. Add the directory to the Windows "path" variable. A file containing some default settings, ssDefs.ini, will be created the first time ss is run.
+
+
+=========================================================
+Starting ss
+
+Parameters to ss are file names that may include wildcards.
+
+For example:
+
+ss this.txt that.ini theother.dat
+
+ss *.txt xxx.lis .\safe\*.txt
+
+Files that are found that match the file specs given are added to the right-click menu as discussed below. The last one will be opened immediately, the others can be opened by choosing them from the menu, or by using the 'b' command, also discussed below.
+
+
+=========================================================
+Basic Typing in an Editing Window
+
+Typing in ss is much like in any other text box in Windows with some differences. Cursor movement using the arrows, page up and down, home and end are all there. One difference is that the Left and Right arrows move by word while Ctrl-Left and Ctrl-Right move by character.
+
+Left clicking the mouse positions the insertion point for editing as usual. Clicking and dragging selects text. The selected text is referred to as 'dot', taking its name from the editing command language that is discussed below.
+
+The Escape key toggles between the Command window and the file editing window.
+
+
+Some default short-cut keys include:
+
+Ctrl-N		Create new unnamed file
+Ctrl-O		Open an existing file
+Ctrl-S		Write out file
+Ctrl-A		Select all
+Ctrl-Z		Undo
+Ctrl-X		Cut
+Ctrl-C		Snarf (a.k.a. Copy)
+Ctrl-V		Paste
+Ctrl-w		Toggle word-wrap on and off
+
+
+Basic Keyboard Moves
+
+The arrow keys along with Home, End, PageUp, and PageDown move the cursor around. Adding Shift to the left or right arrow keys selects the text moved over. Adding Ctrl to Left and Right produce move-by-character commands.
+
+
+Tabs and Identation
+
+The Tab and Shift-Tab can be used to adjust indentation on lines that are part of the selected text.
+
+
+A red insertion point indicates the end of file.
+
+
+=========================================================
+Saving and Closing a File
+
+Attempting to close a file that has been modified will precipitate a message that the file has been changed and will stop the closing of the file in order to prevent the accidental closure and loss of desired changes. Immediately attempting it a second time will close the file regardless of the status of the file.
+
+
+Naming a file that has no name
+	Use the 'f' command from the command window.
+	Right click on the file window and choose 'Write' or 'Write As' 
+	from the menu.
+
+Saving a file
+	Use the 'w' command from the command window.
+	Right click on the file window and choose 'Write' from the menu.
+
+Closing a file
+	Use the 'D' command from the command window.
+	Click the standard Windows red 'X' button in the upper right 
+	corner of the window.
+
+The Right-Click Menu and the Command Window are discussed below.
+
+
+=========================================================
+The Right-click Menu
+
+The right-click menu has two columns. On the left are a few text editing commands. On the right are some file commands as well as entries for files that the editor knows about.
+
+
+Text Commands on the Menu
+
+All			Select all text in window
+Cut			Standard cut command
+Snarf		Standard copy command, called Snarf as a nod to Sam, 
+			the Plan 9 editor
+Paste		Standard paste command
+Undo			Undoes one edit operation
+Look			Searches for what is currently selected.
+/			Repeats the last search done with a '/' from the command
+			line.
+
+In the command window
+
+Exec		Executes the command window's dot as a command.
+
+
+File Commands on the Menu
+
+New			Creates an unnamed file in a new editing window
+Open			Opens an existing file via the Windows file dialog
+Xerox		Adds a new editing window for a file with an editing
+			window already open
+Write			Saves a named file to disk
+Write As		Saves a file to a new name, renames the file in memory
+Font			Selects a font for the editing window
+Next			Selects the next font out of the 4 pre-selected fonts
+Wrap			Toggles word-wrap for the editing window
+Autoindent		Toggles auto-indent for the file
+Programming	Toggles programming mode, changing word boundries
+Expand Tabs	Tabs will be expanded to spaces when entered
+
+NOTE: setting Font, Wrap, Autoindent, or Programming on the command window causes the setting to become the default when future files and windows are opened.
+
+
+File Entries on the Menu
+
+For each file that was found via the command line that started ss, or were added with the 'B' command discussed below, there is an entry in the right side of the right-click menu.
+
+There are some indicator characters at the beginning of the menu entry:
+
+	' 		the file has been changed but not saved
+	- 		the file is loaded but has no window
+	+		the file is loaded and has a single window
+	*		the file is loaded and has multiple windows
+	.		the file is the current command target
+
+Choosing a file entry from the menu will either create or activate an editing window for the file.
+
+NOTE: Files with no windows can be edited via editing commands.
+
+
+=========================================================
+Commands in the Command Window
+
+The command window is freely editable with the mouse and keyboard, although editing commands only act on a file window.
+
+A command will be executed only when return is pressed when the insertion point is red, indicating that one is typing at the end of the command window text. Pressing return when the insertion point is black just inserts a line ending.
+
+The horizontal scroll bar doubles as an indicator of a window being the target of commands executed from the command window. It is colored when it's the target, white when not.
+
+Commands are caps sensitive.
+
+The H command will open up the command quick reference ssHelp.txt along with this file, ssManual.txt.
+
+The commands listed in ssHelp.txt are somewhat self-explanatory and can be grasped quickly, but there are some features that aren't obvious that deserve more detailed treatment.
+
+Starting from the top of the list in ssHelp.txt:
+
+
+First, though, one thing that's not obvious:
+
+A comma by itself (,) is a shorthand for 0,$, which means all lines in the file. More on addresses later but an example is this:
+
+,d		-- delete all lines in the file
+0,$d	-- delete all lines in the file
+
+
+
+---------------------------------------------------------
+a, c, i (append, change, insert)
+
+In addition to entering a command like this:
+
+a/this and that/    -- appends "this and that" after dot, that is, the current selection.
+
+One can do this:
+
+a
+this and that
+the other
+.
+
+This will append "this and that", a line ending, "the other", and another line ending after dot. The last line with the period is the marker for the end of the text being appended.
+
+The 'c' and 'i' commands work the same way.
+
+
+---------------------------------------------------------
+s (substitute)
+
+The substitute command works within the current selection. Consider:
+
+20s/this/xxx/  		--	Replaces the first "this" with "xxx", only on line 20.
+10,40s/this/xxx/g  	--	Replaces all occurences of "this" with "xxx" 
+						only on lines 10 
+                      	through 40.
+,s/this/xxx/g     	--	Replaces all occurences of "this" with "xxx" 
+						in the entire file.
+
+More complicated:
+
+,s/Bill...../&washere/g
+
+Changes
+
+BillSmith
+BillJones
+
+to
+
+BillSmithwashere
+BillJoneswashere
+
+
+---------------------------------------------------------
+d (delete)
+
+Deletes dot
+
+
+---------------------------------------------------------
+m (move)
+
+Move dot to another address
+
+10,20m$		-- Move lines 10 to 20 to the end of the file
+
+
+---------------------------------------------------------
+t (to)
+
+Copy dot to another address
+
+0,25t300	-- Copy the first 25 lines to just after line 300
+
+
+---------------------------------------------------------
+C (case)
+
+The 'C' command will change the case of dot to upper, lower or title case. Note: If the text is already all caps, a change to title case does nothing. 
+
+This also sets case sensitivity for searches:
+
+Ci		-- case insensitive
+Cs		-- case sensitive
+
+---------------------------------------------------------
+= (Print value of dot)
+
+,=   is a handy way to find the size of the file in lines and characters
+
+
+---------------------------------------------------------
+T (Set tab stops)
+
+This sets the width, measured in spaces for the display of tabs. Note that tab characters are not actually transformed into spaces in the data. This setting only affects the display of the data.
+
+
+---------------------------------------------------------
+L (Set line ending)
+
+Changes the display of the data by changing where lines are broken. It defaults to \r\n, the Windows standard, but can be arbitrarily set.
+
+L \n    -- Useful for working with data from a Unix system.
+L       -- Return to the default.
+
+
+---------------------------------------------------------
+F (Fix display line length)
+
+Changes the display to a fixed length line format. A length of 0 reverts the display back to the mormal mode.
+
+F 64	--	Useful for working with fixed record length text data.
+F		--	Return to normal mode.
+
+---------------------------------------------------------
+b (Changes the current file)
+
+Changes which file that is already loaded from disk is the current one to be edited.
+
+
+---------------------------------------------------------
+B (Loads a new file and makes it current)
+
+Just like 'b', but loads a new file from disk.
+
+
+---------------------------------------------------------
+D (Deletes a file from ss)
+
+Closes the file and removes it from memory. It does NOT write it to disk, but the operation is guarded if the file has not been saved.
+
+
+---------------------------------------------------------
+w (Write a file or dot to disk)
+
+If an address is specified, dot is set, and dot's contents are written to the current file.
+
+If no address is specified, the entire file is written.
+
+If a file name is given, that is the file written to in both cases.
+
+Consider:
+
+The current file is xxx.txt.
+
+10,20w		-- Writes lines 10 through 20 to xxx.txt
+w			-- Writes entire file to xxx.txt
+5w yyy.txt		-- Writes line 5 to yyy.txt
+w yyy.txt		-- Writes entire file to yyy.txt
+
+
+---------------------------------------------------------
+e, r, w, f (edit, read, write, file)
+
+All of these take filenames as parameters.
+
+r xxx.txt		-- Replace dot with the contents of xxx.txt 
+e			-- Re-load file from the latest save
+
+
+---------------------------------------------------------
+<, >, |, ! (OS commands)
+
+These mimmick Unix i/o redirection operators, executing Windows cmd.exe to run the commands.
+
+<dir			-- Executes dir and replaces dot with the output
+10,20|sort	-- Sends lines 10 to 20 through sort and replaces 
+			   them with the output
+!ccc			-- Executes ccc, doing nothing with input or output
+>jjj			-- Sends dot to standard input of jjj
+
+
+---------------------------------------------------------

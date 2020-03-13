@@ -1,0 +1,19 @@
+﻿Things to look into
+	Vertical cursor moves
+	Restore dot on an undo.
+
+Mouse and keyboard handlers and event decoding.
+	Eat wheel events
+	Think about adding
+		Dragging for moving text
+		Mark manipulation with keys only
+		Switchable case sensitivity for searches
+		How many occurrances of a string?
+		Enable dragging as a function for other mouse buttons
+	Finish manual
+
+Post-build events
+copy "$(TargetPath)" c:\util
+copy "$(TargetDir)sshelp.txt" c:\util
+copy "$(TargetDir)ssmanual.txt" c:\util
+

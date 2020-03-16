@@ -620,6 +620,7 @@ namespace ss {
     | WordLButton
     | WordMovement
     | BasicHomeEnd
+    | Tab down DecreaseIndent
     | ControlKey down
        + CharLButton
        | CharMovement
@@ -654,6 +655,7 @@ namespace ss {
     | CharLButton
     | CharMovement
     | BasicHomeEnd
+    | Tab down DecreaseIndent
     | ControlKey down
        + WordLButton
        | WordMovement
@@ -688,6 +690,7 @@ namespace ss {
     | WordLButton
     | WordMovement
     | BasicHomeEnd
+    | Tab down DecreaseIndent
     | ControlKey down
        + CharLButton
        | CharMovement
@@ -724,6 +727,7 @@ namespace ss {
     | CharLButton
     | CharMovement
     | BasicHomeEnd
+    | Tab down DecreaseIndent
     | ControlKey down
        + WordLButton
        | WordMovement

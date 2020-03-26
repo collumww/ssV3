@@ -102,9 +102,9 @@ namespace ss {
                 }
             catch {
                 cmd = "cmd.exe";
-                //cmd = "powershell.exe";
+                cmd = "powershell.exe";
                 cmdArgs = "/C {0}";
-                //cmdArgs = "-nologo -noninteractive -inputformat text -outputformat text -windowstyle hidden -executionpolicy bypass -command \"&{0}\"";
+                cmdArgs = "-nologo -noninteractive -inputformat text -outputformat text -windowstyle hidden -executionpolicy bypass -command -";
                 progPunct = "!@#$%^&*()`~;:/?[{]}'\",<.>\\|+=-_";
                 senseCase = true;
                 encoding = System.Text.Encoding.UTF8;

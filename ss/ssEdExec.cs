@@ -547,25 +547,27 @@ namespace ss {
 
         private string ShellCmd(string cmd, string inp) {
             string s = "";
+            string tfnm = null;
             try {
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.FileName = defs.cmd;
-                psi.Arguments = string.Format(defs.cmdArgs, cmd);
+                psi.Arguments = defs.cmdArgs;
                 psi.UseShellExecute = false;
                 psi.RedirectStandardOutput = true;
                 psi.RedirectStandardError = true;
-                if (inp != null) {
-                    psi.RedirectStandardInput = true;
-                    }
+                psi.RedirectStandardInput = true;
                 psi.WindowStyle = ProcessWindowStyle.Hidden;
                 psi.CreateNoWindow = true;
+                if (inp != null) {
+                    tfnm = Path.GetTempFileName();
+                    WinWrite(tfnm, inp, txt.encoding);
+                    cmd = string.Format("gc {0} | {1}", tfnm, cmd);
+                    }
                 Process p = new Process();
                 p.StartInfo = psi;
                 p.Start();
-                if (inp != null) {
-                    p.StandardInput.Write(inp);
-                    p.StandardInput.Close();
-                   }
+                p.StandardInput.WriteLine(cmd);
+                p.StandardInput.Close();
                 p.WaitForExit(1000);
                 s = p.StandardOutput.ReadToEnd();
                 s += "\r\n" + p.StandardError.ReadToEnd();

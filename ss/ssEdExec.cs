@@ -574,6 +574,7 @@ namespace ss {
                 int ec = p.ExitCode;
                 p.Close();
                 p.Dispose();
+                if (inp != null) { File.Delete(tfnm); }
                 if (ec != 0) throw new ssException("non-zero exit code: " + p.ExitCode.ToString());
                 }
             catch (Exception e) {

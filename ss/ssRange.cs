@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ss {
+namespace ss { // what?
     public struct ssRange {
         public ssRange(int left, int right) {
             l = left;

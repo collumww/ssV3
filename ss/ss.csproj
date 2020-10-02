@@ -166,7 +166,7 @@ copy "$(SolutionDir)ss\wasabi.txt" "$(TargetDir)"
 copy "$(SolutionDir)ss\rogerrafa.txt" "$(TargetDir)"
 copy "$(SolutionDir)ss\backdb.ps1" "$(TargetDir)"
 del "$(TargetDir)ssEvents.ini"
-rem del "$(TargetDir)ssDefs.ini"
+del "$(TargetDir)ssDefs.ini"
 
 </PreBuildEvent>
   </PropertyGroup>

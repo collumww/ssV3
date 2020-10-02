@@ -18,6 +18,10 @@ namespace ss {
         public bool senseCase;
         public Encoding encoding;
         //win remove for non-windowed version
+        public static int defleft = 50;
+        public static int deftop = 50;
+        public static int defwidth = 600;
+        public static int defheight = 150;
         public static int fontCnt = 4;
         public int fontNum;
 
@@ -128,10 +132,10 @@ namespace ss {
                 spInTab = 4;
                 expTabs = false;
                 eventSet = "Qwerty";
-                top = 50;
-                left = 50;
-                width = 600;
-                height = 150;
+                top = deftop;
+                left = defleft;
+                width = defwidth;
+                height = defheight;
                 // remove for non-windowed version */
                 }
             }

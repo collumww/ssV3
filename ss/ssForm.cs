@@ -1296,7 +1296,7 @@ namespace ss {
 					canSee |= DesktopBounds.IntersectsWith(s.Bounds);
 					}
 				if (!canSee) {
-					DesktopBounds = new Rectangle(20, 20, 400, 200);
+					DesktopBounds = new Rectangle(ssDefaults.defleft, ssDefaults.deftop, ssDefaults.defwidth, ssDefaults.defheight);
 					}
 				}
 

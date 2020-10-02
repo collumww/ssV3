@@ -1189,8 +1189,6 @@ namespace ss {
 
 
 		private void SetFormLocSiz() {
-			Screen[] ss = Screen.AllScreens;
-
 			int scrh = Screen.GetWorkingArea(ed.Log.Frm.Location).Height;
 			int scry = Screen.GetWorkingArea(ed.Log.Frm.Location).Y;
 			Size lsz = ed.Log.Frm.DesktopBounds.Size;
@@ -1281,9 +1279,9 @@ namespace ss {
 
 
 		private void ssForm_Load(object sender, EventArgs e) {
-			if (txt != ed.Log) {
+			if (txt != ed.Log)
 				SetFormLocSiz(); // Under Windows 10, this generates a resize event. That is handled using the loaded flag, along with logic to detect resize events on window minimization.
-			}
+
 
 			Graphics g = CreateGraphics();
 			IntPtr hdc = g.GetHdc();
@@ -1293,7 +1291,14 @@ namespace ss {
 				Left = layout.left;
 				Width = layout.width;
 				Height = layout.height;
-			}
+				bool canSee = false;
+				foreach (Screen s in Screen.AllScreens) {
+					canSee |= DesktopBounds.IntersectsWith(s.Bounds);
+					}
+				if (!canSee) {
+					DesktopBounds = new Rectangle(20, 20, 400, 200);
+					}
+				}
 
 			lines = MakeLines(true);
 			LayoutLines(hdc, 0, 0, lines, ref linesUsed, ref rngShown);

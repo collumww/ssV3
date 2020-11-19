@@ -330,7 +330,7 @@ namespace ss {
             TList lt = l;
             if (pat == null) return new TList(txt, txt.dot, null);
             for (ssText t = txts; t != null; t = t.Nxt) {
-                bool m = rgx ? Regex.IsMatch(t.MenuLine(), pat) : pat == t.FileName();
+                bool m = rgx ? Regex.IsMatch(t.MenuLine(), pat, defs.senseCase? RegexOptions.None : RegexOptions.IgnoreCase) : pat == t.FileName();
                 if (matching && m || !matching && !m) {
                     lt.nxt = new TList(t, t.dot, null);
                     lt = lt.nxt;

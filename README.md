@@ -36,7 +36,7 @@ again, some one really good at that I'm sure could make it better.
 There are two help files, the second of which is incomplete but I finally decided to make this public since
 I had no idea when I would finish the help documentation.
 
-I use ss every day in my work and rarely run across bugs anymore. Perhaps this will be useful to people as well.
+I use ss every day in my work and rarely run across bugs anymore. Perhaps ss will be useful to others as well.
 
 Cheers,
 Will

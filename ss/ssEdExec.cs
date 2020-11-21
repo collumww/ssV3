@@ -336,6 +336,9 @@ namespace ss {
                     lt = lt.nxt;
                     }
                 }
+            for (lt = l.nxt; lt != null; lt = lt.nxt) {
+                MsgLn(lt.t.MenuLine());
+                }
             if (unique && l.nxt != null && l.nxt.nxt != null) throw new ssException("non-unique match for \"" + pat + "\"");
             return l.nxt;
             }

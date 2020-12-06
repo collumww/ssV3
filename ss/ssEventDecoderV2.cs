@@ -478,8 +478,7 @@ namespace ss {
 # --- Reusable stuff -------------------------------------
 
 < Basics
-  Back down Back
-| Tab down TabOrIncreaseIndent
+  Tab down TabOrIncreaseIndent
 | Enter down Enter
 | PageUp down ScrollTextDownOnePage
 | PageDown down ScrollTextUpOnePage
@@ -513,11 +512,13 @@ namespace ss {
 
 < CharMovement
   CharArrows
+| Back down Back
 | Delete down Delete
 ;
 
 < WordMovement
   WordArrows		
+| Back down BackDeleteWord
 | Delete down DeleteWord
 ;
 
@@ -613,7 +614,6 @@ namespace ss {
     | CharMovement
     | ControlHomeEnd
     | CharLButton
-    | Back down BackDeleteWord
     ;
 | ShiftKey down ExtendSelectionOn true
     + ShiftKey up ExtendSelectionOff
@@ -648,7 +648,6 @@ namespace ss {
     | WordMovement
     | ControlHomeEnd
     | WordLButton
-    | Back down BackDeleteWord
     ;
 | ShiftKey down ExtendSelectionOn true
     + ShiftKey up ExtendSelectionOff
@@ -683,7 +682,6 @@ namespace ss {
     | CharMovement
     | ControlHomeEnd
     | CharLButton
-    | Back down BackDeleteWord
     ;
 | ShiftKey down ExtendSelectionOn true
     + ShiftKey up ExtendSelectionOff
@@ -720,7 +718,6 @@ namespace ss {
     | WordMovement
     | ControlHomeEnd
     | WordLButton
-    | Back down BackDeleteWord
     ;
 | ShiftKey down ExtendSelectionOn true
     + ShiftKey up ExtendSelectionOff

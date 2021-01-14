@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using System.IO;
 
 namespace ss {
 	public partial class ssForm : Form {
@@ -1310,7 +1311,7 @@ namespace ss {
 
 			if (txt == ed.Log) {
 				BackColor = Color.PaleGoldenrod;
-				Text = "ssCmd";
+				Text = "ssCmd — " + Directory.GetCurrentDirectory();
 				ed.Msg("");
 				ed.ProcessArgs(); // Just like above, this needs to happen after form is up and running.
 			}

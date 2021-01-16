@@ -164,7 +164,7 @@ namespace ss {
             prvtxt = txt;
             //win remove for non-windowed version
             if (t.Frm != null) {
-                if (t != log) t.Activate();
+                t.Activate();
                 }
             else
             // remove for non-windowed version */

@@ -37,6 +37,7 @@ namespace ss {
                 // remove for non-windowed version */
                 txt.dot = a.rng;
                 }
+            ssRange levdot = txt.dot;
             switch (t.cmd) {
                 case 'p':
                     Print();
@@ -313,7 +314,10 @@ namespace ss {
                     throw new ssException("unknown command");
                 }
             if (a != null) PostEdDot();
-            xCmd(t.nxt);
+            if (t.nxt != null) {
+                txt.dot = levdot;
+                xCmd(t.nxt);
+                }
             }
 
         class TList {

@@ -26,6 +26,7 @@ namespace ss {
             }
 
         void xCmd(CTree t) {
+            ssRange levdot =  new ssRange();
             if (t == null) return;
             ssAddress ad = xAddr(t.ad);
             ssAddress a = xAddr(t.a);
@@ -37,7 +38,7 @@ namespace ss {
                 // remove for non-windowed version */
                 txt.dot = a.rng;
                 }
-            ssRange levdot = txt.dot;
+            if (txt != null) levdot = txt.dot;
             switch (t.cmd) {
                 case 'p':
                     Print();
@@ -315,7 +316,7 @@ namespace ss {
                 }
             if (a != null) PostEdDot();
             if (t.nxt != null) {
-                txt.dot = levdot;
+                if (txt != null) txt.dot = levdot;
                 xCmd(t.nxt);
                 }
             }

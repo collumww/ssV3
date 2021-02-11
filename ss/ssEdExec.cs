@@ -315,10 +315,8 @@ namespace ss {
                     throw new ssException("unknown command");
                 }
             if (a != null) PostEdDot();
-            if (t.nxt != null) {
-                if (txt != null) txt.dot = levdot;
-                xCmd(t.nxt);
-                }
+            if (txt != null) txt.dot = levdot;
+            xCmd(t.nxt);
             }
 
         class TList {

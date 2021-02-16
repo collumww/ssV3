@@ -147,8 +147,11 @@ namespace ss {
                             frm.Ed.Log.Activate();
                             }
                         else {
+                            string cmd = e.cmd.Replace("``", "`");
+                            string[] ss = cmd.Split('`');
                             if (e.cmdopt == ssEventCmdOption.execPreserveDot) frm.SaveCursor();
-                            frm.Ed.Do(e.cmd);
+                            foreach (string s in ss) frm.Ed.Do(s);
+                            //frm.Ed.Do(e.cmd);
                             if (e.cmdopt == ssEventCmdOption.execPreserveDot) {
                                 frm.InvalidateMarks();
                                 frm.RestoreCursor();
@@ -599,6 +602,7 @@ namespace ss {
 | LButton down PastePreserveSelection
 | P down ssCmdPreserveDot false y/\r\n/i/#/
 | OemPeriod down ssCmdPreserveDot false x/^#/d
+| I down ssCmdPreserveDot false {`i'/*'`a'*/'`}
 | U down ssCmdPreserveDot false y/\r\n/i/\/\//
 | E down ssCmdPreserveDot false x/^\/\//d
 ;

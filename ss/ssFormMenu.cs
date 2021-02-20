@@ -145,7 +145,7 @@ namespace ss {
             string[] cmds = txt.ToString().Split(new string[] { txt.Eoln }, StringSplitOptions.None);
             foreach (string cmd in cmds) {
                 if (cmd != "") {
-                    ed.Msg(cmd);
+                    ed.MsgLn(cmd);
                     ed.Do(cmd);
                     }
                 }

@@ -142,13 +142,13 @@ namespace ss {
                 cursor.To(txt.AlignRange(ref r));
                 txt.dot = cursor.rng;
                 }
-            string s = txt.ToString();
-            string cmd = s;
-            if (cmd.Length >= txt.Eoln.Length && cmd.Substring(cmd.Length - txt.Eoln.Length) == txt.Eoln) {
-                cmd = cmd.Substring(0, cmd.Length - txt.Eoln.Length);
+            string[] cmds = txt.ToString().Split(new string[] { txt.Eoln }, StringSplitOptions.None);
+            foreach (string cmd in cmds) {
+                if (cmd != "") {
+                    ed.Msg(cmd);
+                    ed.Do(cmd);
+                    }
                 }
-            ed.Msg(s);
-            ed.Do(cmd);
             }
 
         void MenuSearch(Object sender, EventArgs e) {

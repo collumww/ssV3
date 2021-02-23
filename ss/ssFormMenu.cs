@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -33,7 +34,7 @@ namespace ss {
                 m.MenuItems.Add("Exec", new System.EventHandler(MenuExec));
             m.MenuItems.Add("Case", new System.EventHandler(MenuToggleIgnoreCase)).Checked = ed.defs.senseCase;
             m.MenuItems.Add("Look", new System.EventHandler(MenuLook));
-            m.MenuItems.Add("/" + ed.LastPat, new System.EventHandler(MenuSearch));
+            m.MenuItems.Add("/" + Regex.Escape(ed.LastPat), new System.EventHandler(MenuSearch));
 
             mi = new MenuItem("New");
             mi.BarBreak = true;

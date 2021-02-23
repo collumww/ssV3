@@ -318,7 +318,7 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = scn.GetStr();
+                    t.s = ssUnescape(scn.GetStr());
                     t.sub = new CTree(null, listHead);
                     tail = t.sub;
                     int group = grouping;
@@ -330,7 +330,7 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = scn.GetStr();
+                    t.s = ssUnescape(scn.GetStr());
                     t.rep = scn.GetStr();
                     t.opt = scn.C;
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");
@@ -448,7 +448,7 @@ namespace ss {
                     t = new CTree(a, c);
                     pChar();
                     t.opt = scn.C;
-                    if ("au387\0".IndexOf(t.opt) < 0)
+                    if ("au387\0".IndexOf(t.opt) < 0) // letters for encodings: ascii, unicode, utf-32, etc.
                         throw new ssException("bad option or expected newline");
                     if (t.opt == '\0') t.opt = '8';
                     CheckEOT();
@@ -523,7 +523,7 @@ namespace ss {
                 case '?':
                     pChar();
                     scn.SetDelim(c);
-                    string s = scn.GetStr();
+                    string s = ssUnescape(scn.GetStr());
                     pSkipSp();
                     return new ATree(c, 0, s, fnm);
                 case '.':

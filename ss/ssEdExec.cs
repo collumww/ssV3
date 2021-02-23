@@ -544,7 +544,13 @@ namespace ss {
             }
 
 
+        string ssUnescape(string s) {
+            return s.Replace("\\N", txt.Eoln); // \N will allow commands to work across line endings.
+            }
+
+
         string Unescape(string s) {
+            s = ssUnescape(s);
             try {
                 return Regex.Unescape(s);
                 }

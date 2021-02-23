@@ -29,7 +29,8 @@ namespace ss {
             m.MenuItems.Add("Snarf", new System.EventHandler(MenuSnarf));
             m.MenuItems.Add("Paste", new System.EventHandler(MenuPaste));
             m.MenuItems.Add("Undo", new System.EventHandler(MenuUndo));
-            m.MenuItems.Add("Exec", new System.EventHandler(MenuExec));
+            if (txt == ed.Log)
+                m.MenuItems.Add("Exec", new System.EventHandler(MenuExec));
             m.MenuItems.Add("Case", new System.EventHandler(MenuToggleIgnoreCase)).Checked = ed.defs.senseCase;
             m.MenuItems.Add("Look", new System.EventHandler(MenuLook));
             m.MenuItems.Add("/" + ed.LastPat, new System.EventHandler(MenuSearch));

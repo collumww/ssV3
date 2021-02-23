@@ -396,9 +396,11 @@ namespace ss {
                     return new ssAddress(atxt.Length, atxt.Length, atxt);
                 case '/':
                     CheckTxt(atxt);
+                    lastPat = a.s;
                     return Search(new ssAddress(atxt.dot, atxt), a.s, true);
                 case '?':
                     CheckTxt(atxt);
+                    lastPat = a.s;
                     return Search(new ssAddress(atxt.dot, atxt), a.s, false);
                 case ',':
                 case ';':
@@ -430,8 +432,10 @@ namespace ss {
                     if (!rt.txt.Contains(rt.rng)) throw new ssException("address range");
                     return rt;
                 case '/':
+                    lastPat = ar.s;
                     return Search(rt, ar.s, dir == '+');
                 case '?':
+                    lastPat = ar.s;
                     return Search(rt, ar.s, dir == '-');
                 case '0':
                     if (dir == '+')
@@ -445,14 +449,27 @@ namespace ss {
                 }
             }
 
+        public void FindNextDot() {
+            string s = txt.ToString();
+            string t = txt.ToString(txt.dot.r, txt.Length - txt.dot.r);
+            int loc = t.IndexOf(s);
+            if (loc < 0) {
+                t = txt.ToString(0, txt.dot.r);
+                loc = t.IndexOf(s);
+                }
+            else {
+                loc += txt.dot.r;
+                }
+            txt.dot.l = loc;
+            txt.dot.len = s.Length;
+            }
+
 
         ssAddress Search(ssAddress rt, string pat, bool forward) {
             Match m;
             Regex rex;
             int start;
 
-            if (pat == "") pat = lastPat;
-            lastPat = pat;
             string s = rt.txt.ToString(0, rt.txt.Length);
             bool found = true;
             RegexOptions opts = RegexOptions.Multiline;

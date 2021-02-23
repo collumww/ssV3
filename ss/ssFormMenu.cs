@@ -133,7 +133,10 @@ namespace ss {
             }
 
         void MenuLook(Object sender, EventArgs e) {
-            ed.Do("/" + txt.ToString());
+            InvalidateCursor();
+            ed.FindNextDot();
+            txt.SyncFormToText();
+            InvalidateCursor();
             }
 
 

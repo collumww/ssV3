@@ -318,7 +318,7 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = ssUnescape(scn.GetStr());
+                    t.s = Unescape(scn.GetStr());
                     t.sub = new CTree(null, listHead);
                     tail = t.sub;
                     int group = grouping;
@@ -330,7 +330,7 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = ssUnescape(scn.GetStr());
+                    t.s = Unescape(scn.GetStr());
                     t.rep = scn.GetStr();
                     t.opt = scn.C;
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");

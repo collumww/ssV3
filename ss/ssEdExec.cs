@@ -364,6 +364,12 @@ namespace ss {
             if (t == null) throw new ssException("no current file");
             }
 
+        string SetPat(string pat) {
+            if (pat == "") return lastPat;
+            lastPat = pat;
+            return pat;
+            }
+
         ssText NullIfTxt(ssText t) { return t == txt ? null : t; }
 
         ssText TxtIfNull(ssText t) { return t == null ? txt : t; }
@@ -396,11 +402,11 @@ namespace ss {
                     return new ssAddress(atxt.Length, atxt.Length, atxt);
                 case '/':
                     CheckTxt(atxt);
-                    lastPat = a.s;
+                    a.s = SetPat(a.s);
                     return Search(new ssAddress(atxt.dot, atxt), a.s, true);
                 case '?':
                     CheckTxt(atxt);
-                    lastPat = a.s;
+                    a.s = SetPat(a.s);
                     return Search(new ssAddress(atxt.dot, atxt), a.s, false);
                 case ',':
                 case ';':
@@ -432,10 +438,10 @@ namespace ss {
                     if (!rt.txt.Contains(rt.rng)) throw new ssException("address range");
                     return rt;
                 case '/':
-                    lastPat = ar.s;
+                    ar.s = SetPat(ar.s);
                     return Search(rt, ar.s, dir == '+');
                 case '?':
-                    lastPat = ar.s;
+                    ar.s = SetPat(ar.s);
                     return Search(rt, ar.s, dir == '-');
                 case '0':
                     if (dir == '+')

@@ -388,12 +388,12 @@ namespace ss {
             }
 
         public void CheckSeq(ref ssRange r, bool insert) {
-            if (r.l > adjEdge) { 
+            int newEdge = insert ? r.l : r.r;
+            if (newEdge > adjEdge) { 
                 ed.Undo(1);
                 throw new ssException("changes not in sequence");
                 }
-            if (insert) adjEdge = r.l;
-            else adjEdge = r.r;
+            adjEdge = newEdge;
             }
 
         public void ShowInternals() {

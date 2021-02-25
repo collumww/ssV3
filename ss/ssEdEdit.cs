@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace ss {
     public partial class ssEd {
         ssTrans seqRoot;
-        ssTrans seqTail;
+        //ssTrans seqTail;
 
         public void SetDot(ssText t, ssRange r) {
             edDot.rng = r;
@@ -18,7 +18,7 @@ namespace ss {
 
         public void InitAllSeqs() {
             seqRoot.nxt = null;
-            seqTail = seqRoot;
+            //seqTail = seqRoot;
             for (ssText tt = txts; tt != null; tt = tt.Nxt) tt.InitSeq();
             }
 
@@ -59,21 +59,25 @@ namespace ss {
                 }
             }
 
+        void PushTrans(ssTrans t) {
+            t.nxt = seqRoot.nxt;
+            seqRoot.nxt = t;
+            }
 
         public void Rename(string s) {
-            seqTail.nxt = new ssTrans(ssTrans.Type.rename, 0, edDot.Copy(), s, null);
-            seqTail = seqTail.nxt;
+            ssTrans t = new ssTrans(ssTrans.Type.rename, 0, edDot.Copy(), s, null);
+            PushTrans(t);
             }
 
         public void Delete() {
-            seqTail.nxt = new ssTrans(ssTrans.Type.delete, 0, edDot.Copy(), null, null);
-            seqTail = seqTail.nxt;
+            ssTrans t = new ssTrans(ssTrans.Type.delete, 0, edDot.Copy(), null, null);
+            PushTrans(t);
             }
 
         public void Insert(string s) {
-            seqTail.nxt = new ssTrans(ssTrans.Type.insert, 0, edDot.Copy(), s, null);
-            seqTail = seqTail.nxt;
-            seqTail.a.rng.len = s.Length;
+            ssTrans t = new ssTrans(ssTrans.Type.insert, 0, edDot.Copy(), s, null);
+            PushTrans(t);
+            t.a.rng.len = s.Length;
             }
 
         public void Insert(char c) {
@@ -95,24 +99,16 @@ namespace ss {
                     t2 = x;
                     }
                 }
-            seqTail.nxt = t1;
-            seqTail = seqTail.nxt;
-            if (t2 != null) { 
-                seqTail.nxt = t2;
-                seqTail = seqTail.nxt;
-                }
+            PushTrans(t1);
+            if (t2 != null) PushTrans(t2);
             }
 
         public void Change(string s) {
-            string ss = txt.ToString();
-            ssAddress ad = edDot.Copy();
-            seqTail.nxt = new ssTrans(ssTrans.Type.delete, 0, ad, null, null);
-            seqTail = seqTail.nxt;
             ssAddress ai = edDot.Copy();
-            ai.rng.Move(ai.rng.len);
-            seqTail.nxt = new ssTrans(ssTrans.Type.insert, 0, ai, s, null);
-            seqTail = seqTail.nxt;
-            seqTail.a.rng.len = s.Length;
+            PushTrans(new ssTrans(ssTrans.Type.insert, 0, ai, s, null));
+            seqRoot.nxt.a.rng.len = s.Length;
+            ssAddress ad = edDot.Copy();
+            PushTrans(new ssTrans(ssTrans.Type.delete, 0, ad, null, null));
             }
         }
     }

@@ -19,7 +19,6 @@ namespace ss {
         public Type typ;
         public long id;         // A large edit command will consist of many of these with the same id number
         public ssAddress a;
-        public ssAddress aseq;
         public string s;       // null here means it was an insert. Presence of a string means a delete.
         public ssTrans nxt;
 

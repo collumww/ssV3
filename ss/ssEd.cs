@@ -22,7 +22,6 @@ namespace ss {
             newfile = 0;
             root = new CTree(null, '\0');
             seqRoot = new ssTrans(ssTrans.Type.delete, 0, null, null, null);
-            seqTail = seqRoot;
             //win remove for non-windowed version
             log = null;
             // remove for non-windowed version */

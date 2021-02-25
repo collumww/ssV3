@@ -73,7 +73,7 @@ namespace ss {
                     if (t.sub.nxt.cmd == noCmd) t.sub.nxt.cmd = 'p';
                     RegexOptions opts = RegexOptions.Multiline;
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
-                    lastPat = t.s;
+                    t.s = SetPat(t.s);
                     MatchCollection ms = Regex.Matches(txt.ToString(), t.s, opts);
                     ssRange strt = txt.dot;
                     foreach (Match m in ms) {
@@ -86,7 +86,7 @@ namespace ss {
                     if (t.sub.nxt.cmd == noCmd) t.sub.nxt.cmd = 'p';
                     opts = RegexOptions.Multiline;
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
-                    lastPat = t.s;
+                    t.s = SetPat(t.s);
                     ms = Regex.Matches(txt.ToString(), t.s, opts);
                     strt = txt.dot;
                     int l = strt.l;
@@ -102,7 +102,7 @@ namespace ss {
                     break;
                 case 'X':
                 case 'Y':
-                    lastPat = t.s;
+                    t.s = SetPat(t.s);
                     t.txts = FindText(true, t.s, t.cmd == 'X', false);
                     if (t.txts == null) throw new ssException("file search");
                     for (TList tl = t.txts; tl != null; tl = tl.nxt) {
@@ -113,21 +113,19 @@ namespace ss {
                 case 'g':
                     opts = RegexOptions.Multiline;
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
-                    lastPat = t.s;
-                    ms = Regex.Matches(txt.ToString(), t.s, opts);
-                    if (ms.Count > 0) xCmd(t.sub);
+                    t.s = SetPat(t.s);
+                    if (Regex.IsMatch(txt.ToString(), t.s, opts)) xCmd(t.sub);
                     break;
                 case 'v':
                     opts = RegexOptions.Multiline;
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
-                    lastPat = t.s;
-                    ms = Regex.Matches(txt.ToString(), t.s, opts);
-                    if (ms.Count == 0) xCmd(t.sub);
+                    t.s = SetPat(t.s);
+                    if (!Regex.IsMatch(txt.ToString(), t.s, opts)) xCmd(t.sub);
                     break;
                 case 's':
                     opts = RegexOptions.Multiline;
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
-                    lastPat = t.s;
+                    t.s = SetPat(t.s);
                     ms = Regex.Matches(txt.ToString(), t.s, opts);
                     strt = txt.dot;
                     int cnt = 0;
@@ -138,7 +136,6 @@ namespace ss {
                         Change(Unescape(SubFound(t.rep, m.ToString())));
                         if (t.opt != 'g') break;
                         }
-                    MsgLn(cnt.ToString() + " substitutions");
                     break;
                 case 'D':
                     TList ts = null;

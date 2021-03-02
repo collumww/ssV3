@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Settings.cs" />
     <Compile Include="ssDefaults.cs" />
+    <Compile Include="ssEdEscapes.cs" />
     <Compile Include="ssEventDecoderV2.cs" />
     <Compile Include="ssFormMenu.cs">
       <SubType>Form</SubType>

@@ -59,6 +59,7 @@ namespace ss {
             public CTree nxt;
             public TList txts;
             public SList fs;
+            public SubList subs;
             }
 
         class CTreeList {
@@ -77,6 +78,14 @@ namespace ss {
             }
 
 
+        string SetPat(string pat)
+        {
+            if (pat == "") return lastPat;
+            lastPat = pat;
+            return pat;
+        }
+
+
         string SListJoin(SList l) {
             string s = "";
             while (l != null) { s += l.s + " "; l = l.nxt; }
@@ -91,6 +100,7 @@ namespace ss {
                 ResetAffected();
                 InitAllSeqs();
                 tlog.NewTrans();
+                Iota = 0;
                 //edDot.txt = txt;
                 //edDot.rng = txt.dot;
                 ParseAndExec(s);
@@ -293,6 +303,7 @@ namespace ss {
                         scn.SetDelim(pDelim());
                         scn.GetChar();
                         t.s = Unescape(scn.GetStr());
+                        t.subs = PrepForSub(t.s, false);
                         }
                     CheckEOT();
                     break;
@@ -318,7 +329,7 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = Unescape(scn.GetStr());
+                    t.s = SetPat(PreEscape(scn.GetStr()));
                     t.sub = new CTree(null, listHead);
                     tail = t.sub;
                     int group = grouping;
@@ -330,8 +341,9 @@ namespace ss {
                     pChar();
                     scn.SetDelim(pDelim());
                     scn.GetChar();
-                    t.s = Unescape(scn.GetStr());
-                    t.rep = scn.GetStr();
+                    t.s = SetPat(PreEscape(scn.GetStr()));
+                    t.rep = Unescape(scn.GetStr());
+                    t.subs = PrepForSub(t.rep, true);
                     t.opt = scn.C;
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");
                     CheckEOT();
@@ -523,7 +535,7 @@ namespace ss {
                 case '?':
                     pChar();
                     scn.SetDelim(c);
-                    string s = ssUnescape(scn.GetStr());
+                    string s = SetPat(PreEscape(scn.GetStr()));
                     pSkipSp();
                     return new ATree(c, 0, s, fnm);
                 case '.':

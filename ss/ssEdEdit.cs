@@ -9,16 +9,9 @@ using System.Text.RegularExpressions;
 namespace ss {
     public partial class ssEd {
         ssTrans seqRoot;
-        //ssTrans seqTail;
-
-        public void SetDot(ssText t, ssRange r) {
-            edDot.rng = r;
-            edDot.txt = t;
-            }
 
         public void InitAllSeqs() {
             seqRoot.nxt = null;
-            //seqTail = seqRoot;
             for (ssText tt = txts; tt != null; tt = tt.Nxt) tt.InitSeq();
             }
 

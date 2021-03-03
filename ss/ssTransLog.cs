@@ -11,6 +11,7 @@ namespace ss {
             log = true;
             ed = e;
             txt = t;
+            olddot = new ssRange();
             }
 
         //public void NewTrans() {
@@ -45,6 +46,9 @@ namespace ss {
                     case ssTrans.Type.insert:
                         txt.Insert(ts.s);
                         break;
+                    case ssTrans.Type.dot:
+                        txt.dot = ts.rng;
+                        break;
                     }
                 ts = ts.nxt;
                 }
@@ -60,10 +64,19 @@ namespace ss {
             get { return ts; }
                 }
 
-        //long curid;
+
+        public void SaveDot() {
+            olddot = txt.dot;
+            }
+
+        public ssRange OldDot {
+            get { return olddot; }
+            }
+
         ssEd ed;
         ssText txt;
         ssTrans ts;
+        ssRange olddot;
         bool log;
         }
     }

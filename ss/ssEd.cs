@@ -76,6 +76,7 @@ namespace ss {
 
         public void NewTrans() {
             curTransId++;
+            for (ssText t = txts; t != null; t = t.Nxt) t.TLog.SaveDot();
             }
 
         public long CurTransId {

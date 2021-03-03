@@ -167,15 +167,17 @@ namespace ss {
 		}
 
 
-		public void Delete(bool inv) {
+		public void Delete() {
 			if (cursor.Empty) return;
 			txt.DoMaint();
 			InvalidateMarks();
 			string s = txt.ToString();
-			ed.TLog.NewTrans();
 			cursor.To(txt.Delete());
 			txt.InvalidateMarksAndChange(cursor.l);
-			if (txt != ed.Log) ed.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);  // you log what the undo will do, not what was just done.
+			if (txt != ed.Log) {
+				ed.NewTrans();
+				txt.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);  // you log what the undo will do, not what was just done.
+				}
 		}
 
 		public void Insert(char c) {
@@ -186,11 +188,13 @@ namespace ss {
 		public void Insert(string s) {
 			txt.DoMaint();
 			InvalidateMarks();
-			Delete(false);
-			ed.TLog.NewTrans();
+			Delete();
 			cursor.To(txt.Insert(s));
 			txt.InvalidateMarksAndChange(cursor.l);
-			if (txt != ed.Log) ed.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);  // you log what the undo will do, not what was just done.
+			if (txt != ed.Log) {
+				ed.NewTrans();
+				txt.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);  // you log what the undo will do, not what was just done.
+				}
 		}
 
 
@@ -201,12 +205,12 @@ namespace ss {
 			ssRange r = cursor.rng;
 			cursor.To(txt.AlignRange(ref r));
 			int ii = cursor.l;
-			ed.TLog.NewTrans();
+			if (txt != ed.Log) ed.NewTrans();
 			for (int i = r.l; i < r.r; i++) {
 				if (txt.AtBOLN(i)) {
 					txt.dot.To(i);
 					txt.Insert(s);
-					if (txt != ed.Log) ed.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);
+					if (txt != ed.Log) txt.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);
 					r.r += s.Length;
 				}
 			}
@@ -221,14 +225,14 @@ namespace ss {
 			ssRange r = cursor.rng;
 			cursor.To(txt.AlignRange(ref r));
 			int ii = cursor.l;
-			ed.TLog.NewTrans();
+			if (txt != ed.Log) ed.NewTrans();
 			for (int i = r.l; i < r.r; i++) {
 				if (txt.AtBOLN(i) && char.IsWhiteSpace(txt[i])) {
 					txt.dot.l = i;
 					txt.dot.r = i + 1;
 					string s = txt.ToString();
 					txt.Delete();
-					if (txt != ed.Log) ed.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);
+					if (txt != ed.Log) txt.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);
 					r.r--;
 				}
 			}
@@ -592,7 +596,7 @@ namespace ss {
 			else if (cursor.Empty) sel();
 			extending = false;
 			string s = txt.ToString();
-			Delete(true);
+			Delete();
 			MoveCursor(cursor.l, mov);
 			Insert(s);
 		}

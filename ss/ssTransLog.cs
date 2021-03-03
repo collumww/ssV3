@@ -6,36 +6,36 @@ using System.Threading.Tasks;
 
 namespace ss {
     public class ssTransLog {
-        public ssTransLog() {
-            curid = 0;
+        public ssTransLog(ssEd e) {
             ts = null;
             log = true;
+            ed = e;
             }
 
-        public void NewTrans() {
-            curid++;
-            }
+        //public void NewTrans() {
+        //    curid++;
+        //    }
 
         public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
-            if (log) ts = new ssTrans(typ, curid, new ssAddress(r, t), s, ts);
+            if (log) ts = new ssTrans(typ, ed.CurTransId, new ssAddress(r, t), s, ts);
             }
 
         public void LogTrans(ssTrans.Type typ, ssAddress aa, string ss) {
-            if (log) ts = new ssTrans(typ, curid, aa, ss, ts);
+            if (log) ts = new ssTrans(typ, ed.CurTransId, aa, ss, ts);
             }
 
         public void LogTrans(ssTrans t) {
             if (log) {
-                t.id = curid;
+                t.id = ed.CurTransId;
                 t.nxt = ts;
                 ts = t;
                 }
             }
 
-        public void Undo() {
+        public void Undo(long id) {
             if (ts == null) return;
             log = false;
-            long id = ts.id;
+            //long id = ts.id;
             while (ts != null && ts.id == id) {
                 if (ts.a != null) {
                     ts.a.txt.dot = ts.a.rng;
@@ -65,7 +65,8 @@ namespace ss {
             get { return ts; }
                 }
 
-        long curid;
+        //long curid;
+        ssEd ed;
         ssTrans ts;
         bool log;
         }

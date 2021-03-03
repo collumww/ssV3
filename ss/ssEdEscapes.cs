@@ -167,10 +167,10 @@ namespace ss
             while (l != null) {
                 switch (l.typ) {
                     case SubType.iota:
-                        string s = Iota.ToString();
+                        string s = iota.ToString();
                         res = res.Insert(l.loc + adj, s);
                         adj += s.Length;
-                        Iota++;
+                        iota++;
                         break;
                     case SubType.match:
                         res = res.Insert(l.loc + adj, m);

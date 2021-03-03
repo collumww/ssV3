@@ -94,13 +94,19 @@ namespace ss {
 
 
 
+        void Commit() {
+            for (ssText t = txts; t != null; t = t.Nxt) t.Commit();
+            }
+
+
 
         public void Do(string s) {
             try {
                 ResetAffected();
                 InitAllSeqs();
-                tlog.NewTrans();
-                Iota = 0;
+                //tlog.NewTrans();
+                NewTrans();
+                iota = 0;
                 //edDot.txt = txt;
                 //edDot.rng = txt.dot;
                 ParseAndExec(s);

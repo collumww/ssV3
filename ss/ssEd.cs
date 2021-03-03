@@ -15,13 +15,13 @@ namespace ss {
             txts = null;
             txt = null;
             prvtxt = null;
-            tlog = new ssTransLog();
+            //tlog = new ssTransLog();
+            curTransId = 0;
             scn = new ssScanner(null, false);
             grouping = 0;
             lastPat = "";
             newfile = 0;
             root = new CTree(null, '\0');
-            seqRoot = new ssTrans(ssTrans.Type.delete, 0, null, null, null);
             //win remove for non-windowed version
             log = null;
             // remove for non-windowed version */
@@ -32,7 +32,8 @@ namespace ss {
         string[] args;
         int startWith;
         ssText txts;
-        ssTransLog tlog;
+        //ssTransLog tlog;
+        long curTransId;
         int newfile;
         //win remove for non-windowed version
         ssText log;
@@ -73,6 +74,13 @@ namespace ss {
             }
 
 
+        public void NewTrans() {
+            curTransId++;
+            }
+
+        public long CurTransId {
+            get { return curTransId; }
+            }
 
         public string LastPat {
             get { return lastPat; }
@@ -136,8 +144,8 @@ namespace ss {
             if (t == null) return true;
             if (p == null) txts = t.Nxt;
             else p.Nxt = t.Nxt;
-            ssTrans.VoidTrans(tlog.Ts, dtxt);
-            ssTrans.VoidTrans(seqRoot.nxt, dtxt);
+            //ssTrans.VoidTrans(tlog.Ts, dtxt);
+            //ssTrans.VoidTrans(seqRoot.nxt, dtxt);
             prvtxt = txt;
             txt = null;
             return true;
@@ -210,9 +218,9 @@ namespace ss {
             get { return txt; }
             }
 
-        public ssTransLog TLog {
-            get { return tlog; }
-            }
+        //public ssTransLog TLog {
+        //    get { return tlog; }
+        //    }
 
         public void Err(string s) {
             MsgLn("?" + s);

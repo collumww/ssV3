@@ -31,6 +31,8 @@ namespace ss {
             nm = n;
             ed = ee;
             encoding = enc;
+            seqRoot = new ssTrans(ssTrans.Type.delete, 0, null, null, null);
+            tlog = new ssTransLog(ed);
             InitSeq();
 
             //win Remove for non-windowing version
@@ -55,6 +57,8 @@ namespace ss {
         public bool cmdaffected;  // the editor uses this to know which windows to update after a command
 
         int adjEdge;
+        public ssTrans seqRoot;
+        ssTransLog tlog;
 
         string EOLN;
         public int fixedLn;
@@ -67,6 +71,52 @@ namespace ss {
         ssForm frms;
         // Remove for non-windowed version */
 
+
+        public ssTransLog TLog {
+            get { return tlog; }
+            }
+
+        public void Commit() {
+            ssTrans t = seqRoot.nxt;
+            while (t != null) {
+                if (t.a != null) {  // could be null if a D command is part of a compound command
+                    if (t.typ != ssTrans.Type.rename) t.a.txt.CheckSeq(ref t.a.rng, t.s != null);
+                    dot = t.a.rng;
+                    switch (t.typ) {
+                        case ssTrans.Type.rename:
+                            string n = Nm;
+                            Rename(t.s);
+                            t.s = n;
+                            break;
+                        case ssTrans.Type.delete:
+                            t.s = ToString();
+                            t.a.rng = Delete();
+                            t.typ = ssTrans.Type.insert;
+                            break;
+                        case ssTrans.Type.insert:
+                            t.a.rng = Insert(t.s);
+                            t.s = null;
+                            t.typ = ssTrans.Type.delete;
+                            break;
+                        }
+
+                    }
+                ssTrans tt = t.nxt; // Grab t.nxt before LogTrans changes it.
+                if (t.a != null) {
+                    if (tt == null) {
+                        if (t.typ != ssTrans.Type.rename) t.a.txt.dot = t.a.rng;
+                        SyncFormToText();
+                        }
+                    tlog.LogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
+                    }
+                t = tt;
+                }
+            }
+
+        public void PushTrans(ssTrans t) {
+            t.nxt = seqRoot.nxt;
+            seqRoot.nxt = t;
+            }
 
         public bool DoMaint() {
             return txt.DoMaint();
@@ -210,7 +260,7 @@ namespace ss {
             changed = true;
             firstTry = true;
             cmdaffected = true;
-            mark.Adjust(dot.l, s.Length, true);
+            mark.Adjust(dot.l, s.Length, true); // needed in case there's no window
             AdjMarks(dot.l, s.Length, true);
             dot.len = s.Length;
             return dot;
@@ -222,7 +272,7 @@ namespace ss {
                 changed = true;
                 firstTry = true;
                 cmdaffected = true;
-                mark.Adjust(dot.l, dot.len, false);
+                mark.Adjust(dot.l, dot.len, false); // needed in case there's no window
                 AdjMarks(dot.l, dot.len, false);
                 dot.len = 0;
                 }
@@ -385,6 +435,7 @@ namespace ss {
 
         public void InitSeq() {
             adjEdge = Length;
+            seqRoot.nxt = null;
             }
 
         public void CheckSeq(ref ssRange r, bool insert) {

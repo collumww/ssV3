@@ -182,19 +182,19 @@ namespace ss {
 
         public void CmdBack() {
             if (!cursor.Empty) {
-                Delete(true);
+                Delete();
                 }
             else {
                 extending = true;
                 MoveCursor(cursor.boat, txt.NxtLeft);
-                Delete(true);
+                Delete();
                 extending = false;
                 }
             }
 
 
         public void CmdEnter() {
-            Delete(true);
+            Delete();
             int b = cursor.boat;
             Insert(txt.Eoln);
             int oldl = cursor.l;
@@ -222,18 +222,18 @@ namespace ss {
 
 
         public void CmdDelete() {
-            if (!cursor.Empty) Delete(true);
+            if (!cursor.Empty) Delete();
             else {
                 extending = true;
                 MoveCursor(cursor.boat, txt.NxtRight);
-                Delete(true);
+                Delete();
                 extending = false;
                 }
             }
 
         public void CmdCut() {
             Clipboard.SetDataObject(txt.ToString());
-            Delete(true);
+            Delete();
             extending = false;
             }
 
@@ -291,7 +291,7 @@ namespace ss {
             mark = r;
             txt.dot = cursor.rng;
             string s = txt.ToString();
-            Delete(false);
+            Delete();
             r = cursor.rng;
             cursor.To(mark);
             mark = r;
@@ -509,14 +509,14 @@ namespace ss {
                 extending = true;
                 CmdCursorToNextWordRight();
                 }
-            Delete(true);
+            Delete();
             extending = false;
             }
 
         public void CmdBackDeleteWord() {
             extending = true;
             CmdCursorToNextWordLeft();
-            Delete(true);
+            Delete();
             extending = false;
             }
 

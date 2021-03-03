@@ -21,14 +21,5 @@ namespace ss {
         public ssAddress a;
         public string s;       // null here means it was an insert. Presence of a string means a delete.
         public ssTrans nxt;
-
-        public static void VoidTrans(ssTrans t, ssText vt) {
-            while (t != null) {
-                if (t.a != null && t.a.txt == vt) { t.a = null; }
-                t = t.nxt;
-                }
-            }
-
-
         }
     }

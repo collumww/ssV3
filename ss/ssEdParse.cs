@@ -104,7 +104,6 @@ namespace ss {
             try {
                 ResetAffected();
                 InitAllSeqs();
-                //tlog.NewTrans();
                 NewTrans();
                 iota = 0;
                 //edDot.txt = txt;

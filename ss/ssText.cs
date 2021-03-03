@@ -31,8 +31,8 @@ namespace ss {
             nm = n;
             ed = ee;
             encoding = enc;
-            seqRoot = new ssTrans(ssTrans.Type.delete, 0, null, null, null);
-            tlog = new ssTransLog(ed);
+            seqRoot = new ssTrans(ssTrans.Type.delete, 0, dot, null, null);
+            tlog = new ssTransLog(ed, this);
             InitSeq();
 
             //win Remove for non-windowing version
@@ -79,36 +79,32 @@ namespace ss {
         public void Commit() {
             ssTrans t = seqRoot.nxt;
             while (t != null) {
-                if (t.a != null) {  // could be null if a D command is part of a compound command
-                    if (t.typ != ssTrans.Type.rename) t.a.txt.CheckSeq(ref t.a.rng, t.s != null);
-                    dot = t.a.rng;
-                    switch (t.typ) {
-                        case ssTrans.Type.rename:
-                            string n = Nm;
-                            Rename(t.s);
-                            t.s = n;
-                            break;
-                        case ssTrans.Type.delete:
-                            t.s = ToString();
-                            t.a.rng = Delete();
-                            t.typ = ssTrans.Type.insert;
-                            break;
-                        case ssTrans.Type.insert:
-                            t.a.rng = Insert(t.s);
-                            t.s = null;
-                            t.typ = ssTrans.Type.delete;
-                            break;
-                        }
+                if (t.typ != ssTrans.Type.rename) CheckSeq(ref t.rng, t.s != null);
+                dot = t.rng;
+                switch (t.typ) {
+                    case ssTrans.Type.rename:
+                        string n = Nm;
+                        Rename(t.s);
+                        t.s = n;
+                        break;
+                    case ssTrans.Type.delete:
+                        t.s = ToString();
+                        t.rng = Delete();
+                        t.typ = ssTrans.Type.insert;
+                        break;
+                    case ssTrans.Type.insert:
+                        t.rng = Insert(t.s);
+                        t.s = null;
+                        t.typ = ssTrans.Type.delete;
+                        break;
+                    }
 
-                    }
                 ssTrans tt = t.nxt; // Grab t.nxt before LogTrans changes it.
-                if (t.a != null) {
-                    if (tt == null) {
-                        if (t.typ != ssTrans.Type.rename) t.a.txt.dot = t.a.rng;
-                        SyncFormToText();
-                        }
-                    tlog.LogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
+                if (tt == null) {
+                    if (t.typ != ssTrans.Type.rename) dot = t.rng;
+                    SyncFormToText();
                     }
+                tlog.LogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
                 t = tt;
                 }
             }

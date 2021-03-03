@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ss {
     public class ssTransLog {
-        public ssTransLog(ssEd e) {
+        public ssTransLog(ssEd e, ssText t) {
             ts = null;
             log = true;
             ed = e;
+            txt = t;
             }
 
         //public void NewTrans() {
@@ -17,11 +18,7 @@ namespace ss {
         //    }
 
         public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
-            if (log) ts = new ssTrans(typ, ed.CurTransId, new ssAddress(r, t), s, ts);
-            }
-
-        public void LogTrans(ssTrans.Type typ, ssAddress aa, string ss) {
-            if (log) ts = new ssTrans(typ, ed.CurTransId, aa, ss, ts);
+            if (log) ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
             }
 
         public void LogTrans(ssTrans t) {
@@ -37,19 +34,17 @@ namespace ss {
             log = false;
             //long id = ts.id;
             while (ts != null && ts.id == id) {
-                if (ts.a != null) {
-                    ts.a.txt.dot = ts.a.rng;
-                    switch (ts.typ) {
-                        case ssTrans.Type.rename:
-                            ts.a.txt.Rename(ts.s);
-                            break;
-                        case ssTrans.Type.delete:
-                            ts.a.txt.Delete();
-                            break;
-                        case ssTrans.Type.insert:
-                            ts.a.txt.Insert(ts.s);
-                            break;
-                        }
+                txt.dot = ts.rng;
+                switch (ts.typ) {
+                    case ssTrans.Type.rename:
+                        txt.Rename(ts.s);
+                        break;
+                    case ssTrans.Type.delete:
+                        txt.Delete();
+                        break;
+                    case ssTrans.Type.insert:
+                        txt.Insert(ts.s);
+                        break;
                     }
                 ts = ts.nxt;
                 }
@@ -67,6 +62,7 @@ namespace ss {
 
         //long curid;
         ssEd ed;
+        ssText txt;
         ssTrans ts;
         bool log;
         }

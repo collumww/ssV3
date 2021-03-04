@@ -83,6 +83,10 @@ namespace ss {
             curTransId++;
             }
 
+        public void PrevTransId() {
+            if (curTransId > 0) curTransId--;
+            }
+
         public long CurTransId {
             get { return curTransId; }
             }

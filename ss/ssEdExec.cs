@@ -515,19 +515,20 @@ namespace ss {
 
         public void Undo(int n) {
             ssText t;
-            long id = 0;
-            long tid = 0;
+            //long id = 0;
+            //long tid = 0;
             for (; n > 0; n--) {
-                id = 0;
-                for (t = txts; t != null; t = t.Nxt) {
-                    if (t.TLog.Ts != null) {
-                        tid = t.TLog.Ts.id;
-                        if (tid > id) id = tid;
-                        }
-                    }
-                for (t = txts; t != null; t = t.Nxt) 
-                    t.TLog.Undo(id);
-                //tlog.Undo();
+                //id = 0;
+                //for (t = txts; t != null; t = t.Nxt) {
+                //    if (t.TLog.Ts != null) {
+                //        tid = t.TLog.Ts.id;
+                //        if (tid > id) id = tid;
+                //        }
+                //    }
+                for (t = txts; t != null; t = t.Nxt)
+                    t.TLog.Undo(curTransId);
+                //t.TLog.Undo(id);
+                PrevTransId();
             }
             SyncFormToTextAll();
         }

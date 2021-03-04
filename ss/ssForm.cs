@@ -168,7 +168,7 @@ namespace ss {
 
 
 		void BeginFormTrans() {
-			ed.NewTransId();
+			//ed.NewTransId();
 			txt.TLog.InitTrans();
 			txt.TLog.BeginTrans();
             }
@@ -194,7 +194,7 @@ namespace ss {
 		public void Insert(string s) {
 			txt.DoMaint();
 			InvalidateMarks();
-			Delete();
+			if (!txt.dot.Empty) Delete();
 			cursor.To(txt.Insert(s));
 			txt.InvalidateMarksAndChange(cursor.l);
 			if (txt != ed.Log) {
@@ -205,24 +205,19 @@ namespace ss {
 
 
 		public void IncIndent() {
-			InvalidateMarks();
-			string s;
-			if (layout.expTabs) s = ("").PadLeft(layout.spInTab); else s = "\t";
-			ssRange r = cursor.rng;
-			cursor.To(txt.AlignRange(ref r));
-			int ii = cursor.l;
-			if (txt != ed.Log) BeginFormTrans();
-			for (int i = r.l; i < r.r; i++) {
-				if (txt.AtBOLN(i)) {
-					txt.dot.To(i);
-					txt.Insert(s);
-					if (txt != ed.Log) txt.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);
-					r.r += s.Length;
-				}
-			}
-			FormMarksToText();
-			txt.InvalidateMarksAndChange(ii);
-		}
+            InvalidateMarks();
+            string s;
+            if (layout.expTabs) s = ("").PadLeft(layout.spInTab); else s = "\t";
+			s = @"x/.*\N/i/" + s + "/";
+            ssRange r = cursor.rng;
+            cursor.To(txt.AlignRange(ref r));
+			SaveCursor();
+            int ii = cursor.l;
+			ed.Do(s);
+			RestoreCursor();
+            FormMarksToText();
+            txt.InvalidateMarksAndChange(ii);
+            }
 
 
 
@@ -230,18 +225,10 @@ namespace ss {
 			InvalidateMarks();
 			ssRange r = cursor.rng;
 			cursor.To(txt.AlignRange(ref r));
+			SaveCursor();
 			int ii = cursor.l;
-			if (txt != ed.Log) BeginFormTrans();
-			for (int i = r.l; i < r.r; i++) {
-				if (txt.AtBOLN(i) && char.IsWhiteSpace(txt[i])) {
-					txt.dot.l = i;
-					txt.dot.r = i + 1;
-					string s = txt.ToString();
-					txt.Delete();
-					if (txt != ed.Log) txt.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);
-					r.r--;
-				}
-			}
+			ed.Do(@"x/.*\N/x/^[ \t]/d");
+			RestoreCursor();
 			FormMarksToText();
 			txt.InvalidateMarksAndChange(ii);
 		}

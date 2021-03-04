@@ -11,6 +11,7 @@ namespace ss {
             log = true;
             ed = e;
             txt = t;
+            getnewtrans = true;
             olddot = new ssRange();
             }
 
@@ -19,10 +20,18 @@ namespace ss {
         //    }
 
         public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
+            if (getnewtrans) {
+                ed.NewTransId();
+                getnewtrans = false;
+                }
             if (log) ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
             }
 
         public void LogTrans(ssTrans t) {
+            if (getnewtrans) {
+                ed.NewTransId();
+                getnewtrans = false;
+                }
             if (log) {
                 t.id = ed.CurTransId;
                 t.nxt = ts;
@@ -64,8 +73,8 @@ namespace ss {
             get { return ts; }
                 }
 
-
-        public void SaveDot() {
+        public void InitTrans() {
+            getnewtrans = true;
             olddot = txt.dot;
             }
 
@@ -77,6 +86,7 @@ namespace ss {
         ssText txt;
         ssTrans ts;
         ssRange olddot;
+        bool getnewtrans;
         bool log;
         }
     }

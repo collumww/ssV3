@@ -104,12 +104,12 @@ namespace ss {
             try {
                 ResetAffected();
                 InitAllSeqs();
-                NewTrans();
+                //NewTrans();
                 iota = 0;
                 //edDot.txt = txt;
                 //edDot.rng = txt.dot;
                 ParseAndExec(s);
-                Commit();
+                //Commit();
                 UpdateAffected();
                 //win remove for non-windowed version
                 if (txt != null && txt.Frm != null) txt.Frm.CmdShowCursor();

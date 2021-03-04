@@ -167,6 +167,11 @@ namespace ss {
 		}
 
 
+		void BeginFormTrans() {
+			ed.NewTrans();
+			txt.TLog.BeginTrans();
+            }
+
 		public void Delete() {
 			if (cursor.Empty) return;
 			txt.DoMaint();
@@ -175,7 +180,7 @@ namespace ss {
 			cursor.To(txt.Delete());
 			txt.InvalidateMarksAndChange(cursor.l);
 			if (txt != ed.Log) {
-				ed.NewTrans();
+				BeginFormTrans();
 				txt.TLog.LogTrans(ssTrans.Type.insert, txt.dot, txt, s);  // you log what the undo will do, not what was just done.
 				}
 		}
@@ -192,7 +197,7 @@ namespace ss {
 			cursor.To(txt.Insert(s));
 			txt.InvalidateMarksAndChange(cursor.l);
 			if (txt != ed.Log) {
-				ed.NewTrans();
+				BeginFormTrans();
 				txt.TLog.LogTrans(ssTrans.Type.delete, txt.dot, txt, null);  // you log what the undo will do, not what was just done.
 				}
 		}
@@ -205,7 +210,7 @@ namespace ss {
 			ssRange r = cursor.rng;
 			cursor.To(txt.AlignRange(ref r));
 			int ii = cursor.l;
-			if (txt != ed.Log) ed.NewTrans();
+			if (txt != ed.Log) BeginFormTrans();
 			for (int i = r.l; i < r.r; i++) {
 				if (txt.AtBOLN(i)) {
 					txt.dot.To(i);
@@ -225,7 +230,7 @@ namespace ss {
 			ssRange r = cursor.rng;
 			cursor.To(txt.AlignRange(ref r));
 			int ii = cursor.l;
-			if (txt != ed.Log) ed.NewTrans();
+			if (txt != ed.Log) BeginFormTrans();
 			for (int i = r.l; i < r.r; i++) {
 				if (txt.AtBOLN(i) && char.IsWhiteSpace(txt[i])) {
 					txt.dot.l = i;

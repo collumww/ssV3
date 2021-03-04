@@ -19,19 +19,20 @@ namespace ss {
         //    curid++;
         //    }
 
-        public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
-            if (getnewtrans) {
+        public void BeginTrans() {
+            if (log && getnewtrans) {
                 ed.NewTransId();
                 getnewtrans = false;
                 }
-            if (log) ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
+            }
+
+        public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
+            if (log) {
+                ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
+                }
             }
 
         public void LogTrans(ssTrans t) {
-            if (getnewtrans) {
-                ed.NewTransId();
-                getnewtrans = false;
-                }
             if (log) {
                 t.id = ed.CurTransId;
                 t.nxt = ts;
@@ -42,7 +43,6 @@ namespace ss {
         public void Undo(long id) {
             if (ts == null) return;
             log = false;
-            //long id = ts.id;
             while (ts != null && ts.id == id) {
                 txt.dot = ts.rng;
                 switch (ts.typ) {
@@ -86,7 +86,7 @@ namespace ss {
         ssText txt;
         ssTrans ts;
         ssRange olddot;
-        bool getnewtrans;
+        public bool getnewtrans;
         bool log;
         }
     }

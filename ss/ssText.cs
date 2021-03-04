@@ -111,6 +111,7 @@ namespace ss {
             }
 
         public void PushTrans(ssTrans t) {
+            tlog.BeginTrans();
             t.nxt = seqRoot.nxt;
             seqRoot.nxt = t;
             }

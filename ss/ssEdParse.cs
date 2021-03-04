@@ -95,7 +95,9 @@ namespace ss {
 
 
         void Commit() {
-            for (ssText t = txts; t != null; t = t.Nxt) t.Commit();
+            for (ssText t = txts; t != null; t = t.Nxt) {
+                if (!t.TLog.getnewtrans) t.Commit();
+                }
             }
 
 
@@ -104,12 +106,11 @@ namespace ss {
             try {
                 ResetAffected();
                 InitAllSeqs();
-                //NewTrans();
-                iota = 0;
                 //edDot.txt = txt;
                 //edDot.rng = txt.dot;
+                NewTrans();
                 ParseAndExec(s);
-                //Commit();
+                Commit();
                 UpdateAffected();
                 //win remove for non-windowed version
                 if (txt != null && txt.Frm != null) txt.Frm.CmdShowCursor();

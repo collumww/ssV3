@@ -168,7 +168,8 @@ namespace ss {
 
 
 		void BeginFormTrans() {
-			ed.NewTrans();
+			ed.NewTransId();
+			txt.TLog.InitTrans();
 			txt.TLog.BeginTrans();
             }
 

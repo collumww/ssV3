@@ -70,7 +70,7 @@ namespace ss {
             m.MenuItems.Add("Wrap", new System.EventHandler(MenuToggleWrap)).Checked = wrap;
             m.MenuItems.Add("Indent", new System.EventHandler(MenuToggleAutoIndent)).Checked = layout.autoIndent;
             m.MenuItems.Add("Prog", new System.EventHandler(MenuToggleProgramming)).Checked = layout.programming;
-            m.MenuItems.Add("Tabs", new System.EventHandler(MenuToggleExpTabs)).Checked = layout.expTabs;
+            m.MenuItems.Add("Tabs", new System.EventHandler(MenuToggleExpTabs)).Checked = !layout.expTabs;
 
             mi = new MenuItem("Events");
             evd.InitEventSetEnum();

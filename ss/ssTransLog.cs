@@ -28,7 +28,7 @@ namespace ss {
                 }
             }
 
-        public void LogTrans(ssTrans.Type typ, ssRange r, string s) {
+        public void FormLogTrans(ssTrans.Type typ, ssRange r, string s) {
             if (log) {
                 if (ts != null &&
                     ts.typ == ssTrans.Type.delete &&
@@ -48,7 +48,7 @@ namespace ss {
                 }
             }
 
-        public void LogTrans(ssTrans t) {
+        public void EdLogTrans(ssTrans t) {
             if (log) {
                 t.id = ed.CurTransId;
                 t.nxt = ts;

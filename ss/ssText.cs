@@ -56,7 +56,7 @@ namespace ss {
         bool firstTry;
         public bool cmdaffected;  // the editor uses this to know which windows to update after a command
 
-        int adjEdge;
+        ssRange adjEdge;
         public ssTrans seqRoot;
         ssTransLog tlog;
 
@@ -77,10 +77,9 @@ namespace ss {
             }
 
         public void Commit() {
-            tlog.LogTrans(ssTrans.Type.dot, tlog.OldDot, "");
+            tlog.FormLogTrans(ssTrans.Type.dot, tlog.OldDot, "");
             ssTrans t = seqRoot.nxt;
             while (t != null) {
-                if (t.typ != ssTrans.Type.rename) CheckSeq(ref t.rng, t.s != null);
                 dot = t.rng;
                 switch (t.typ) {
                     case ssTrans.Type.rename:
@@ -89,11 +88,13 @@ namespace ss {
                         t.s = n;
                         break;
                     case ssTrans.Type.delete:
+                        CheckSeq(ref t.rng, false);
                         t.s = ToString();
                         t.rng = Delete();
                         t.typ = ssTrans.Type.insert;
                         break;
                     case ssTrans.Type.insert:
+                        CheckSeq(ref t.rng, true);
                         t.rng = Insert(t.s);
                         t.s = null;
                         t.typ = ssTrans.Type.delete;
@@ -105,7 +106,7 @@ namespace ss {
                     if (t.typ != ssTrans.Type.rename) dot = t.rng;
                     SyncFormToText();
                     }
-                tlog.LogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
+                tlog.EdLogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
                 t = tt;
                 }
             changeCnt++;
@@ -429,17 +430,17 @@ namespace ss {
 
 
         public void InitSeq() {
-            adjEdge = Length;
+            adjEdge = new ssRange(Length, Length);
             seqRoot.nxt = null;
             }
 
         public void CheckSeq(ref ssRange r, bool insert) {
-            int newEdge = insert ? r.l : r.r;
-            if (newEdge > adjEdge) {
+            if (insert) r.r = r.l;
+            if (r.r > adjEdge.l) {
                 ed.Undo(1);
                 throw new ssException("changes not in sequence");
                 }
-            adjEdge = newEdge;
+            adjEdge = r;
             }
 
         public void ShowInternals() {

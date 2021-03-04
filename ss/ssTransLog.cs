@@ -62,6 +62,7 @@ namespace ss {
                 ts = ts.nxt;
                 }
             log = true;
+            txt.changeCnt--;
             }
 
         public bool Log {

@@ -203,7 +203,7 @@ namespace ss {
                     if (t.a == null) { r.l = 0; r.r = txt.Length; }
                     string dta = txt.ToString(r.l, r.len);
                     if (WinWrite(t.s, dta, txt.encoding)) {
-                        if (dta.Length == txt.Length) txt.Changed = false;
+                        if (dta.Length == txt.Length) txt.changeCnt = 0;
                         MsgLn(s + ": #" + dta.Length.ToString());
                     }
                     PostEdDot();

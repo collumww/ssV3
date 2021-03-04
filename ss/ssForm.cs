@@ -171,6 +171,7 @@ namespace ss {
 			//ed.NewTransId();
 			txt.TLog.InitTrans();
 			txt.TLog.BeginTrans();
+			txt.changeCnt++;
             }
 
 		public void Delete() {

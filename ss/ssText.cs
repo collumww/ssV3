@@ -20,7 +20,7 @@ namespace ss {
         public ssText(ssEd ee, string s, string eoln, string n, Encoding enc) {
             nxt = null;
             txt = new ssRawTextV2(s);
-            changed = false;
+            changeCnt = 0;
             firstTry = true;
             cmdaffected = false;
             dot = new ssRange();
@@ -52,7 +52,7 @@ namespace ss {
 
         ssText nxt;
         ssRawTextV2 txt;
-        bool changed;
+        public long changeCnt;
         bool firstTry;
         public bool cmdaffected;  // the editor uses this to know which windows to update after a command
 
@@ -108,6 +108,7 @@ namespace ss {
                 tlog.LogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
                 t = tt;
                 }
+            changeCnt++;
             }
 
         public void PushTrans(ssTrans t) {
@@ -133,12 +134,12 @@ namespace ss {
             }
 
         public string MenuLine() {
-            string ml = changed ? "'" : " ";
+            string ml = Changed ? "'" : " ";
             /*/nonwin Remove for windowed version
             ml += "-";
             // Remove for windowed version */
             //win Remove for non-windowed version
-            ml += frm == null ? "-" : (frm.Nxt == null? "+" : "*");
+            ml += frm == null ? "-" : (frm.Nxt == null ? "+" : "*");
             // Remove for non-windowed version */
             ml += ed.encodeEncoding(encoding);
             ml += this == ed.Txt ? ". " : "  ";
@@ -183,7 +184,6 @@ namespace ss {
 
 
         public void Rename(string n) {
-            changed = true;
             nm = n;
             ed.Msg(MenuLine());
             //win remove for non-windowed version
@@ -217,8 +217,7 @@ namespace ss {
             }
 
         public bool Changed {
-            get { return changed; }
-            set { changed = value; }
+            get { return changeCnt != 0; }
             }
 
         public ssText Nxt {
@@ -255,7 +254,6 @@ namespace ss {
 
         public ssRange Insert(string s) {
             txt.Insert(dot.l, s);
-            changed = true;
             firstTry = true;
             cmdaffected = true;
             mark.Adjust(dot.l, s.Length, true); // needed in case there's no window
@@ -267,7 +265,6 @@ namespace ss {
         public ssRange Delete() {
             if (dot.l != dot.r) {
                 txt.Remove(dot.l, dot.len);
-                changed = true;
                 firstTry = true;
                 cmdaffected = true;
                 mark.Adjust(dot.l, dot.len, false); // needed in case there's no window
@@ -293,12 +290,12 @@ namespace ss {
             else return false;
             }
 
-       
+
 
         public bool AtBOW(int i) {
             if (i == txt.Length) return false;
             if (i == 0) return !char.IsWhiteSpace(txt[i]);
-            return (!char.IsWhiteSpace(txt[i]) && char.IsWhiteSpace(txt[i - 1])) 
+            return (!char.IsWhiteSpace(txt[i]) && char.IsWhiteSpace(txt[i - 1]))
                 || AtBOLN(i)
                 || AtEOLN(i);
             }
@@ -400,7 +397,7 @@ namespace ss {
 
 
         public bool DoubleCheck() {
-            if (changed) {
+            if (Changed) {
                 if (firstTry) {
                     firstTry = false;
                     return false;
@@ -438,7 +435,7 @@ namespace ss {
 
         public void CheckSeq(ref ssRange r, bool insert) {
             int newEdge = insert ? r.l : r.r;
-            if (newEdge > adjEdge) { 
+            if (newEdge > adjEdge) {
                 ed.Undo(1);
                 throw new ssException("changes not in sequence");
                 }

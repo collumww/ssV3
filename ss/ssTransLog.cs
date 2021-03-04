@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ss {
@@ -13,6 +14,7 @@ namespace ss {
             txt = t;
             getnewtrans = true;
             olddot = new ssRange();
+            rex = new Regex(@"[\w\s]");
             }
 
         //public void NewTrans() {
@@ -26,9 +28,23 @@ namespace ss {
                 }
             }
 
-        public void LogTrans(ssTrans.Type typ, ssRange r, ssText t, string s) {
+        public void LogTrans(ssTrans.Type typ, ssRange r, string s) {
             if (log) {
-                ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
+                if (ts != null &&
+                    ts.typ == ssTrans.Type.delete &&
+                    typ == ssTrans.Type.delete &&
+                    ts.rng.r == r.l &&
+                    r.len == 1 &&
+                    rex.IsMatch(ts.s) &&
+                    rex.IsMatch(s) &&
+                    ts.s != txt.Eoln &&
+                    s != txt.Eoln) { 
+                    ed.PrevTransId();
+                    ts.rng.r = r.r;
+                    }
+                else {
+                    ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
+                    }
                 }
             }
 
@@ -89,5 +105,6 @@ namespace ss {
         ssRange olddot;
         public bool getnewtrans;
         bool log;
+        Regex rex;
         }
     }

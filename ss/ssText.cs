@@ -77,7 +77,7 @@ namespace ss {
             }
 
         public void Commit() {
-            tlog.LogTrans(ssTrans.Type.dot, tlog.OldDot, this, "");
+            tlog.LogTrans(ssTrans.Type.dot, tlog.OldDot, "");
             ssTrans t = seqRoot.nxt;
             while (t != null) {
                 if (t.typ != ssTrans.Type.rename) CheckSeq(ref t.rng, t.s != null);

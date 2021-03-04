@@ -314,7 +314,7 @@ namespace ss {
                     throw new ssException("unknown command");
             }
             if (a != null) PostEdDot();
-            if (txt != null) txt.dot = levdot;
+            if (txt != null && t.nxt != null) txt.dot = levdot;
             xCmd(t.nxt);
         }
 

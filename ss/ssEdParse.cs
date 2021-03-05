@@ -96,7 +96,7 @@ namespace ss {
 
         void Commit() {
             for (ssText t = txts; t != null; t = t.Nxt) {
-                if (!t.TLog.getnewtrans) t.Commit();
+                if (!t.TLog.getnewtrans) t.TLog.Commit();
                 }
             }
 
@@ -125,6 +125,7 @@ namespace ss {
                 root.sub = null;
                 tail = root;
                 InitAllSeqs();
+                SyncFormToTextAll();
                 Err(e.Message);
                 //if (!(e is ssException)) throw e;
                 }

@@ -158,10 +158,11 @@ namespace ss {
                 case 'b':
                     bool fnd = false;
                     for (SList f = t.fs; f != null; f = f.nxt) {
-                        ts = FindText(true, f.s, true, true);
+                        ts = FindText(false, f.s, true, true);
                         if (ts != null) { fnd = true; txt = ts.t; break; }
                         }
                     if (!fnd) throw new ssException("not in menu: \"" + SListJoin(t.fs) + "\"");
+                    MsgLn(txt.MenuLine());
                     WakeUpText(txt);
                     break;
                 case 'f':
@@ -203,7 +204,7 @@ namespace ss {
                     if (t.a == null) { r.l = 0; r.r = txt.Length; }
                     string dta = txt.ToString(r.l, r.len);
                     if (WinWrite(t.s, dta, txt.encoding)) {
-                        if (dta.Length == txt.Length) txt.changeCnt = 0;
+                        if (dta.Length == txt.Length) txt.TLog.changeCnt = 0;
                         MsgLn(s + ": #" + dta.Length.ToString());
                         }
                     PostEdDot();

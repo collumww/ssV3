@@ -12,14 +12,13 @@ namespace ss {
             log = true;
             ed = e;
             txt = t;
+            seqRoot = new ssTrans(ssTrans.Type.delete, 0, t.dot, null, null);
+            adjEdge = new ssRange(0, 0);
             getnewtrans = true;
             olddot = new ssRange();
             rex = new Regex(@"[\w\s]");
             }
 
-        //public void NewTrans() {
-        //    curid++;
-        //    }
 
         public void BeginTrans() {
             if (log && getnewtrans) {
@@ -35,11 +34,12 @@ namespace ss {
                     typ == ssTrans.Type.delete &&
                     ts.rng.r == r.l &&
                     r.len == 1 &&
-                    rex.IsMatch(ts.s) &&
-                    rex.IsMatch(s) &&
+                    ts.s != null && rex.IsMatch(ts.s) &&
+                    s != null && rex.IsMatch(s) &&
                     ts.s != txt.Eoln &&
                     s != txt.Eoln) { 
                     ed.PrevTransId();
+                    changeCnt--;
                     ts.rng.r = r.r;
                     }
                 else {
@@ -55,6 +55,56 @@ namespace ss {
                 ts = t;
                 }
             }
+
+        public void Commit() {
+            FormLogTrans(ssTrans.Type.dot, OldDot, "");
+            ssTrans t = seqRoot.nxt;
+            while (t != null) {
+                txt.dot = t.rng;
+                switch (t.typ) {
+                    case ssTrans.Type.rename:
+                        string n = txt.Nm;
+                        txt.Rename(t.s);
+                        t.s = n;
+                        break;
+                    case ssTrans.Type.delete:
+                        //CheckSeq(ref t.rng, false);
+                        t.s = txt.ToString();
+                        t.rng = txt.Delete();
+                        t.typ = ssTrans.Type.insert;
+                        break;
+                    case ssTrans.Type.insert:
+                        //CheckSeq(ref t.rng, true);
+                        t.rng = txt.Insert(t.s);
+                        t.s = null;
+                        t.typ = ssTrans.Type.delete;
+                        break;
+                }
+
+                ssTrans tt = t.nxt; // Grab t.nxt before LogTrans changes it.
+                if (tt == null) {
+                    if (t.typ != ssTrans.Type.rename) txt.dot = t.rng;
+                    txt.SyncFormToText();
+                }
+                EdLogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
+                t = tt;
+            }
+            changeCnt++;
+        }
+
+        public void PushTrans(ssTrans t) {
+            switch (t.typ) {
+                case ssTrans.Type.insert:
+                    CheckSeq(ref t.rng, true);
+                    break;
+                case ssTrans.Type.delete:
+                    CheckSeq(ref t.rng, false);
+                    break;
+            }
+            BeginTrans();
+            t.nxt = seqRoot.nxt;
+            seqRoot.nxt = t;
+        }
 
         public void Undo(long id) {
             if (ts == null) return;
@@ -78,8 +128,17 @@ namespace ss {
                 ts = ts.nxt;
                 }
             log = true;
-            txt.changeCnt--;
+            changeCnt--;
             }
+
+        public void CheckSeq(ref ssRange r, bool insert) {
+            if (insert) r.r = r.l;
+            if (adjEdge.r > r.l) {
+                txt.dot = olddot;
+                throw new ssException("changes not in sequence");
+            }
+            adjEdge = r;
+        }
 
         public bool Log {
             get { return log; }
@@ -99,9 +158,18 @@ namespace ss {
             get { return olddot; }
             }
 
+        public void InitSeq() {
+            adjEdge.l = 0;
+            adjEdge.r = 0;
+            seqRoot.nxt = null;
+        }
+
         ssEd ed;
         ssText txt;
         ssTrans ts;
+        ssRange adjEdge;
+        public long changeCnt;
+        public ssTrans seqRoot;
         ssRange olddot;
         public bool getnewtrans;
         bool log;

@@ -11,22 +11,22 @@ namespace ss {
         //ssTrans seqRoot;
 
         public void InitAllSeqs() {
-            for (ssText tt = txts; tt != null; tt = tt.Nxt) tt.InitSeq();
+            for (ssText tt = txts; tt != null; tt = tt.Nxt) tt.TLog.InitSeq();
             }
 
         public void Rename(string s) {
             ssTrans t = new ssTrans(ssTrans.Type.rename, 0, txt.dot, s, null);
-            txt.PushTrans(t);
+            txt.TLog.PushTrans(t);
             }
 
         public void Delete() {
             ssTrans t = new ssTrans(ssTrans.Type.delete, 0, txt.dot, null, null);
-            txt.PushTrans(t);
+            txt.TLog.PushTrans(t);
             }
 
         public void Insert(string s) {
             ssTrans t = new ssTrans(ssTrans.Type.insert, 0, txt.dot, s, null);
-            txt.PushTrans(t);
+            txt.TLog.PushTrans(t);
             txt.dot.len = s.Length;
             }
 
@@ -55,16 +55,16 @@ namespace ss {
                     txt2 = txtx;
                     }
                 }
-            txt1.PushTrans(t1);
-            if (t2 != null) txt2.PushTrans(t2);
+            txt1.TLog.PushTrans(t1);
+            if (t2 != null) txt2.TLog.PushTrans(t2);
             }
 
         public void Change(string s) {
             ssAddress ai = edDot.Copy();
-            txt.PushTrans(new ssTrans(ssTrans.Type.insert, 0, txt.dot, s, null));
-            txt.seqRoot.nxt.rng.len = s.Length;
+            txt.TLog.PushTrans(new ssTrans(ssTrans.Type.insert, 0, txt.dot, s, null));
+            txt.TLog.seqRoot.nxt.rng.len = s.Length;
             ssAddress ad = edDot.Copy();
-            txt.PushTrans(new ssTrans(ssTrans.Type.delete, 0, txt.dot, null, null));
+            txt.TLog.PushTrans(new ssTrans(ssTrans.Type.delete, 0, txt.dot, null, null));
             }
         }
     }

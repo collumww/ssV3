@@ -88,8 +88,8 @@ namespace ss {
 
         string SListJoin(SList l) {
             string s = "";
-            while (l != null) { s += l.s + " "; l = l.nxt; }
-            return s;
+            while (l != null) { s += " " + l.s; l = l.nxt; }
+            return s.Substring(1);
             }
 
 
@@ -106,8 +106,6 @@ namespace ss {
             try {
                 ResetAffected();
                 InitAllSeqs();
-                //edDot.txt = txt;
-                //edDot.rng = txt.dot;
                 NewTrans();
                 ParseAndExec(s);
                 Commit();
@@ -127,7 +125,7 @@ namespace ss {
                 InitAllSeqs();
                 SyncFormToTextAll();
                 Err(e.Message);
-                //if (!(e is ssException)) throw e;
+                if (!(e is ssException)) throw e;
                 }
             }
 

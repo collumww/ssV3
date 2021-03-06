@@ -346,6 +346,8 @@ namespace ss {
                 case 's':
                     t = new CTree(a, c);
                     pChar();
+                    if (char.IsDigit(scn.C)) t.n = scn.GetNum();
+                    if (scn.Nothing) t.n = 1;
                     scn.SetDelim(pDelim());
                     scn.GetChar();
                     t.s = SetPat(PreEscape(scn.GetStr()));
@@ -522,7 +524,7 @@ namespace ss {
             if (scn.C == '"') {
                 scn.GetChar();
                 scn.SetDelim('\"');
-                fnm = scn.GetStr();
+                fnm = SetPat(PreEscape(scn.GetStr()));
                 }
             pSkipSp();
             char c = scn.C;

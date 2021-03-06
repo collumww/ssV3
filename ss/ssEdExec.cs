@@ -125,12 +125,15 @@ namespace ss {
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
                     ms = Regex.Matches(txt.ToString(), t.s, opts);
                     strt = txt.dot;
+                    int cnt = 0;
                     foreach (Match m in ms) {
+                        cnt++;
                         txt.dot.l = strt.l + m.Index;
                         txt.dot.len = m.Length;
-                        if (t.subs != null) Change(DoSubs(m.ToString(), t.subs));
-                        else Change(t.rep);
-                        if (t.opt != 'g') break;
+                        if (t.opt == 'g' || cnt == t.n ) {
+                            if (t.subs != null) Change(DoSubs(m.ToString(), t.subs));
+                            else Change(t.rep);
+                            }
                         }
                     break;
                 case 'D':
@@ -166,7 +169,7 @@ namespace ss {
                     WakeUpText(txt);
                     break;
                 case 'f':
-                    if (t.fs == null) Msg(txt.FileName());
+                    if (t.fs == null) Msg(txt.MenuLine());
                     else Rename(t.fs.s);
                     break;
                 case 'e':
@@ -203,9 +206,10 @@ namespace ss {
                     ssRange r = txt.dot;
                     if (t.a == null) { r.l = 0; r.r = txt.Length; }
                     string dta = txt.ToString(r.l, r.len);
+                    string lbl = File.Exists(t.s)? "" : " (new file) ";
                     if (WinWrite(t.s, dta, txt.encoding)) {
                         if (dta.Length == txt.Length) txt.TLog.changeCnt = 0;
-                        MsgLn(s + ": #" + dta.Length.ToString());
+                        MsgLn(s + ":" + lbl + "#" + dta.Length.ToString());
                         }
                     PostEdDot();
                     break;

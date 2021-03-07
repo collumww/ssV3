@@ -156,7 +156,8 @@ namespace ss {
                         }
                     break;
                 case 'B':
-                    AddTexts(SListToArray(t.fs), false);
+                    if (t.fs != null) AddTexts(SListToArray(t.fs), false);
+                    else NewText();
                     break;
                 case 'b':
                     bool fnd = false;
@@ -173,6 +174,7 @@ namespace ss {
                     else Rename(t.fs.s);
                     break;
                 case 'e':
+                    if (txt == null) throw new ssException("no current file");
                     if (t.fs == null) t.s = txt.Nm;
                     else t.s = t.fs.s;
                     Encoding enc = defs.encoding;

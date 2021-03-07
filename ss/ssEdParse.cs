@@ -89,7 +89,8 @@ namespace ss {
         string SListJoin(SList l) {
             string s = "";
             while (l != null) { s += " " + l.s; l = l.nxt; }
-            return s.Substring(1);
+            if (s.Length > 0) return s.Substring(1);
+            else return "";
             }
 
 

@@ -14,7 +14,7 @@ namespace ss {
         int iota;
         void PostEdDot() {
             txt.SyncFormToText();
-            }
+        }
 
         string[] SListToArray(SList ss) {
             int cnt = 0;
@@ -23,7 +23,7 @@ namespace ss {
             int i = 0;
             for (SList s = ss; s != null; s = s.nxt) a[i++] = s.s;
             return a;
-            }
+        }
 
         void xCmd(CTree t) {
             ssRange levdot = new ssRange();
@@ -32,12 +32,12 @@ namespace ss {
             ssAddress a = xAddr(t.a);
             if (a != null) {
                 if (a.txt == null) a.txt = txt;
-                WakeUpText(a.txt);
-                //win remove for non-windowed version
-                log.Activate();  // Bring the damn focus back to the command line.
-                // remove for non-windowed version */
-                txt.dot = a.rng;
+                else {
+                    prvtxt = txt;
+                    txt = a.txt;
                 }
+                txt.dot = a.rng;
+            }
             if (txt != null) levdot = txt.dot;
             switch (t.cmd) {
                 case 'p':
@@ -82,7 +82,7 @@ namespace ss {
                         txt.dot.l = strt.l + m.Index;
                         txt.dot.len = m.Length;
                         xCmd(t.sub);
-                        }
+                    }
                     break;
                 case 'y':
                     if (t.sub.nxt.cmd == noCmd) t.sub.nxt.cmd = 'p';
@@ -96,7 +96,7 @@ namespace ss {
                         txt.dot.r = m.Index + strt.l;
                         xCmd(t.sub);
                         l = strt.l + m.Index + m.Length;
-                        }
+                    }
                     txt.dot.l = l;
                     txt.dot.r = strt.r;
                     xCmd(t.sub);
@@ -108,7 +108,7 @@ namespace ss {
                     for (TList tl = t.txts; tl != null; tl = tl.nxt) {
                         txt = tl.t;
                         xCmd(t.sub);
-                        }
+                    }
                     break;
                 case 'g':
                     opts = RegexOptions.Multiline;
@@ -130,18 +130,18 @@ namespace ss {
                         cnt++;
                         txt.dot.l = strt.l + m.Index;
                         txt.dot.len = m.Length;
-                        if (t.opt == 'g' || cnt == t.n ) {
+                        if (t.opt == 'g' || cnt == t.n) {
                             if (t.subs != null) Change(DoSubs(m.ToString(), t.subs));
                             else Change(t.rep);
-                            }
                         }
+                    }
                     break;
                 case 'D':
                     TList ts = null;
                     if (t.fs == null) {
                         if (txt == null) throw new ssException("no current file");
                         else DeleteText(txt, true);
-                        }
+                    }
                     else {
                         for (SList f = t.fs; f != null; f = f.nxt) {
                             ts = FindText(true, f.s, true, false);
@@ -150,10 +150,10 @@ namespace ss {
                                 while (ts != null) {
                                     DeleteText(ts.t, true);
                                     ts = ts.nxt;
-                                    }
                                 }
                             }
                         }
+                    }
                     break;
                 case 'B':
                     if (t.fs != null) AddTexts(SListToArray(t.fs), false);
@@ -164,7 +164,7 @@ namespace ss {
                     for (SList f = t.fs; f != null; f = f.nxt) {
                         ts = FindText(false, f.s, true, true);
                         if (ts != null) { fnd = true; txt = ts.t; break; }
-                        }
+                    }
                     if (!fnd) throw new ssException("not in menu: \"" + SListJoin(t.fs) + "\"");
                     MsgLn(txt.MenuLine());
                     WakeUpText(txt);
@@ -187,7 +187,7 @@ namespace ss {
                         Change(fdta);
                         txt.dot.To(0);
                         PostEdDot();
-                        }
+                    }
                     break;
                 case 'r':
                     if (t.fs == null) t.s = txt.Nm;
@@ -198,7 +198,7 @@ namespace ss {
                         txt.encoding = enc;
                         Change(fdta);
                         PostEdDot();
-                        }
+                    }
                     break;
                 case 'w':
                     if (txt == null) throw new ssException("no current file");
@@ -208,11 +208,11 @@ namespace ss {
                     ssRange r = txt.dot;
                     if (t.a == null) { r.l = 0; r.r = txt.Length; }
                     string dta = txt.ToString(r.l, r.len);
-                    string lbl = File.Exists(t.s)? "" : " (new file) ";
+                    string lbl = File.Exists(t.s) ? "" : " (new file) ";
                     if (WinWrite(t.s, dta, txt.encoding)) {
                         if (dta.Length == txt.Length) txt.TLog.changeCnt = 0;
                         MsgLn(s + ":" + lbl + "#" + dta.Length.ToString());
-                        }
+                    }
                     PostEdDot();
                     break;
                 case 'd':
@@ -304,9 +304,9 @@ namespace ss {
                                 case 'l':
                                     Change(ti.ToLower(s));
                                     break;
-                                }
+                            }
                             break;
-                        }
+                    }
                     break;
                 case 'E':
                     if (txt == null) {
@@ -314,25 +314,25 @@ namespace ss {
                         //win remove for non-windowing version
                         log.encoding = defs.encoding;
                         //   remove for non-windowing version */
-                        }
+                    }
                     else txt.encoding = decodeEncoding(t.opt);
                     break;
                 default:
                     throw new ssException("unknown command");
-                }
+            }
             if (a != null) PostEdDot();
             if (txt != null && t.nxt != null) txt.dot = levdot;
             xCmd(t.nxt);
-            }
+        }
 
         class TList {
             public TList(ssText tt, ssRange r, TList nn) {
                 t = tt; nxt = nn; dot = r;
-                }
+            }
             public ssText t;
             public ssRange dot;
             public TList nxt;
-            }
+        }
 
         TList FindText(bool rgx, string pat, bool matching, bool unique) {
             TList l = new TList(null, new ssRange(), null);
@@ -343,23 +343,23 @@ namespace ss {
                 if (matching && m || !matching && !m) {
                     lt.nxt = new TList(t, t.dot, null);
                     lt = lt.nxt;
-                    }
                 }
+            }
             if (unique && l.nxt != null && l.nxt.nxt != null) throw new ssException("non-unique match for \"" + pat + "\"");
             return l.nxt;
-            }
+        }
 
         void CheckRange(ssText t, int i) {
             if (!t.Contains(i)) throw new ssException("address range");
-            }
+        }
 
         void CheckRange(ssText t, ssRange r) {
             if (!t.Contains(r)) throw new ssException("address range");
-            }
+        }
 
         void CheckTxt(ssText t) {
             if (t == null) throw new ssException("no current file");
-            }
+        }
 
         ssText NullIfTxt(ssText t) { return t == txt ? null : t; }
 
@@ -372,7 +372,7 @@ namespace ss {
                 TList fs = FindText(true, a.fnm, true, true);
                 if (fs == null) throw new ssException("file search");
                 atxt = fs.t;
-                }
+            }
             switch (a.op) {
                 case '#':
                     CheckTxt(atxt);
@@ -403,7 +403,7 @@ namespace ss {
                     if (a.op == ';') {
                         txt = al.txt;
                         txt.dot = al.rng;
-                        }
+                    }
                     ssAddress ar = xAddr(a.r);
                     if (al.txt != ar.txt || ar.rng.l < al.rng.l)
                         throw new ssException("addresses out of order");
@@ -416,8 +416,8 @@ namespace ss {
                     return al;
                 default:
                     throw new ssException("address");
-                }
             }
+        }
 
         ssAddress xRelAddr(ssAddress rt, char dir, ATree ar) {
             switch (ar.op) {
@@ -439,8 +439,8 @@ namespace ss {
                             (rt.txt.FindLine(rt.rng.l, ar.n, -1), rt.txt);
                 default:
                     throw new ssException("address");
-                }
             }
+        }
 
         public void FindNextDot() {
             string s = txt.ToString();
@@ -449,13 +449,13 @@ namespace ss {
             if (loc < 0) {
                 t = txt.ToString(0, txt.dot.r);
                 loc = t.IndexOf(s);
-                }
+            }
             else {
                 loc += txt.dot.r;
-                }
+            }
             txt.dot.l = loc;
             txt.dot.len = s.Length;
-            }
+        }
 
 
         ssAddress Search(ssAddress rt, string pat, bool forward) {
@@ -474,8 +474,8 @@ namespace ss {
                 if (!m.Success) {
                     m = rex.Match(s, 0, rt.txt.Length);
                     if (!m.Success || m.Index > start) found = false;
-                    }
                 }
+            }
             else {
                 opts |= RegexOptions.RightToLeft;
                 rex = new Regex(pat, opts);
@@ -484,13 +484,13 @@ namespace ss {
                 if (!m.Success) {
                     m = rex.Match(s, 0, rt.txt.Length);
                     if (!m.Success || m.Index + m.Length <= start) found = false;
-                    }
                 }
+            }
             if (found) {
                 return new ssAddress(m.Index, m.Index + m.Length, rt.txt);
-                }
-            else throw new ssException("search");
             }
+            else throw new ssException("search");
+        }
 
 
         int IndexToTextLine(int i) {
@@ -498,7 +498,7 @@ namespace ss {
             for (int j = 0; j <= i; j++)
                 if (txt.AtBOLN(j)) ln++;
             return ln;
-            }
+        }
 
 
 
@@ -511,11 +511,11 @@ namespace ss {
             if (txt.dot.l != txt.dot.r) s += ",#" + txt.dot.r.ToString();
             return s;
 
-            }
+        }
 
         public void SyncFormToTextAll() {
             for (ssText t = txts; t != null; t = t.Nxt) t.SyncFormToText();
-            }
+        }
 
         public void Undo(int n) {
             ssText t;
@@ -533,9 +533,9 @@ namespace ss {
                     t.TLog.Undo(curTransId);
                 //t.TLog.Undo(id);
                 PrevTransId();
-                }
-            SyncFormToTextAll();
             }
+            SyncFormToTextAll();
+        }
 
         void xNoCmd() {
             if (txt == null) return;
@@ -543,11 +543,11 @@ namespace ss {
             else txt.AlignRange(ref txt.dot);
             PostEdDot();
             Print();
-            }
+        }
 
         void Print() {
             Msg(txt.ToString());
-            }
+        }
 
 
 
@@ -568,7 +568,7 @@ namespace ss {
                     tfnm = Path.GetTempFileName();
                     WinWrite(tfnm, inp, txt.encoding);
                     cmd = string.Format("gc {0} | {1}", tfnm, cmd);
-                    }
+                }
                 Process p = new Process();
                 p.StartInfo = psi;
                 p.Start();
@@ -582,15 +582,15 @@ namespace ss {
                 p.Dispose();
                 if (inp != null) { File.Delete(tfnm); }
                 if (ec != 0) throw new ssException("non-zero exit code: " + p.ExitCode.ToString());
-                }
+            }
             catch (Exception e) {
                 Err("problem shelling command: \r\n" + e.Message);
-                }
+            }
             //win remove for non-windowed version
             log.Activate();
             // remave for non-windowed version */
             return s;
-            }
+        }
 
         void ShowHex(string s) {
             StringBuilder sbh = new StringBuilder();
@@ -603,26 +603,26 @@ namespace ss {
                         sbc.Append('"');
                         sbh.Append(sbc.ToString());
                         MsgLn(sbh.ToString());
-                        }
+                    }
                     sbh.Clear();
                     sbc.Clear();
-                    }
+                }
                 sbh.Append(System.Convert.ToUInt16(c).ToString("X4"));
                 sbh.Append(' ');
                 sbc.Append(char.IsControl(c) ? '.' : c);
-                }
+            }
             sbc.Insert(0, '"');
             sbc.Append('"');
             sbh.Append(sbc.ToString());
             MsgLn(sbh.ToString());
-            }
+        }
 
         void ShowHelp() {
             string[] ss = new string[2];
             ss[0] = defs.exePath + "\\ssHelp.txt";
             ss[1] = defs.exePath + "\\ssManual.txt";
             AddTexts(ss, true);
-            }
+        }
 
 
         Encoding decodeEncoding(char c) {
@@ -632,9 +632,9 @@ namespace ss {
                 case '3': return System.Text.Encoding.UTF32;
                 case '8': return System.Text.Encoding.UTF8;
                 case '7': return System.Text.Encoding.UTF7;
-                }
-            return System.Text.Encoding.UTF8;
             }
+            return System.Text.Encoding.UTF8;
+        }
 
         public char encodeEncoding(Encoding enc) {
             switch (enc.EncodingName) {
@@ -644,7 +644,7 @@ namespace ss {
                 case "Unicode (UTF-8)": return '8';
                 case "Unicode (UTF-7)": return '7';
                 default: return '8';
-                }
             }
         }
     }
+}

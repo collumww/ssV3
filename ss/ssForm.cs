@@ -144,14 +144,17 @@ namespace ss {
 		}
 
 		public void SaveCursor() {
+            InvalidateMarks();
 			restCur = cursor.rng;
 		}
 
 		public void RestoreCursor() {
 			cursor.To(restCur);
-		}
+            FormMarksToText();
+            txt.InvalidateMarksAndChange(cursor.l);
+        }
 
-		public ssForm Nxt {
+        public ssForm Nxt {
 			get { return nxt; }
 			set { nxt = value; }
 		}
@@ -206,33 +209,21 @@ namespace ss {
 
 
 		public void IncIndent() {
-            InvalidateMarks();
             string s;
             if (layout.expTabs) s = ("").PadLeft(layout.spInTab); else s = "\t";
-			s = @"x/.*\N/i/" + s + "/";
-            ssRange r = cursor.rng;
-            cursor.To(txt.AlignRange(ref r));
-			SaveCursor();
-            int ii = cursor.l;
+			s = @"-0,.,+0x/.*\N/i/" + s + "/";
+ 			SaveCursor();
 			ed.Do(s);
 			RestoreCursor();
-            FormMarksToText();
-            txt.InvalidateMarksAndChange(ii);
-            }
+        }
 
 
 
 		public void DecIndent() {
-			InvalidateMarks();
-			ssRange r = cursor.rng;
-			cursor.To(txt.AlignRange(ref r));
 			SaveCursor();
-			int ii = cursor.l;
-			ed.Do(@"x/.*\N/x/^[ \t]/d");
+			ed.Do(@"-0,.,+0x/.*\N/x/^[ \t]/d");
 			RestoreCursor();
-			FormMarksToText();
-			txt.InvalidateMarksAndChange(ii);
-		}
+        }
 
 
 
@@ -1460,7 +1451,7 @@ namespace ss {
 		}
 
 		private void ssForm_MouseMove(object sender, MouseEventArgs e) {
-			if (!evd.Enabled() || clicks == 0) return;
+			//if (!evd.Enabled() || clicks == 0) return;
 			mouX = e.X;
 			mouY = e.Y;
 			if (mouMaster != MouseButtons.None && e.Button == mouMaster) {

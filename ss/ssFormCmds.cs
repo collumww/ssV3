@@ -217,6 +217,8 @@ namespace ss {
                 Cursor.Current = Cursors.WaitCursor;
                 ed.Do(txt.ToString(a, b - a)); // Exclude the line ending for cases where line ending is set weird.
                 Cursor.Current = Cursors.Default;
+                ed.WakeUpText(ed.txt);
+                ed.Log.Activate();
                 }
             }
 

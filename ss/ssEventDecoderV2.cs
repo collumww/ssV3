@@ -147,14 +147,10 @@ namespace ss {
                             frm.Ed.Log.Activate();
                             }
                         else {
-                            string[] ss = e.cmd.Split(new string[] { "\\N" }, StringSplitOptions.None);
+                            string[] ss = e.cmd.Split(new string[] { "`" }, StringSplitOptions.None);
                             if (e.cmdopt == ssEventCmdOption.execPreserveDot) frm.SaveCursor();
                             foreach (string s in ss) frm.Ed.Do(s);
-                            //frm.Ed.Do(e.cmd);
-                            if (e.cmdopt == ssEventCmdOption.execPreserveDot) {
-                                frm.InvalidateMarks();
-                                frm.RestoreCursor();
-                                }
+                            if (e.cmdopt == ssEventCmdOption.execPreserveDot) frm.RestoreCursor();
                             }
                         }
 
@@ -601,7 +597,7 @@ namespace ss {
 | LButton down PastePreserveSelection
 | P down ssCmdPreserveDot false y/\r\n/i/#/
 | OemPeriod down ssCmdPreserveDot false x/^#/d
-| I down ssCmdPreserveDot false {\Ni'/*'\Na'*/'\N}
+| I down ssCmdPreserveDot false {`i'/*'`a'*/'`}
 | U down ssCmdPreserveDot false y/\r\n/i/\/\//
 | E down ssCmdPreserveDot false x/^\/\//d
 ;

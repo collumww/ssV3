@@ -14,7 +14,7 @@ a/text/				Append text after dot.
 c/text/				Change text in dot.
 i/text/				Insert text before dot.
 d					Delete text in dot.
-s/regexpr/text/[g]	Substitute text for first match of
+sn/regexpr/text/[g]	Substitute text for nth match of
 					regular expression in dot. Use g for
 					all matches. Use & in text to refer to
 					text the search matched.
@@ -23,6 +23,7 @@ t address			Copy text in dot after address.
 C [u|l|t|s|i]		Convert text to upper, lower, or title 
 					case or set search to case sensitive or
 					not.
+Note:	In a, c, i and s use &I to refer to iota.
 ------------------------------------------------------------
 Display Commands
 ------------------------------------------------------------
@@ -31,7 +32,7 @@ p					Print contents of dot.
 					numbers) of dot.
 h					Print hex dump of contents of dot.
 T [n]				Set tabs at n spaces intervals for
-					current file. Default is 4
+					current file. Default is 4.
 L [string]			Set end of line string for current
 					file. Default is \r\n.
 F [n]				Fix display line length. Default is

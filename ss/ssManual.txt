@@ -21,10 +21,12 @@ Rob Pike gets all the credit for the conception and functional design while the 
 
 The user interface is purposefully sparse, mostly to reduce visual clutter. Controlling the editor is done in three different ways:
 
-	1. Typing text in the editing window.
-	2. Right-clicking on an editor window, and choosing from the pop-up menu.
-	3. Executing commands from the ssCmd window.
-	4. Executing commands via short-cut keys, along with mouse/key chording.
+	1.	Typing text in the editing window.
+	2.	Right-clicking on an editor window, and choosing 
+		from the pop-up menu.
+	3.	Executing commands from the ssCmd window.
+	4.	Executing commands via events defined in the 
+		ssEvents.ini file. More on this later.
 
 
 =========================================================
@@ -44,7 +46,7 @@ ss this.txt that.ini theother.dat
 
 ss *.txt xxx.lis .\safe\*.txt
 
-Files that are found that match the file specs given are added to the right-click menu as discussed below. The last one will be opened immediately, the others can be opened by choosing them from the menu, or by using the 'b' command, also discussed below.
+Files that are found that match the file specs given are added to the right-click menu as discussed below. The files will be opened and the last one will be given a window, the others can be given a window by choosing them from the menu, or by using the 'b' command, also discussed below.
 
 
 =========================================================
@@ -74,10 +76,12 @@ Basic Keyboard Moves
 
 The arrow keys along with Home, End, PageUp, and PageDown move the cursor around. Adding Shift to the left or right arrow keys selects the text moved over. Adding Ctrl to Left and Right produce move-by-character commands.
 
+These keys and more are user-configurable via the ssEvents.ini file discussed below.
+
 
 Tabs and Identation
 
-The Tab and Shift-Tab can be used to adjust indentation on lines that are part of the selected text.
+The Tab and Shift-Tab can be used to adjust indentation on lines that are part of the selected text. Automatic indentation is selectable.
 
 
 A red insertion point indicates the end of file.
@@ -90,18 +94,20 @@ Attempting to close a file that has been modified will precipitate a message tha
 
 
 Naming a file that has no name
-	Use the 'f' command from the command window.
-	Right click on the file window and choose 'Write' or 'Write As' 
+
+Use the 'f' command from the command window.
+Right click on the file window and choose 'Write' or 'Write As' 
 	from the menu.
 
 Saving a file
-	Use the 'w' command from the command window.
-	Right click on the file window and choose 'Write' from the menu.
+
+Use the 'w' command from the command window.
+Right click on the file window and choose 'Write' from the menu.
 
 Closing a file
-	Use the 'D' command from the command window.
-	Click the standard Windows red 'X' button in the upper right 
-	corner of the window.
+
+Use the 'D' command from the command window.
+Click the standard Windows red 'X' button in the upper right corner of the window.
 
 The Right-Click Menu and the Command Window are discussed below.
 
@@ -114,50 +120,74 @@ The right-click menu has two columns. On the left are a few text editing command
 
 Text Commands on the Menu
 
-All			Select all text in window
-Cut			Standard cut command
-Snarf		Standard copy command, called Snarf as a nod to Sam, 
-			the Plan 9 editor
-Paste		Standard paste command
-Undo			Undoes one edit operation
-Look			Searches for what is currently selected.
-/			Repeats the last search done with a '/' from the command
-			line.
+All			Select all text in window.
+Cut			Standard cut command.
+Snarf		Standard copy command, called Snarf as a nod 
+			to Sam, the Plan 9 editor.
+Paste		Standard paste command.
+Undo		Undoes one edit operation.
+Case		Toggles case sensitivity for searches.
+Look		Searches for what is currently selected 
+			without interpreting the selection.
+/			Repeats the last search done with a '/' from 			the command line.
+
 
 In the command window
 
-Exec		Executes the command window's dot as a command.
+Exec		Executes the command window's dot as 
+			command.
 
 
 File Commands on the Menu
 
-New			Creates an unnamed file in a new editing window
-Open			Opens an existing file via the Windows file dialog
-Xerox		Adds a new editing window for a file with an editing
-			window already open
-Write			Saves a named file to disk
-Write As		Saves a file to a new name, renames the file in memory
-Font			Selects a font for the editing window
-Next			Selects the next font out of the 4 pre-selected fonts
-Wrap			Toggles word-wrap for the editing window
-Autoindent		Toggles auto-indent for the file
-Programming	Toggles programming mode, changing word boundries
-Expand Tabs	Tabs will be expanded to spaces when entered
+New				Creates an unnamed file in a new 
+				window.
+Open			Opens an existing file via the file 
+				dialog.
+Xerox			Adds a new editing window for a file 
+				window already open.
+Write			Saves a named file to disk.
+Write As		Saves a file to a new name, renames 
+				file in memory.
+~~ss~~			Activates the command window.
 
-NOTE: setting Font, Wrap, Autoindent, or Programming on the command window causes the setting to become the default when future files and windows are opened.
+
+Display Commands on the Menu
+
+Fonts			Selects a font for the editing window.
+				Selecting the already selected font
+				brings up the windows font selection
+				dialog.
+Wrap			Toggles word-wrap for the editing window.
+Autoindent		Toggles auto-indent for the file.
+Programming		Toggles programming mode, changing word 
+				boundries.
+Tabs			Tabs will be kept or expanded to spaces 
+				when entered.
+Events			Selects the set of keyboard and mouse 
+				events to respond to.
+Encoding		Selects the text encoding.
+
+NOTE: Setting Font, Wrap, Autoindent, Programming, on the command window causes the setting to become the default when future files and windows are opened.
 
 
 File Entries on the Menu
 
-For each file that was found via the command line that started ss, or were added with the 'B' command discussed below, there is an entry in the right side of the right-click menu.
+For each file that was found via the command line that started ss, or were added with the 'B' command discussed below, there is an entry in the center column of the right-click menu.
 
 There are some indicator characters at the beginning of the menu entry:
 
-	' 		the file has been changed but not saved
-	- 		the file is loaded but has no window
-	+		the file is loaded and has a single window
-	*		the file is loaded and has multiple windows
-	.		the file is the current command target
+	' 	been changed but not saved.
+	- 	loaded but has no window.
+	+	loaded and has a single window.
+	*	loaded and has multiple windows.
+	.	the current command target.
+	a	US-ASCII.
+	u	Unicode.
+	3	Unicode (UTF-32).
+	8	Unicode (UTF-8).
+	7	Unicode (UTF-7).
+	
 
 Choosing a file entry from the menu will either create or activate an editing window for the file.
 
@@ -186,17 +216,37 @@ First, though, one thing that's not obvious:
 
 A comma by itself (,) is a shorthand for 0,$, which means all lines in the file. More on addresses later but an example is this:
 
-,d		-- delete all lines in the file
-0,$d	-- delete all lines in the file
+,d		--	delete all lines in the file.
+0,$d	--	delete all lines in the file.
 
 
+
+---------------------------------------------------------
+Regular expression and searchs
+
+Use the documentation on Microsoft's Regular Expressions for a full description. There are a couple important differences at the time of this writing.
+
+\N	--	Represents the line ending set for the current 
+		file.
+
+This addition was made since ss is intended to work with different line endings. \N will match what is in use at the time.
+
+Substitutions
+
+The complete set of Micrsoft substitutions is not implemented, but a couple ones are.
+
+&	--	The contents of the match
+&I	--	iota, an automatically incrementing number
+
+iota can be used to number lines in a file, items in a list, etc.
 
 ---------------------------------------------------------
 a, c, i (append, change, insert)
 
 In addition to entering a command like this:
 
-a/this and that/    -- appends "this and that" after dot, that is, the current selection.
+a/this and that/    --	appends "this and that" after 
+						dot.
 
 One can do this:
 
@@ -215,12 +265,15 @@ s (substitute)
 
 The substitute command works within the current selection. Consider:
 
-20s/this/xxx/  		--	Replaces the first "this" with "xxx", only on line 20.
-10,40s/this/xxx/g  	--	Replaces all occurences of "this" with "xxx" 
-						only on lines 10 
+20s/this/xxx/  		--	Replaces the first "this" with 
+						"xxx", only on line 20.
+10s3/this/xxx/		--	Replace the 3rd "this" with "xxx"
+						on line 10.
+10,40s/this/xxx/g  	--	Replaces all occurences of "this" 
+						with "xxx" only on lines 10 
                       	through 40.
-,s/this/xxx/g     	--	Replaces all occurences of "this" with "xxx" 
-						in the entire file.
+,s/this/xxx/g     	--	Replaces all occurences of "this" 
+						with "xxx" in the entire file.
 
 More complicated:
 
@@ -238,6 +291,48 @@ BillJoneswashere
 
 
 ---------------------------------------------------------
+Using iota and \N
+
+Iota, denoted by '&I', is an automatically incrementing number that can be used with a, i, c, and s commands. It starts at 0 and increments everytime it is referenced. Consider the following:
+
+,s/this/& (&I)/g
+
+Changes
+
+...this and this again with this...
+
+To
+
+...this (0) and this (1) again with this (2)...
+
+And...
+
+i/&I this and &I that/
+
+Inserts
+
+0 this and 1 that
+
+
+s/.*\N/&I)\t&/g
+
+Changes
+
+This
+That
+The
+Other
+Thing
+
+To
+
+0)	This
+1)	That
+2)	The
+3)	Other
+4)	Thing
+
+---------------------------------------------------------
 d (delete)
 
 Deletes dot
@@ -248,7 +343,8 @@ m (move)
 
 Move dot to another address
 
-10,20m$		-- Move lines 10 to 20 to the end of the file
+10,20m$		--	Move lines 10 to 20 to the end of the 
+				file.
 
 
 ---------------------------------------------------------
@@ -256,7 +352,8 @@ t (to)
 
 Copy dot to another address
 
-0,25t300	-- Copy the first 25 lines to just after line 300
+0,25t300	--	Copy the first 25 lines to just after 
+				line 300.
 
 
 ---------------------------------------------------------
@@ -266,13 +363,21 @@ The 'C' command will change the case of dot to upper, lower or title case. Note:
 
 This also sets case sensitivity for searches:
 
-Ci		-- case insensitive
-Cs		-- case sensitive
+Ci		--	case insensitive.
+Cs		--	case sensitive.
+Cu		--	Change dot to upper case.
+
+---------------------------------------------------------
+p (Print the text in dot)
+
+20p		--	Prints line 20 to the command window.
+
 
 ---------------------------------------------------------
 = (Print value of dot)
 
-,=   is a handy way to find the size of the file in lines and characters
+,=		--	is a handy way to find the size of the file 
+			in lines and characters
 
 
 ---------------------------------------------------------
@@ -286,8 +391,9 @@ L (Set line ending)
 
 Changes the display of the data by changing where lines are broken. It defaults to \r\n, the Windows standard, but can be arbitrarily set.
 
-L \n    -- Useful for working with data from a Unix system.
-L       -- Return to the default.
+L \n    --	Useful for working with data from a Unix 
+			system.
+L       --	Return to the default.
 
 
 ---------------------------------------------------------
@@ -295,7 +401,8 @@ F (Fix display line length)
 
 Changes the display to a fixed length line format. A length of 0 reverts the display back to the mormal mode.
 
-F 64	--	Useful for working with fixed record length text data.
+F 64	--	Useful for working with fixed record length 
+			text data.
 F		--	Return to normal mode.
 
 ---------------------------------------------------------
@@ -329,19 +436,20 @@ Consider:
 
 The current file is xxx.txt.
 
-10,20w		-- Writes lines 10 through 20 to xxx.txt
-w			-- Writes entire file to xxx.txt
-5w yyy.txt		-- Writes line 5 to yyy.txt
-w yyy.txt		-- Writes entire file to yyy.txt
+10,20w		--	Writes lines 10 through 20 to xxx.txt.
+w			--	Writes entire file to xxx.txt.
+5w yyy.txt	--	Writes line 5 to yyy.txt.
+w yyy.txt	--	Writes entire file to yyy.txt.
 
 
 ---------------------------------------------------------
 e, r, w, f (edit, read, write, file)
 
-All of these take filenames as parameters.
+All of these take filenames as parameters. For some, the filename is optional.
 
-r xxx.txt		-- Replace dot with the contents of xxx.txt 
-e			-- Re-load file from the latest save
+f			--	Prints the current file's meu line.
+r xxx.txt	--	Replace dot with the contents of xxx.txt.
+e			--	Re-load file from the latest save.
 
 
 ---------------------------------------------------------
@@ -349,11 +457,100 @@ e			-- Re-load file from the latest save
 
 These mimmick Unix i/o redirection operators, executing Windows cmd.exe to run the commands.
 
-<dir			-- Executes dir and replaces dot with the output
-10,20|sort	-- Sends lines 10 to 20 through sort and replaces 
-			   them with the output
-!ccc			-- Executes ccc, doing nothing with input or output
->jjj			-- Sends dot to standard input of jjj
+<dir			--	Executes dir and replaces dot with the output
+10,20|sort		--	Sends lines 10 to 20 through sort and 
+					replaces them with the output
+!ccc			--	Executes ccc, doing nothing with 
+					input or output
+>jjj			--	Sends dot to standard input of jjj
+
+
+---------------------------------------------------------
+x, y (Text loop commands)
+
+x does a search, sets dot to the matching text, and executes a command for every match found.
+
+,x/this/a/ is/
+
+Changes
+
+this and that and this again
+
+To
+
+this is and that and this is again
+
+
+y does a search, sets dot to the text in between the matches, and executes a command for each section. This will search for line endings and execute a command on the text in between, that is, the lines.
+
+,y/\N/a/ What???/
+
+Appends " What???" to the end of every line.
+
+
+---------------------------------------------------------
+X, Y (Menu looop commands)
+
+X will search for all files in the menu that match and execute a command for each.
+
+X/\.txt$/w	--	Saves all the .txt files.
+
+Y does the same for the ones that don't match.
+
+Y/\.txt$/w	--	Saves files that are not .txt type.
+
+
+---------------------------------------------------------
+g, v (Conditional commands)
+
+g performs a search and executes a command if any match is found.
+
+,g/SAVEME/w	--	Saves the file if SAVEME is found anywhere
+				in the file.
+
+v performs a search and executes a command if no match is found.
+
+,v/NOGOOD/w	--	Only save the file if NOGOOD can't be 
+				found.
+
+
+---------------------------------------------------------
+Miscellany
+
+k saves an address as "the mark". Reference the mark as '.
+
+10k	--	Line 10 is now the mark.
+
+'t$	--	Copy the mark, set to line 10 at the moment, to
+		the end of the file.
+
+
+q quits without saving.
+
+u undoes 1 or more editing commands. Note that large 
+	complex commands that perform many changes are undone 
+	as a single transaction.
+
+{} group commands into compound commands. Consider...
+
+This text:
+
+This is text to work with.
+
+And this command:
+
+{
+i/(
+Cu
+a/)
+}
+
+With dot set to this line, it results in
+
+This is text to (WORK) with.
+
+
+The commands grouped by the braces are essentially applied simultaneously. More about complex commands later.
 
 
 ---------------------------------------------------------

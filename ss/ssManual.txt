@@ -7,7 +7,7 @@ Right click anywhere on the main part of this window and
 choose Wrap from the pop-up menu to turn on word-wrapping 
 for this window.
 
-ss' scroll bars are different from the Windows norm. On the lefthand side of the window is the vertical scroll bar. Left clicking on it will scroll down. Right clicking will scroll up. On the righthand side of the window is the horizontal scroll bar. Right and left clicking will scroll right and left, respectively. Note that in each case the distance from the top of the window determines the amount of scroll for the click. 
+ss scroll bars are different from the Windows norm. On the lefthand side of the window is the vertical scroll bar. Left clicking on it will scroll down. Right clicking will scroll up. On the righthand side of the window is the horizontal scroll bar. Right and left clicking will scroll right and left, respectively. Note that in each case the distance from the top of the window determines the amount of scroll for the click. 
 
 The mouse wheel works the same way with respect to the distance from the top of the window the mouse is when the wheel is used.
 
@@ -553,4 +553,53 @@ This is text to (WORK) with.
 The commands grouped by the braces are essentially applied simultaneously. More about complex commands later.
 
 
+=========================================================
+Addresses
+
+Simple addresses are self-explanatory with one note:
+
+"regexpr" will change the current file.
+
+Compound addresses can denote a range of text a number of ways:
+
+#0,#4		--	First 4 characters in the file.
+$-#4,$		--	Last 4 characters in the file.
+.+3			--	The line that is 3 lines ahead of the 
+				current dot.
++6,+8		--	A 2 line range 6 lines down from dot.
+$-4,$		--	The last 4 lines of the file.
+1,4			--	The first 4 lines.
+
+Something more subtle:
+
+-5,+1		--	A 7 line range around where dot was, 
+				5 lines back and 1 lines forward.
+-5;+1		--	A 2 line range 5 lines back from where dot
+				was.
+
+In the first case, +1 is evaluated from the original dot. In the second case, the semi-colon sets dot by evaluating the -5 and then evaluates +1 from that new location. 
+
+Searches
+
+Searches start to the right of dot going forward or just to the left of dot going backwards.
+
+Given a line of text like this:
+
+Example text to play with for now.
+
+Assume that dot is set to just before the "x" in "text".
+
+-/ple/,/play/	--	Starts with "ple" in "Example" 
+					running to "play" in the 
+					same line.
+?ple?,/play/	--	Same thing.
+
+
 ---------------------------------------------------------
+Idioms
+
+-+		--	Select the full line when dot is only part of 
+			the line.
+-0,.,+0	--	For a selection that spans more than one line,
+			it selects the full lines in the range, 
+			aligning the selection on line boundries.

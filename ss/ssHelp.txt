@@ -116,6 +116,6 @@ a1;a2				Like , but sets dot after evaluating
 					a1.
 ------------------------------------------------------------
 The operators + and - are high precedence, while , and ; are 
-low precedence. In both + and - forms, a2 defaults to 1 and a1 
-defaults to dot.
+low precedence. In both + and - forms, a2 defaults to 1 and 
+a1 defaults to dot.
 ------------------------------------------------------------

@@ -11,10 +11,24 @@ using System.Globalization;
 
 namespace ss {
     public partial class ssEd {
-        int iota;
+        int one;
+        int zero;
+        int alpha;
         void PostEdDot() {
             txt.SyncFormToText();
-        }
+            }
+
+
+        public string ToAlphaString(int n) {
+            string s = "";
+            do {
+                int dig = n % 26;
+                s = (char)(dig + 'A') + s;
+                n /= 26;
+                }
+            while (n > 0);
+            return s;
+            }
 
         string[] SListToArray(SList ss) {
             int cnt = 0;

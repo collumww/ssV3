@@ -6,7 +6,7 @@ namespace ss
 {
     public partial class ssEd
     {
-        public enum SubType { iota, match }
+        public enum SubType { match, one, zero, alpha }
 
 
         public class SubList
@@ -112,8 +112,18 @@ namespace ss
                         break;
                     case subMode.sub:
                         switch (c) {
-                            case 'I':
-                                lt.nxt = new SubList(SubType.iota, res.Length);
+                            case '0':
+                                lt.nxt = new SubList(SubType.zero, res.Length);
+                                lt = lt.nxt;
+                                md = subMode.scan;
+                                break;
+                            case '1':
+                                lt.nxt = new SubList(SubType.one, res.Length);
+                                lt = lt.nxt;
+                                md = subMode.scan;
+                                break;
+                            case 'A':
+                                lt.nxt = new SubList(SubType.alpha, res.Length);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
@@ -166,11 +176,23 @@ namespace ss
             int adj = 0;
             while (l != null) {
                 switch (l.typ) {
-                    case SubType.iota:
-                        string s = iota.ToString();
+                    case SubType.zero:
+                        string s = zero.ToString();
                         res = res.Insert(l.loc + adj, s);
                         adj += s.Length;
-                        iota++;
+                        zero++;
+                        break;
+                    case SubType.one:
+                        s = one.ToString();
+                        res = res.Insert(l.loc + adj, s);
+                        adj += s.Length;
+                        one++;
+                        break;
+                    case SubType.alpha:
+                        s = ToAlphaString(alpha);
+                        res = res.Insert(l.loc + adj, s);
+                        adj += s.Length;
+                        alpha++;
                         break;
                     case SubType.match:
                         res = res.Insert(l.loc + adj, m);

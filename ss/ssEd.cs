@@ -76,7 +76,9 @@ namespace ss {
 
         public void NewTrans() {
             for (ssText t = txts; t != null; t = t.Nxt) t.TLog.InitTrans();
-            iota = 1;
+            one = 1;
+            zero = 0;
+            alpha = 0;
             }
 
         public void NewTransId() {

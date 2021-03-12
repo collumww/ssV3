@@ -14,7 +14,7 @@ namespace ss {
         public bool IsPunctuation(char c) {
             return char.IsPunctuation(c) ||
             ed.defs.progPunct.IndexOf(c) != -1;
-            }
+        }
 
 
         public ssText(ssEd ee, string s, string eoln, string n, Encoding enc) {
@@ -36,7 +36,7 @@ namespace ss {
             frms = null;
             frm = null;
             // Remove for non-windowing version */
-            }
+        }
 
         public ssRange dot;
         public ssRange mark;
@@ -68,11 +68,11 @@ namespace ss {
 
         public ssTransLog TLog {
             get { return tlog; }
-            }
+        }
 
         public bool DoMaint() {
             return txt.DoMaint();
-            }
+        }
 
 
         public string FileName() {
@@ -82,9 +82,9 @@ namespace ss {
             string fd = Path.GetDirectoryName(Path.GetFullPath(nm)).ToUpper();
             if (fd == wd) {
                 fn = Path.GetFileName(fn);
-                }
-            return fn;
             }
+            return fn;
+        }
 
         public string MenuLine() {
             string ml = Changed ? "'" : " ";
@@ -97,7 +97,7 @@ namespace ss {
             ml += ed.encodeEncoding(encoding);
             ml += this == ed.Txt ? ". " : "  ";
             return ml + FileName();
-            }
+        }
 
 
         //win Remove for non-windowed version
@@ -106,7 +106,7 @@ namespace ss {
             frms = f;
             frm = f;
             frm.Text = FileName();
-            }
+        }
 
 
         public void DeleteForm(ssForm ff) {
@@ -116,21 +116,21 @@ namespace ss {
             if (p == null) {
                 frms = f.Nxt;
                 frm = frms;
-                }
+            }
             else {
                 p.Nxt = f.Nxt;
                 frm = p;
-                }
             }
+        }
 
         public void DeleteAllForms() {
             for (ssForm f = frms; f != null; f = f.Nxt) f.Close();
-            }
+        }
 
 
         public bool LastForm(ssForm f) {
             return f == frms && f.Nxt == null;
-            }
+        }
 
 
         // Remove for non-windowed version */
@@ -142,62 +142,62 @@ namespace ss {
             //win remove for non-windowed version
             for (ssForm f = frms; f != null; f = f.Nxt) f.Text = FileName();
             // remove for non-windowed version */
-            }
+        }
 
         public string Nm {
             get { return nm; }
             set { nm = value; }
-            }
+        }
 
         public int Length {
             get { return txt.Length; }
-            }
+        }
 
         public string Eoln {
             get {
                 return EOLN;
-                }
+            }
             set {
                 if (value == "") { throw new ssException("invalid EOLN"); }
                 EOLN = value;
-                }
             }
+        }
 
         public bool Changed {
             get { return TLog.changeCnt != 0; }
-            }
+        }
 
         public ssText Nxt {
             get { return nxt; }
             set { nxt = value; }
-            }
+        }
 
         //win Remove for non-windowed version
         public ssForm Frms {
             get { return frms; }
-            }
+        }
 
         public ssForm Frm {
             get { return frm; }
             set { frm = value; }
-            }
+        }
         // Remove for non-windowed version */
 
         public char this[int i] {
             get { return txt[i]; }
-            }
+        }
 
         public string ToString(int first, int length) {
             return txt.ToString(first, length);
-            }
+        }
 
         public override string ToString() {
             return txt.ToString(dot.l, dot.len);
-            }
+        }
 
         public ssRange Insert(char c) {
             return Insert(c.ToString());
-            }
+        }
 
         public ssRange Insert(string s) {
             txt.Insert(dot.l, s);
@@ -207,7 +207,7 @@ namespace ss {
             AdjMarks(dot.l, s.Length, true);
             dot.len = s.Length;
             return dot;
-            }
+        }
 
         public ssRange Delete() {
             if (dot.l != dot.r) {
@@ -217,9 +217,9 @@ namespace ss {
                 mark.Adjust(dot.l, dot.len, false); // needed in case there's no window
                 AdjMarks(dot.l, dot.len, false);
                 dot.len = 0;
-                }
-            return dot;
             }
+            return dot;
+        }
 
 
         public bool AtEOLN(int i) {
@@ -227,7 +227,7 @@ namespace ss {
             if (i == txt.Length || (0 <= i && i <= (txt.Length - EOLN.Length) && txt.ToString(i, EOLN.Length) == EOLN))
                 return true;
             else return false;
-            }
+        }
 
 
         public bool AtBOLN(int i) {
@@ -235,7 +235,7 @@ namespace ss {
             if (i == 0 || (i >= EOLN.Length && i <= txt.Length && txt.ToString(i - EOLN.Length, EOLN.Length) == EOLN))
                 return true;
             else return false;
-            }
+        }
 
 
 
@@ -245,7 +245,7 @@ namespace ss {
             return (!char.IsWhiteSpace(txt[i]) && char.IsWhiteSpace(txt[i - 1]))
                 || AtBOLN(i)
                 || AtEOLN(i);
-            }
+        }
 
 
         public bool AtEOW(int i) {
@@ -254,7 +254,7 @@ namespace ss {
             return (char.IsWhiteSpace(txt[i]) && !char.IsWhiteSpace(txt[i - 1]))
                 || AtBOLN(i)
                 || AtEOLN(i);
-            }
+        }
 
         public bool AtProgBOW(int i) {
             if (i == txt.Length) return false;
@@ -263,7 +263,7 @@ namespace ss {
                 || AtBOLN(i)
                 || AtEOLN(i)
                 || i < txt.Length && IsPunctuation(txt[i]);
-            }
+        }
 
 
         public bool AtProgEOW(int i) {
@@ -273,18 +273,18 @@ namespace ss {
                 || AtBOLN(i)
                 || AtEOLN(i)
                 || i < txt.Length && IsPunctuation(txt[i]);
-            }
+        }
 
         public bool RangeAligned(ssRange r) {
-            return AtBOLN(r.l) && AtBOLN(r.r);
-            }
+            return AtBOLN(r.l) && (AtBOLN(r.r) || r.r == Length);
+        }
 
         public ssRange AlignRange(ref ssRange r) {
             if (r.l == r.r) r.r = NxtRight(r.r);
             r.l = To(AtBOLN, r.l, -1);
             r.r = To(AtBOLN, r.r, 1);
             return r;
-            }
+        }
 
 
         public delegate bool PosTest(int i);
@@ -295,20 +295,20 @@ namespace ss {
             while (0 <= i && i <= txt.Length) {
                 if (tst(i)) return i;
                 i += dir;
-                }
+            }
             if (i >= txt.Length) return txt.Length;
             else if (i < 0) return 0;
             return 0;
-            }
+        }
 
 
         public bool Contains(int i) {
             return i >= 0 && i <= txt.Length;
-            }
+        }
 
         public bool Contains(ssRange r) {
             return r.l >= 0 && r.r <= txt.Length;
-            }
+        }
 
         public int NxtLeft(int i) {
             if (i == 0) return i;
@@ -317,7 +317,7 @@ namespace ss {
             if (AtBOLN(i)) inc = Eoln.Length;
             else inc = 1;
             return i - inc;
-            }
+        }
 
 
         public int NxtRight(int i) {
@@ -327,20 +327,20 @@ namespace ss {
             if (AtEOLN(i)) inc = Eoln.Length;
             else inc = 1;
             return i + inc;
-            }
+        }
 
 
         public void SeekEnd() {
             dot.To(txt.Length);
-            }
+        }
 
         public void SeekHome() {
             dot.To(0);
-            }
+        }
 
         public bool Ended() {
             return AtEOLN(Length - Eoln.Length);
-            }
+        }
 
 
         public bool DoubleCheck() {
@@ -348,11 +348,11 @@ namespace ss {
                 if (firstTry) {
                     firstTry = false;
                     return false;
-                    }
-                else return true;
                 }
-            else return true;
+                else return true;
             }
+            else return true;
+        }
 
 
 
@@ -364,20 +364,27 @@ namespace ss {
             n = Math.Abs(n);
             int tail = start;
             int head = To(AtBOLN, start, dir);
+            if (!AtBOLN(head)) throw new ssException("address range");
             int m = 0;
+            bool didntmove = false;
             while (m < n) {
                 tail = head;
                 head = To(AtBOLN, mov(head), dir);
-                if (head == tail && n - m > 1) throw new ssException("address range");
+                if (head == tail) {
+                    if (didntmove) throw new ssException("address range");
+                    else didntmove = true;
+                    }
+                //if (head == tail && n - m > 1) throw new ssException("address range");
                 m++;
                 }
+            //if (head != Length && !AtBOLN(head)) throw new ssException("address range");
             return new ssRange(tail, head).Normalize();
             }
 
 
         public void ShowInternals() {
             txt.Show(ed);
-            }
+        }
 
 
 
@@ -385,37 +392,37 @@ namespace ss {
             //win Remove contents of this routine for non-windowing version
             for (ssForm f = frms; f != null; f = f.Nxt) {
                 f.AdjMarks(loc, chg, insert);
-                }
-            // Remove contents of this routine for non-windowing version */
             }
+            // Remove contents of this routine for non-windowing version */
+        }
 
         public void InvalidateMarks() {
             //win Remove contents of this routine for non-windowing version
             for (ssForm f = frms; f != null; f = f.Nxt) {
                 f.InvalidateMarks();
-                }
-            // Remove contents of this routine for non-windowing version */
             }
+            // Remove contents of this routine for non-windowing version */
+        }
 
         public void InvalidateMarksAndChange(int loc) {
             //win Remove contents of this routine for non-windowing version
             for (ssForm f = frms; f != null; f = f.Nxt) {
                 f.InvalidateMarksAndChange(loc);
-                }
-            // Remove contents of this routine for non-windowing version */
             }
+            // Remove contents of this routine for non-windowing version */
+        }
 
         public void SyncTextToForm() {
             //win Remove contents of this routine for non-windowing version
             if (frm != null) frm.FormMarksToText();
             // Remove contents of this routine for non-windowing version */
-            }
+        }
 
         public void SyncFormToText() {
             //win Remove contents of this routine for non-windowing version
             if (frm != null) frm.TextMarksToForm(true);
             // Remove contents of this routine for non-windowing version */
-            }
+        }
 
         public void Activate() {
             //win Remove contents of this routine for non-windowing version
@@ -423,9 +430,9 @@ namespace ss {
                 if (frm.WindowState == System.Windows.Forms.FormWindowState.Minimized)
                     frm.WindowState = System.Windows.Forms.FormWindowState.Normal;
                 frm.Activate();
-                }
-            // Remove contents of this routine for non-windowing version */
             }
+            // Remove contents of this routine for non-windowing version */
+        }
 
 
         //win Remove contents of this routine for non-windowing version
@@ -435,8 +442,8 @@ namespace ss {
                 ssForm f = new ssForm(ed, this);
                 AddForm(f);
                 f.Show();
-                }
             }
+        }
         // Remove contents of this routine for non-windowing version */
 
 
@@ -445,14 +452,14 @@ namespace ss {
             //win Remove contents of this routine for non-windowing version
             for (ssForm f = frms; f != null; f = f.Nxt) f.ReDisplay();
             // Remove contents of this routine for non-windowing version */
-            }
+        }
 
         public void FixLineLen(int n) {
             fixedLn = n;
             //win Remove contents of this routine for non-windowing version
             for (ssForm f = frms; f != null; f = f.Nxt) f.ReDisplay();
             // Remove contents of this routine for non-windowing version */
-            }
-
         }
+
     }
+}

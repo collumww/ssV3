@@ -303,7 +303,7 @@ Changes
 
 To
 
-...this (0) and this (1) again with this (2)...
+...this (1) and this (2) again with this (3)...
 
 And...
 
@@ -311,7 +311,7 @@ i/&I this and &I that/
 
 Inserts
 
-0 this and 1 that
+1 this and 2 that
 
 
 s/.*\N/&I)\t&/g
@@ -326,11 +326,11 @@ Thing
 
 To
 
-0)	This
-1)	That
-2)	The
-3)	Other
-4)	Thing
+1)	This
+2)	That
+3)	The
+4)	Other
+5)	Thing
 
 ---------------------------------------------------------
 d (delete)

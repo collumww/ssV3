@@ -80,7 +80,7 @@ namespace ss {
                     break;
                 case 'c':
                     if (swallowing) return;
-                    if (t.subs != null) Change(DoSubs("", t.subs));
+                    if (t.subs != null) Change(DoSubs(txt.ToString(), t.subs));
                     else Change(t.s);
                     break;
                 case 't':

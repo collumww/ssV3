@@ -309,7 +309,7 @@ namespace ss {
                         scn.SetDelim(pDelim());
                         scn.GetChar();
                         t.s = Unescape(scn.GetStr());
-                        t.subs = PrepForSub(ref t.s, false);
+                        t.subs = PrepForSub(ref t.s, c == 'c');
                         }
                     CheckEOT();
                     break;

@@ -374,10 +374,8 @@ namespace ss {
                     if (didntmove) throw new ssException("address range");
                     else didntmove = true;
                     }
-                //if (head == tail && n - m > 1) throw new ssException("address range");
                 m++;
                 }
-            //if (head != Length && !AtBOLN(head)) throw new ssException("address range");
             return new ssRange(tail, head).Normalize();
             }
 

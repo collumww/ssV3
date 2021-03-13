@@ -13,17 +13,18 @@ namespace ss {
     public partial class ssEd {
         int one;
         int zero;
-        int alpha;
+        int alphaUpper;
+        int alphaLower;
         void PostEdDot() {
             txt.SyncFormToText();
             }
 
 
-        public string ToAlphaString(int n) {
+        public string ToAlphaString(int n, char strt) {
             string s = "";
             do {
                 int dig = n % 26;
-                s = (char)(dig + 'A') + s;
+                s = (char)(dig + strt) + s;
                 n /= 26;
                 }
             while (n > 0);

@@ -6,7 +6,7 @@ namespace ss
 {
     public partial class ssEd
     {
-        public enum SubType { match, one, zero, alpha }
+        public enum SubType { match, one, zero, alphaUpper, alphaLower }
 
 
         public class SubList
@@ -34,10 +34,6 @@ namespace ss
                         case '&':  // Change \& to \\& so Regex.Unescape doesn't remove the \
                             res += "\\\\";
                             res += '&';
-                            break;
-                        case 'I':  // \I left intact for PrepForSubs
-                            res += "\\\\";
-                            res += 'I';
                             break;
                         case 'N':  // ss custom line ending escape.
                             if (txt != null)
@@ -79,9 +75,9 @@ namespace ss
             }
         }
 
-        enum subMode { scan, sub, esc }
+        enum subMode { scan, sub, esc, esc2 }
 
-        SubList PrepForSub(string s, bool allowmatch)
+        SubList PrepForSub(ref string s, bool allowmatch)
         {
             SubList l = new SubList(SubType.match, 0);
             SubList lt = l;
@@ -112,18 +108,23 @@ namespace ss
                         break;
                     case subMode.sub:
                         switch (c) {
-                            case '0':
+                            case 'Z':
                                 lt.nxt = new SubList(SubType.zero, res.Length);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
-                            case '1':
+                            case 'O':
                                 lt.nxt = new SubList(SubType.one, res.Length);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
-                            case 'A':
-                                lt.nxt = new SubList(SubType.alpha, res.Length);
+                            case 'U':
+                                lt.nxt = new SubList(SubType.alphaUpper, res.Length);
+                                lt = lt.nxt;
+                                md = subMode.scan;
+                                break;
+                            case 'L':
+                                lt.nxt = new SubList(SubType.alphaLower, res.Length);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
@@ -148,21 +149,38 @@ namespace ss
                                     }
                                 }
                                 else {
-                                    md = subMode.scan;
-                                    res += pc;
-                                    res += c;
+                                    switch (c) {
+                                        case '\\':
+                                            //throw new ssException("substitution not allowed");
+                                            md = subMode.esc2;
+                                            res += pc;
+                                            break;
+                                        default:
+                                            md = subMode.scan;
+                                            res += pc;
+                                            res += c;
+                                            break;
+                                        }
                                 }
                                 break;
                         }
                         break;
-                }
+                    case subMode.esc2:
+                        md = subMode.scan;
+                        res += c;
+                        break;
+                    }
                 i++;
             }
             if (md == subMode.sub) {
                 if (allowmatch) lt.nxt = new SubList(SubType.match, res.Length);
-                else res += pc;
+                else {
+                    if (i > 1) res += pc;
+                    else res += '&';
+                    }
             }
             if (l.nxt != null) l.nxt.res = res;
+            else if (res != s) s = res;
 
             //MsgLn("/" + res + "/");
             //for (SubList x = l; x != null; x = x.nxt) MsgLn(x.loc.ToString() + " " + x.typ.ToString());
@@ -188,11 +206,17 @@ namespace ss
                         adj += s.Length;
                         one++;
                         break;
-                    case SubType.alpha:
-                        s = ToAlphaString(alpha);
+                    case SubType.alphaUpper:
+                        s = ToAlphaString(alphaUpper, 'A');
                         res = res.Insert(l.loc + adj, s);
                         adj += s.Length;
-                        alpha++;
+                        alphaUpper++;
+                        break;
+                    case SubType.alphaLower:
+                        s = ToAlphaString(alphaLower, 'a');
+                        res = res.Insert(l.loc + adj, s);
+                        adj += s.Length;
+                        alphaLower++;
                         break;
                     case SubType.match:
                         res = res.Insert(l.loc + adj, m);

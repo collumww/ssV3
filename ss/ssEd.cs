@@ -78,7 +78,8 @@ namespace ss {
             for (ssText t = txts; t != null; t = t.Nxt) t.TLog.InitTrans();
             one = 1;
             zero = 0;
-            alpha = 0;
+            alphaUpper = 0;
+            alphaLower = 0;
             }
 
         public void NewTransId() {

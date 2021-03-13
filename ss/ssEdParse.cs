@@ -309,7 +309,7 @@ namespace ss {
                         scn.SetDelim(pDelim());
                         scn.GetChar();
                         t.s = Unescape(scn.GetStr());
-                        t.subs = PrepForSub(t.s, false);
+                        t.subs = PrepForSub(ref t.s, false);
                         }
                     CheckEOT();
                     break;
@@ -346,12 +346,12 @@ namespace ss {
                     t = new CTree(a, c);
                     pChar();
                     if (char.IsDigit(scn.C)) t.n = scn.GetNum();
-                    if (scn.Nothing) t.n = 1;
+                    else t.n = 1;
                     scn.SetDelim(pDelim());
                     scn.GetChar();
                     t.s = SetPat(PreEscape(scn.GetStr()));
                     t.rep = Unescape(scn.GetStr());
-                    t.subs = PrepForSub(t.rep, true);
+                    t.subs = PrepForSub(ref t.rep, true);
                     t.opt = scn.C;
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");
                     CheckEOT();

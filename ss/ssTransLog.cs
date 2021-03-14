@@ -16,6 +16,7 @@ namespace ss {
             adjEdge = new ssRange(0, 0);
             getnewtrans = true;
             canconsolidate = true;
+            savepoint = 0;
             olddot = new ssRange();
             rex = new Regex(@"[\w\s]");
             }
@@ -30,6 +31,7 @@ namespace ss {
 
         public void FormLogTrans(ssTrans.Type typ, ssRange r, string s) {
             if (log) {
+                curChangeId++;
                 if (canconsolidate &&
                     ts != null &&
                     ts.typ == ssTrans.Type.delete &&
@@ -42,13 +44,12 @@ namespace ss {
                     s != txt.Eoln) {
                     ed.PrevTransId();
                     ts.rng.r = r.r;
-                    ts.cnt++;
-                    changeCnt++;
+                    ts.chgid = curChangeId;
                     }
                 else {
                     ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
                     canconsolidate = true;
-                    changeCnt++;
+                    ts.chgid = curChangeId;
                     }
                 }
             }
@@ -56,9 +57,10 @@ namespace ss {
         public void EdLogTrans(ssTrans t) {
             if (log) {
                 t.id = ed.CurTransId;
+                t.chgid = curChangeId;
                 t.nxt = ts;
                 ts = t;
-                changeCnt++;
+                curChangeId++;
                 }
             }
 
@@ -130,7 +132,7 @@ namespace ss {
                         txt.dot = ts.rng;
                         break;
                     }
-                changeCnt -= ts.cnt;
+                //curChangeId -= ts.cnt;
                 ts = ts.nxt;
                 }
             log = true;
@@ -170,8 +172,16 @@ namespace ss {
             seqRoot.nxt = null;
             }
 
+
+        public bool Changed {
+            get { return ts == null && savepoint != 0 ||
+                    ts != null && ts.chgid != savepoint; }
+            }
+
+
         public void RecordSave() {
-            changeCnt = 0;
+            if (ts != null) savepoint = ts.chgid;
+            else savepoint = 0;
             canconsolidate = false;
             txt.InvalidateMarks();
             }
@@ -180,7 +190,8 @@ namespace ss {
         ssText txt;
         ssTrans ts;
         ssRange adjEdge;
-        public long changeCnt;
+        public long curChangeId;
+        long savepoint;
         public ssTrans seqRoot;
         ssRange olddot;
         public bool getnewtrans;

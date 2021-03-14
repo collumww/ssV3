@@ -1364,7 +1364,7 @@ namespace ss {
                 e.Graphics.FillRectangle(Brushes.Chocolate, rct);
                 }
 
-            if (txt.Changed) {
+            if (txt.TLog.Changed) {
                 e.Graphics.FillRectangle(Brushes.Red, ChangedRect());
                 }
 

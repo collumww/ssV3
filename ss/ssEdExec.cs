@@ -225,7 +225,9 @@ namespace ss {
                     string dta = txt.ToString(r.l, r.len);
                     string lbl = File.Exists(t.s) ? "" : " (new file) ";
                     if (WinWrite(t.s, dta, txt.encoding)) {
-                        if (dta.Length == txt.Length) txt.TLog.changeCnt = 0;
+                        if (dta.Length == txt.Length) {
+                            txt.TLog.RecordSave();
+                            }
                         MsgLn(s + ":" + lbl + "#" + dta.Length.ToString());
                     }
                     PostEdDot();

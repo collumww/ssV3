@@ -392,7 +392,7 @@ namespace ss {
                     }
                 if (ed.WinWrite(ed.Txt.Nm, ed.Txt.ToString(0, ed.Txt.Length), ed.Txt.encoding)) {
                     ed.MsgLn(ed.Txt.FileName() + ": #" + ed.Txt.Length.ToString());
-                    ed.Txt.TLog.changeCnt = 0;
+                    ed.txt.TLog.RecordSave();
                     }
                 }
             catch (Exception e) {

@@ -15,6 +15,7 @@ namespace ss {
             seqRoot = new ssTrans(ssTrans.Type.delete, 0, t.dot, null, null);
             adjEdge = new ssRange(0, 0);
             getnewtrans = true;
+            canconsolidate = true;
             olddot = new ssRange();
             rex = new Regex(@"[\w\s]");
             }
@@ -29,7 +30,8 @@ namespace ss {
 
         public void FormLogTrans(ssTrans.Type typ, ssRange r, string s) {
             if (log) {
-                if (ts != null &&
+                if (canconsolidate &&
+                    ts != null &&
                     ts.typ == ssTrans.Type.delete &&
                     typ == ssTrans.Type.delete &&
                     ts.rng.r == r.l &&
@@ -37,13 +39,16 @@ namespace ss {
                     ts.s != null && rex.IsMatch(ts.s) &&
                     s != null && rex.IsMatch(s) &&
                     ts.s != txt.Eoln &&
-                    s != txt.Eoln) { 
+                    s != txt.Eoln) {
                     ed.PrevTransId();
-                    changeCnt--;
                     ts.rng.r = r.r;
+                    ts.cnt++;
+                    changeCnt++;
                     }
                 else {
                     ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
+                    canconsolidate = true;
+                    changeCnt++;
                     }
                 }
             }
@@ -53,6 +58,7 @@ namespace ss {
                 t.id = ed.CurTransId;
                 t.nxt = ts;
                 ts = t;
+                changeCnt++;
                 }
             }
 
@@ -79,18 +85,17 @@ namespace ss {
                         t.s = null;
                         t.typ = ssTrans.Type.delete;
                         break;
-                }
+                    }
 
                 ssTrans tt = t.nxt; // Grab t.nxt before LogTrans changes it.
                 if (tt == null) {
                     if (t.typ != ssTrans.Type.rename) txt.dot = t.rng;
                     txt.SyncFormToText();
-                }
+                    }
                 EdLogTrans(t);  // Form keeps from logging ed.log transactions. We don't check it here.
                 t = tt;
+                }
             }
-            changeCnt++;
-        }
 
         public void PushTrans(ssTrans t) {
             switch (t.typ) {
@@ -100,11 +105,11 @@ namespace ss {
                 case ssTrans.Type.delete:
                     CheckSeq(ref t.rng, false);
                     break;
-            }
+                }
             BeginTrans();
             t.nxt = seqRoot.nxt;
             seqRoot.nxt = t;
-        }
+            }
 
         public void Undo(long id) {
             if (ts == null) return;
@@ -125,10 +130,11 @@ namespace ss {
                         txt.dot = ts.rng;
                         break;
                     }
+                changeCnt -= ts.cnt;
                 ts = ts.nxt;
                 }
             log = true;
-            changeCnt--;
+            txt.InvalidateMarks();
             }
 
         public void CheckSeq(ref ssRange r, bool insert) {
@@ -136,9 +142,9 @@ namespace ss {
             if (adjEdge.r > r.l) {
                 txt.dot = olddot;
                 throw new ssException("changes not in sequence");
-            }
+                }
             adjEdge = r;
-        }
+            }
 
         public bool Log {
             get { return log; }
@@ -147,7 +153,7 @@ namespace ss {
 
         public ssTrans Ts {
             get { return ts; }
-                }
+            }
 
         public void InitTrans() {
             getnewtrans = true;
@@ -162,7 +168,13 @@ namespace ss {
             adjEdge.l = 0;
             adjEdge.r = 0;
             seqRoot.nxt = null;
-        }
+            }
+
+        public void RecordSave() {
+            changeCnt = 0;
+            canconsolidate = false;
+            txt.InvalidateMarks();
+            }
 
         ssEd ed;
         ssText txt;
@@ -172,6 +184,7 @@ namespace ss {
         public ssTrans seqRoot;
         ssRange olddot;
         public bool getnewtrans;
+        public bool canconsolidate;
         bool log;
         Regex rex;
         }

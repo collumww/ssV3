@@ -11,6 +11,7 @@ namespace ss {
             id = i;
             rng = r;
             s = ss;
+            cnt = 1;
             nxt = nnxt;
             }
 
@@ -20,6 +21,7 @@ namespace ss {
         public long id;         // A large edit command will consist of many of these with the same id number
         public ssRange rng;
         public string s;
+        public long cnt;
         public ssTrans nxt;
         }
     }

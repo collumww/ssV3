@@ -173,7 +173,6 @@ namespace ss {
         void BeginFormTrans() {
             txt.TLog.InitTrans();
             txt.TLog.BeginTrans();
-            txt.TLog.changeCnt++;
             }
 
         public void Delete() {
@@ -279,6 +278,7 @@ namespace ss {
         public void InvalidateMarks() {
             InvalidateCursor();
             InvalidateMark();
+            Invalidate(ChangedRect());
             }
 
         private void InvalidateCursor() {
@@ -1332,12 +1332,12 @@ namespace ss {
             }
 
 
-        //private Rectangle ChangedRect() {
-        //    Rectangle r = ClientRectangle;
-        //    r.X = r.Width - 3;
-        //    r.Width = 3;
-        //    return r;
-        //    }
+        private Rectangle ChangedRect() {
+            Rectangle r = ClientRectangle;
+            r.X = r.Width - 3;
+            r.Width = 3;
+            return r;
+            }
 
         private void ssForm_Paint(object sender, PaintEventArgs e) {
             if (WindowState == FormWindowState.Minimized) return;
@@ -1364,9 +1364,9 @@ namespace ss {
                 e.Graphics.FillRectangle(Brushes.Chocolate, rct);
                 }
 
-            //if (txt.Changed) {
-            //    e.Graphics.FillRectangle(Brushes.Red, ChangedRect());
-            //    }
+            if (txt.Changed) {
+                e.Graphics.FillRectangle(Brushes.Red, ChangedRect());
+                }
 
             rct = ClientRectangle;
             rct.Width = layout.scrollMargin;

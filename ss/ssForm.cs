@@ -1333,9 +1333,10 @@ namespace ss {
 
 
         private Rectangle ChangedRect() {
+            const int width = 2;
             Rectangle r = ClientRectangle;
-            r.X = r.Width - 3;
-            r.Width = 3;
+            r.X = r.Width - width;
+            r.Width = width;
             return r;
             }
 

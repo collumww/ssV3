@@ -23,7 +23,8 @@ t address			Copy text in dot after address.
 C [u|l|t|s|i]		Convert text to upper, lower, or title 
 					case or set search to case sensitive or
 					not.
-Note:	In a, c, i and s use &I to refer to iota.
+Note:	In a, c, i and s use &Z, &O, &U, and &L to refer to 
+		counters starting at 0, 1, A, and a.
 ------------------------------------------------------------
 Display Commands
 ------------------------------------------------------------

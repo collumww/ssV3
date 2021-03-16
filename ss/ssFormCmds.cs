@@ -516,8 +516,10 @@ namespace ss {
             }
 
         public void CmdBackDeleteWord() {
-            extending = true;
-            CmdCursorToNextWordLeft();
+            if (cursor.Empty) {
+                extending = true;
+                CmdCursorToNextWordLeft();
+                }
             Delete();
             extending = false;
             }

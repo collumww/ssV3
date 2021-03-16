@@ -15,9 +15,9 @@ The mouse wheel works the same way with respect to the distance from the top of 
 =========================================================
 Introduction to ss
 
-ss is a multi-file, multi-window (on a file) plain text editor in the Unix/Plan 9 style. In fact, it's really an implementation of Plan 9's Sam editor, written by Rob Pike, with some minor enhancements and adjustments to make it a bit more comfortable in Windows.
+ss is a multi-file, multi-window (on a file) plain text editor in the Unix/Plan 9 style. In fact, it's really an implementation of Plan 9's Sam editor, written by Rob Pike, with some minor enhancements and adjustments to make it a bit more familiar to Windows users.
 
-Rob Pike gets all the credit for the conception and functional design while the code itself is a from-scratch implementation in C#, making heavy use of the .NET library.
+Rob Pike gets all the credit for the conception and functional design while the code itself is a from-scratch implementation in C#, making heavy use of the .NET library, in particular string handling and .NET's regular expression (except for the substitutions).
 
 The user interface is purposefully sparse, mostly to reduce visual clutter. Controlling the editor is done in three different ways:
 
@@ -219,8 +219,6 @@ A comma by itself (,) is a shorthand for 0,$, which means all lines in the file.
 ,d		--	delete all lines in the file.
 0,$d	--	delete all lines in the file.
 
-
-
 ---------------------------------------------------------
 Regular expression and searchs
 
@@ -231,14 +229,18 @@ Use the documentation on Microsoft's Regular Expressions for a full description.
 
 This addition was made since ss is intended to work with different line endings. \N will match what is in use at the time.
 
-Substitutions
+Substitutions and Counters
 
-The complete set of Micrsoft substitutions is not implemented, but a couple ones are.
+The complete set of Micrsoft substitutions is not implemented, but severaly automatically incrementing counters are provided.
 
 &	--	The contents of the match
-&I	--	iota, an automatically incrementing number
+&Z	--	A counter starting at 0
+&O	--	A counter starting at 1
+&U	--	Uppercase letter counter
+&L	--	Lowercase letter counter
 
-iota can be used to number lines in a file, items in a list, etc.
+The counters, admittedly an oddball item, can be used to number lines in a file, items in a list, etc.
+
 
 ---------------------------------------------------------
 a, c, i (append, change, insert)
@@ -291,11 +293,11 @@ BillJoneswashere
 
 
 ---------------------------------------------------------
-Using iota and \N
+Using counters and \N
 
-Iota, denoted by '&I', is an automatically incrementing number that can be used with a, i, c, and s commands. It starts at 0 and increments everytime it is referenced. Consider the following:
+Counters, denoted by '&Z', '&O', '&U', and '&L' are automatically incrementing numbers that can be used with a, i, c, and s commands. They start respectively at 0, 1, A, and a, incrementing every time they are referenced. Consider the following:
 
-,s/this/& (&I)/g
+,s/this/& (&O)/g
 
 Changes
 
@@ -307,14 +309,14 @@ To
 
 And...
 
-i/&I this and &I that/
+i/&Z this and &Z that/
 
 Inserts
 
-1 this and 2 that
+0 this and 1 that
 
 
-s/.*\N/&I)\t&/g
+s/.*\N/&U)\t&/g
 
 Changes
 
@@ -326,11 +328,34 @@ Thing
 
 To
 
-1)	This
-2)	That
-3)	The
-4)	Other
-5)	Thing
+A)	This
+B)	That
+C)	The
+D)	Other
+E)	Thing
+
+
+&L would have provided lowercase letters.
+
+To substitute the match followed by one of the counter letters instead of the counter itself, prefix the letter with a backslash like so. With text:
+
+th th th th
+
+s/th/&OSE/g
+
+Would yield
+
+1SE 2SE 3SE 4SE
+
+
+While
+
+s/th/&\OSE/g
+
+Yields
+
+thOSE thOSE thOSE thOSE
+
 
 ---------------------------------------------------------
 d (delete)
@@ -366,6 +391,7 @@ This also sets case sensitivity for searches:
 Ci		--	case insensitive.
 Cs		--	case sensitive.
 Cu		--	Change dot to upper case.
+
 
 ---------------------------------------------------------
 p (Print the text in dot)
@@ -579,6 +605,7 @@ Something more subtle:
 
 In the first case, +1 is evaluated from the original dot. In the second case, the semi-colon sets dot by evaluating the -5 and then evaluates +1 from that new location. 
 
+
 Searches
 
 Searches start to the right of dot going forward or just to the left of dot going backwards.
@@ -603,3 +630,4 @@ Idioms
 -0,.,+0	--	For a selection that spans more than one line,
 			it selects the full lines in the range, 
 			aligning the selection on line boundries.
+

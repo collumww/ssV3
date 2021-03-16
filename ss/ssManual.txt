@@ -631,3 +631,70 @@ Idioms
 			it selects the full lines in the range, 
 			aligning the selection on line boundries.
 
+
+=========================================================
+Compound Commands and Sequencing
+
+The design of ss is based partly on the idea that all changes to text requested in a command conceptually happen at once. Two rules must be followed to make that possible without having the underlying logic become overly complicated. First, the changes must not overlap. Second, they must proceed in order from low addresses to high. 
+
+All changes are implemented as inserts and deletes. Inserts occur at a point while deletes also have width. This is used to think about overlap. 
+
+Some examples:
+
+This will fail:
+
+{
+5d
+5d
+} 
+
+A command cannot delete the same line twice, because the twe deletes overlap.
+
+
+This will also fail:
+
+{
+10i/this/
+5i/that/
+}
+
+A command cannot insert something in line 10 and then insert in line 5.
+
+Consider:
+
+,x/th../{
+i/(
+x/^./d
+a/)
+}
+
+This succeeds.
+
+For each match of 'th' followed by two characters, insert a '(', delete the first letter of the match, and append ')' to the match. 
+
+The matches proceed forward in order.
+
+The insert is at the beginning with 0 width.
+
+The delete is at the beginning of the match and so doesn't overlap with the insert.
+
+The append as at the end of the 4 letter long match and so doesn't overlap with the insert or the delete.
+
+This fails:
+
+,x/th../{
+i/(
+a/)
+x/^./d
+}
+
+Giving the message
+
+?changes not in sequence
+
+The failure is due to the delete being located before the append rather than after.
+
+
+=========================================================
+The ssEvents.ini File
+

@@ -45,6 +45,7 @@ namespace ss {
             if (t == null) return;
             ssAddress ad = xAddr(t.ad);
             ssAddress a = xAddr(t.a);
+            if (txt != null) levdot = txt.dot;
             if (a != null) {
                 if (a.txt == null) a.txt = txt;
                 else {
@@ -53,7 +54,6 @@ namespace ss {
                 }
                 txt.dot = a.rng;
             }
-            if (txt != null) levdot = txt.dot;
             switch (t.cmd) {
                 case 'p':
                     Print();

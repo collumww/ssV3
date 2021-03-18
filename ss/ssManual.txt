@@ -7,9 +7,9 @@ Right click anywhere on the main part of this window and
 choose Wrap from the pop-up menu to turn on word-wrapping 
 for this window.
 
-ss scroll bars are different from the Windows norm. On the lefthand side of the window is the vertical scroll bar. Left clicking on it will scroll down. Right clicking will scroll up. On the righthand side of the window is the horizontal scroll bar. Right and left clicking will scroll right and left, respectively. Note that in each case the distance from the top of the window determines the amount of scroll for the click. 
+ss scroll bars are different from the Windows norm. On the lefthand side of the window is the vertical scroll bar. Left clicking on it will scroll down. Right clicking will scroll up. A middle click, done with the wheel on most modern mice, scrolls to an absolute position. On the righthand side of the window is the horizontal scroll bar. Right and left clicking will scroll right and left, respectively. Note that in each case the distance from the top of the window determines the amount of scroll for the click. 
 
-The mouse wheel works the same way with respect to the distance from the top of the window the mouse is when the wheel is used.
+The mouse wheel works the same way with respect to the distance from the top of the window. 
 
 
 =========================================================
@@ -46,22 +46,22 @@ ss this.txt that.ini theother.dat
 
 ss *.txt xxx.lis .\safe\*.txt
 
-Files that are found that match the file specs given are added to the right-click menu as discussed below. The files will be opened and the last one will be given a window, the others can be given a window by choosing them from the menu, or by using the 'b' command, also discussed below.
+Files that are found that match the file specs given are added to the command menu as discussed below. The files will be opened and the last one will be given a window, the others can be given a window by choosing them from the menu, or by using the 'b' command, discussed below.
 
 
 =========================================================
 Basic Typing in an Editing Window
 
-Typing in ss is much like in any other text box in Windows with some differences. Cursor movement using the arrows, page up and down, home and end are all there. One difference is that the Left and Right arrows move by word while Ctrl-Left and Ctrl-Right move by character.
+Typing in ss is much like in any other text box in Windows with some differences. Cursor movement using the arrows, page up and down, home and end are all there. One difference is that things like the Left and Right arrows can be configured to taste. The default is the usual Windows behavior.
 
 Left clicking the mouse positions the insertion point for editing as usual. Clicking and dragging selects text. The selected text is referred to as 'dot', taking its name from the editing command language that is discussed below.
 
-The Escape key toggles between the Command window and the file editing window.
+The Escape key toggles between the Command window and a file editing window.
 
 
 Some default short-cut keys include:
 
-Ctrl-N		Create new unnamed file
+Ctrl-N		Create new file
 Ctrl-O		Open an existing file
 Ctrl-S		Write out file
 Ctrl-A		Select all
@@ -93,29 +93,31 @@ Saving and Closing a File
 Attempting to close a file that has been modified will precipitate a message that the file has been changed and will stop the closing of the file in order to prevent the accidental closure and loss of desired changes. Immediately attempting it a second time will close the file regardless of the status of the file.
 
 
-Naming a file that has no name
+Renaming a file 
 
 Use the 'f' command from the command window.
 Right click on the file window and choose 'Write' or 'Write As' 
 	from the menu.
+
 
 Saving a file
 
 Use the 'w' command from the command window.
 Right click on the file window and choose 'Write' from the menu.
 
+
 Closing a file
 
 Use the 'D' command from the command window.
 Click the standard Windows red 'X' button in the upper right corner of the window.
 
-The Right-Click Menu and the Command Window are discussed below.
+The Command Menu and the Command Window are discussed below.
 
 
 =========================================================
-The Right-click Menu
+The Command Menu
 
-The right-click menu has two columns. On the left are a few text editing commands. On the right are some file commands as well as entries for files that the editor knows about.
+The command menu has two columns. On the left are a few text editing commands. On the right are some file commands as well as entries for files that the editor knows about.
 
 
 Text Commands on the Menu
@@ -132,7 +134,7 @@ Look		Searches for what is currently selected
 /			Repeats the last search done with a '/' from 			the command line.
 
 
-In the command window
+When in the command window there is also:
 
 Exec		Executes the command window's dot as 
 			command.
@@ -173,11 +175,11 @@ NOTE: Setting Font, Wrap, Autoindent, Programming, on the command window causes 
 
 File Entries on the Menu
 
-For each file that was found via the command line that started ss, or were added with the 'B' command discussed below, there is an entry in the center column of the right-click menu.
+For each file that was found via the command line that started ss, or were added with the 'B' command discussed below, there is an entry in the center column of the command menu.
 
-There are some indicator characters at the beginning of the menu entry:
+There are some characters at the beginning of the menu entry indicating the state of the file:
 
-	' 	been changed but not saved.
+	' 	changed but not saved.
 	- 	loaded but has no window.
 	+	loaded and has a single window.
 	*	loaded and has multiple windows.
@@ -201,7 +203,7 @@ The command window is freely editable with the mouse and keyboard, although edit
 
 A command will be executed only when return is pressed when the insertion point is red, indicating that one is typing at the end of the command window text. Pressing return when the insertion point is black just inserts a line ending.
 
-The horizontal scroll bar doubles as an indicator of a window being the target of commands executed from the command window. It is colored when it's the target, white when not.
+The horizontal scroll bar doubles as an indicator of a window being the target of commands executed from the command window. It is colored when it's the target, white when not. The command window's is colored when it has focus, white when not.
 
 Commands are caps sensitive.
 
@@ -293,7 +295,7 @@ BillJoneswashere
 
 
 ---------------------------------------------------------
-Using counters and \N
+Using Counters and \N
 
 Counters, denoted by '&Z', '&O', '&U', and '&L' are automatically incrementing numbers that can be used with a, i, c, and s commands. They start respectively at 0, 1, A, and a, incrementing every time they are referenced. Consider the following:
 
@@ -370,7 +372,7 @@ Move dot to another address
 
 10,20m$		--	Move lines 10 to 20 to the end of the 
 				file.
-
+1,5m"xxx"	--	Move lines 1 to 5 to dot in file xxx.
 
 ---------------------------------------------------------
 t (to)
@@ -531,13 +533,37 @@ g, v (Conditional commands)
 
 g performs a search and executes a command if any match is found.
 
-,g/SAVEME/w	--	Saves the file if SAVEME is found anywhere
+,g/SAVEME/w	--	Saves the file if SAVEME is found 
+				anywhere
 				in the file.
 
 v performs a search and executes a command if no match is found.
 
 ,v/NOGOOD/w	--	Only save the file if NOGOOD can't be 
 				found.
+
+A more complicated example:
+
+Given a file containing
+
+this and that
+those things 
+more things
+most things
+what are you
+what are we
+when will we
+
+Along with two files aaa and bbb, this command: 
+
+,x/.*\N/{
+g/w/m"b"
+v/w/m"c"
+}
+
+Moves all lines containing a 'w' to file bbb, and lines not containing a 'w' to file ccc.
+
+The 'x' command effectively breaks the file into lines. For every match it runs the 'g' and 'v' commands. The 'm' commands take "b" and "c" as destination addresses respectively, with "b" making a regular expression match for file bbb and "c" matching file name ccc.
 
 
 ---------------------------------------------------------
@@ -595,15 +621,17 @@ $-#4,$		--	Last 4 characters in the file.
 +6,+8		--	A 2 line range 6 lines down from dot.
 $-4,$		--	The last 4 lines of the file.
 1,4			--	The first 4 lines.
++#0-#3,+#0	--	The last 3 characters of dot.
 
 Something more subtle:
 
 -5,+1		--	A 7 line range around where dot was, 
 				5 lines back and 1 lines forward.
--5;+1		--	A 2 line range 5 lines back from where dot
-				was.
+-5;+1		--	A 2 line range 5 lines back from where 
+				dot was.
+8-#0;+#5	--	The first 5 characters of line 8.
 
-In the first case, +1 is evaluated from the original dot. In the second case, the semi-colon sets dot by evaluating the -5 and then evaluates +1 from that new location. 
+In the first case, +1 is evaluated from the original dot. In the second and third cases, the semi-colon sets dot and evaluation proceeds from there. 
 
 
 Searches
@@ -623,14 +651,16 @@ Assume that dot is set to just before the "x" in "text".
 
 
 ---------------------------------------------------------
-Idioms
+Handy Cases
 
--+		--	Select the full line when dot is only part of 
-			the line.
--0,.,+0	--	For a selection that spans more than one line,
-			it selects the full lines in the range, 
-			aligning the selection on line boundries.
-
+-+		--	Select a single full line when dot is only 
+			part of the line.
+-0,+0	--	For a selection that spans more than one 
+			line, it selects the full lines in the 
+			range, aligning the selection on line 
+			boundries.
+-#0		--	The left edge of dot.
++#0		--	The right edge of dot.
 
 =========================================================
 Compound Commands and Sequencing
@@ -674,9 +704,9 @@ For each match of 'th' followed by two characters, insert a '(', delete the firs
 
 The matches proceed forward in order.
 
-The insert is at the beginning with 0 width.
+The insert is at the beginning of a with 0 width.
 
-The delete is at the beginning of the match and so doesn't overlap with the insert.
+The delete is at the beginning of a match and so doesn't overlap with the insert.
 
 The append as at the end of the 4 letter long match and so doesn't overlap with the insert or the delete.
 
@@ -692,9 +722,168 @@ Giving the message
 
 ?changes not in sequence
 
-The failure is due to the delete being located before the append rather than after.
+It fails because the delete is located before the append rather than after.
 
 
 =========================================================
 The ssEvents.ini File
+
+The ssEvents.ini file defines key and mouse button sequences that perform various operations. It is intended for customization by the user and, hopefully reasonably readable.
+
+For example, consider this:
+
+< Basics
+  Tab down TabOrIncreaseIndent
+| Enter down Enter
+| PageUp down ScrollTextDownOnePage
+| PageDown down ScrollTextUpOnePage
+| Escape down ToggleToCommand
+| ShiftKey up ExtendSelectionOff
+;
+
+
+The '<' indicates the beginning of a named section, "Basics" in this case. A '|' represents an or'ing while a '+' represents and'ing, something discussed below.
+
+The next line indicates the operation to be performed when the Tab key is pressed. The names of the keys are from the .Net documentation.
+
+If it wasn't the Tab key, matching proceeds to Enter. Failing that, PageUp, then PageDown, et cetera.
+
+The ';' indicates the end of that section. 
+
+
+Consider this section:
+
+= DvorakWord
+  Basics
+| WordMovement
+| BasicHomeEnd
+| ControlKey down  
+    + Mnemonics
+    | CharMovement
+    | ControlHomeEnd
+    | CharLButton
+    ;
+| ShiftKey down ExtendSelectionOn true
+    + ShiftKey up ExtendSelectionOff
+    | WordLButton
+    | WordMovement
+    | BasicHomeEnd
+    | Tab down DecreaseIndent
+    | ControlKey down
+       + CharLButton
+       | CharMovement
+       | ControlHomeEnd
+       | S down SaveAs
+       ;
+    ;
+| Menu down
+	+ AltStuff
+	;
+| LButton down CursorToNearestBOWordWithEntitySelect true
+	+ LButtonPositionalDvorak
+	;
+| RButton down
+	+ RButtonActions
+	;
+;
+
+
+The '=' denotes the name of a set of definitions that can be chosen in the Right Click menu. Some examples from this set:
+
+"DvorakWord" is the name of the event set.
+
+"Basics", the section referenced above is used to provide Tab, Enter, and the other sequences mentioned in the "Basics" section.
+
+"WordMovement" is a section in which the Left and Right arrow keys, Backspace, and Delete all have been defined to operate on words rather than single characters by default. This reusable section looks like this:
+
+< WordMovement
+  WordArrows		
+| Back down BackDeleteWord
+| Delete down DeleteWord
+;
+
+And here's "WordArrows":
+
+< WordArrows
+  Left down CursorToNextWordLeft 
+| Right down CursorToNextWordRight 
+| Up down CursorUpToNearestBOWord
+| Down down CursorDownToNearestBOWord
+;
+
+
+Now, back to "DvorakWord", note the '+' preceeding "Mnemonics". It indicates that when the Control key is pressed, it will then continue matching in the "Mnemonics" section. "Mnemonecs" looks like this:
+
+< Mnemonics
+  S down Save
+| O down Open
+| N down New
+| D down NextFont
+| H down PrevText
+| T down NextText
+| A down SelectAll
+| F down ssCmdBegin false /
+| X down Cut
+| C down Snarf
+| V down Paste
+| Z down Undo
+| G down Xerox
+| W down ToggleWrap
+| U down ToggleToCommand
+;
+
+Since "Mnemonics" is referenced with a '+' after a ControlKey down, Control-S is defined to Save a file, Contol-X to Cut, Control-W to toggle word wrap on and off, and so on.
+
+Control-F is an interesting case. It causes a '/' to be placed on the command line and focus moved to the Command window so that it simplifies beginning a search operation.
+
+At the end of "DvorakWord" note the RButton down entry followed by RButtonActions. That section looks like this:
+
+< RButtonActions
+  RButton up ShowMenu
+| LButton down PastePreserveSelection
+| P down ssCmdPreserveDot false y/\r\n/i/#/
+| OemPeriod down ssCmdPreserveDot false x/^#/d
+| U down ssCmdPreserveDot false y/\r\n/i/\/\//
+| E down ssCmdPreserveDot false x/^\/\//d
+;
+
+With these definitions, if the RButton is released without ony of the other keys being pressed, ShowMenu is executed.
+
+If LButton is pressed while RButton is still down, a PastePreserveSelection is executed, thus mouse chording is possible.
+
+The other four entries define actions using the editor commands to command and un-comment Powershell code and C-style code.
+
+Chording of mouse buttons and keys is also possible. Consider these entries from "DvorakWord" above:
+
+| LButton down CursorToNearestBOWordWithEntitySelect true
+	+ LButtonPositionalDvorak
+	;
+
+< LButtonPositionalDvorak
+  E down MakeMarkFromCursor   
+| U down CopyMarkToCursor 
+| O down MoveMarkToCursor 
+| A down MatchBraces true
+| OemPeriod down CopyCursorToMarkBeginning 
+| P down CopyCursorToMarkEnd
+| J down CursorToMarkBeginning 
+| K down CursorToMarkEnd
+| I down ShowMark 
+| Y down ToggleCrossHairs
+| RButton down Cut
+| MButton down Snarf
+;
+
+
+First, when LButton is pressed, CursorToNearestBOWordWithEntitySelect is executed which places the cursor at the beginning of a word while also handling double and triple clicks.
+
+The "true" at the end of the line indicates matching to continue after the cursor is placed as opposed to ending when the match is processed. 
+
+Since matching is continuing, if 'E' is pressed, the mark will be set from the cursor. If 'A' is pressed and the cursor is at a parentheses, bracket, or the like, the matching one will be found and text in between will be selected. If Y is pressed, display of crosshairs that can be handy in following indentations are toggled on or off. And so on.
+
+And so, chording of mouse buttons and keyboard keys is available.
+
+The intent is to provide a highly customizable user interface for the user is spends a great deal of time in the tool.
+
+If the ssEvents.ini file is damaged and the editor no longer works, simply delete the file and ss will create another upon startup.
 

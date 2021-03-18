@@ -387,7 +387,7 @@ namespace ss {
                     if (d.ShowDialog() != DialogResult.OK) throw new ssException("no file chosen");
                     else {
                         ed.Txt.Nm = d.FileName;
-                        Text = ed.Txt.Nm; // real name here because or long names from dialog
+                        Text = ed.Txt.FileName(); // real name here because or long names from dialog
                         }
                     }
                 if (ed.WinWrite(ed.Txt.Nm, ed.Txt.ToString(0, ed.Txt.Length), ed.Txt.encoding)) {

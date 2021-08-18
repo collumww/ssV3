@@ -304,6 +304,7 @@ namespace ss {
                     if (scn.EOT()) {
                         swallowing = true;
                         stomach = t;
+                        stomach.s = "";
                         }
                     else {
                         scn.SetDelim(pDelim());

@@ -125,13 +125,13 @@ namespace ss {
 
         public void CmdCursorUpToNearestBOWord() {
             MoveCursor(cursor.l, IndexInLineAbove);
-            MoveCursor(cursor.l, IndexToBOWLeft);
+            MoveCursor(cursor.l, IndexToNearestBOWord);
             firstVMove = false;
             }
 
         public void CmdCursorDownToNearestBOWord() {
             MoveCursor(cursor.l, IndexInLineBelow);
-            MoveCursor(cursor.l, IndexToBOWRight);
+            MoveCursor(cursor.l, IndexToNearestBOWord);
             firstVMove = false;
             }
 

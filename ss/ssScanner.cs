@@ -25,6 +25,7 @@ namespace ss {
             itemLen = 0;
             delims = "";
             cancomment = com;
+            escaping = false;
             }
 
         public bool EOT() {
@@ -50,6 +51,7 @@ namespace ss {
                 }
             else x = getch();
             if (x == '\r') x = getch();   // Assuming Windows line endings and throwing out the cr's.
+            escaping = (!escaping && lastc == '\\') ;
             c = x;
             return c;
             }
@@ -97,7 +99,8 @@ namespace ss {
 
         bool IsDelim() {
             foreach (char x in delims) {
-                if (c == x && lastc != '\\') return true;
+                if (c == x && !escaping) 
+                    return true;
                 }
             return false;
             }
@@ -152,6 +155,7 @@ namespace ss {
         StringBuilder sb;
         string delims;
         bool cancomment;
+        bool escaping;
 
         char c;
         char lastc;

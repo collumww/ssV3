@@ -69,18 +69,18 @@ namespace ss {
                 case 'a':
                     if (swallowing) return;
                     txt.dot = txt.dot.To(txt.dot.r);
-                    if (t.subs != null) Insert(DoSubs("", t.subs));
+                    if (t.subs != null) Insert(DoSubs("", t.subs, t.s));
                     else Insert(t.s);
                     break;
                 case 'i':
                     if (swallowing) return;
                     txt.dot = txt.dot.To(txt.dot.l);
-                    if (t.subs != null) Insert(DoSubs("", t.subs));
+                    if (t.subs != null) Insert(DoSubs("", t.subs, t.s));
                     else Insert(t.s);
                     break;
                 case 'c':
                     if (swallowing) return;
-                    if (t.subs != null) Change(DoSubs(txt.ToString(), t.subs));
+                    if (t.subs != null) Change(DoSubs(txt.ToString(), t.subs, t.s));
                     else Change(t.s);
                     break;
                 case 't':
@@ -146,7 +146,7 @@ namespace ss {
                         txt.dot.l = strt.l + m.Index;
                         txt.dot.len = m.Length;
                         if (t.opt == 'g' || cnt == t.n) {
-                            if (t.subs != null) Change(DoSubs(m.ToString(), t.subs));
+                            if (t.subs != null) Change(DoSubs(m.ToString(), t.subs, t.rep));
                             else Change(t.rep);
                         }
                     }

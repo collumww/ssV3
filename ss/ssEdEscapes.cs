@@ -2,52 +2,40 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ss
-{
-    public partial class ssEd
-    {
-        public enum SubType { match, one, zero, alphaUpper, alphaLower }
+namespace ss {
+    public partial class ssEd {
+        public enum SubType { none, match, one, zero, alphaUpper, alphaLower }
 
 
-        public class SubList
-        {
+        public class SubList {
             public SubType typ;
-            public int loc;
-            public string res;
             public SubList nxt;
 
-            public SubList(SubType t, int i)
-            {
+            public SubList(SubType t) {
                 typ = t;
-                loc = i;
+                }
             }
-        }
 
 
-        string PreEscape(string s)
-        {
+        string PreEscape(string s) {
             string res = "";
             bool esc = false;
             foreach (char c in s) {
                 if (esc) {
                     switch (c) {
-                        case '&':  // Change \& to \\& so Regex.Unescape doesn't remove the \
-                            res += "\\\\";
-                            res += '&';
-                            break;
                         case 'N':  // ss custom line ending escape.
                             if (txt != null)
                                 res += txt.Eoln;
                             else
-                                res += 'N';
+                                res += "\\N";
                             break;
                         default:
                             res += '\\'; // Preserve for Regex.Unescape 
                             res += c;
                             break;
-                    }
+                        }
                     esc = false;
-                }
+                    }
                 else {
                     switch (c) {
                         case '\\':
@@ -56,30 +44,22 @@ namespace ss
                         default:
                             res += c;
                             break;
+                        }
                     }
                 }
-            }
             return res;
             //return SubFound(s, 'N', txt.Eoln, false); // \N will allow commands to work across line endings.
-        }
+            }
 
 
-        string Unescape(string s)
-        {
-            s = PreEscape(s);
-            try {
-                return Regex.Unescape(s);
+        string Unescape(string s) {
+            return Regex.Unescape(PreEscape(s));
             }
-            catch {
-                return s;
-            }
-        }
 
         enum subMode { scan, sub, esc, esc2 }
 
-        SubList PrepForSub(ref string s, bool allowmatch)
-        {
-            SubList l = new SubList(SubType.match, 0);
+        SubList PrepForSub(ref string s, bool allowmatch) {
+            SubList l = new SubList(SubType.none);
             SubList lt = l;
             string res = "";
             int i = 0;
@@ -98,33 +78,32 @@ namespace ss
                             case '&':
                                 md = subMode.sub;
                                 break;
-                            default:
-                                res += c;
-                                break;
-                        }
+                            }
+                        res += c;
                         break;
                     case subMode.esc:
+                        res += c;
                         md = subMode.scan;
                         break;
                     case subMode.sub:
                         switch (c) {
                             case 'Z':
-                                lt.nxt = new SubList(SubType.zero, res.Length);
+                                lt.nxt = new SubList(SubType.zero);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
                             case 'O':
-                                lt.nxt = new SubList(SubType.one, res.Length);
+                                lt.nxt = new SubList(SubType.one);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
                             case 'U':
-                                lt.nxt = new SubList(SubType.alphaUpper, res.Length);
+                                lt.nxt = new SubList(SubType.alphaUpper);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
                             case 'L':
-                                lt.nxt = new SubList(SubType.alphaLower, res.Length);
+                                lt.nxt = new SubList(SubType.alphaLower);
                                 lt = lt.nxt;
                                 md = subMode.scan;
                                 break;
@@ -132,101 +111,77 @@ namespace ss
                                 if (allowmatch) {
                                     switch (c) {
                                         case '\\':
-                                            lt.nxt = new SubList(SubType.match, res.Length);
+                                            lt.nxt = new SubList(SubType.match);
                                             lt = lt.nxt;
                                             md = subMode.scan;
                                             break;
                                         case '&':
-                                            lt.nxt = new SubList(SubType.match, res.Length);
+                                            lt.nxt = new SubList(SubType.match);
                                             lt = lt.nxt;
-                                            break;
-                                        default:
-                                            lt.nxt = new SubList(SubType.match, res.Length);
-                                            lt = lt.nxt;
-                                            md = subMode.scan;
                                             res += c;
                                             break;
-                                    }
-                                }
-                                else {
-                                    switch (c) {
-                                        case '\\':
-                                            //throw new ssException("substitution not allowed");
-                                            md = subMode.esc2;
-                                            res += pc;
-                                            break;
                                         default:
+                                            lt.nxt = new SubList(SubType.match);
+                                            lt = lt.nxt;
                                             md = subMode.scan;
-                                            res += pc;
                                             res += c;
                                             break;
                                         }
-                                }
+                                    }
+                                else {
+                                    md = subMode.scan;
+                                    res += c;
+                                    }
                                 break;
-                        }
-                        break;
-                    case subMode.esc2:
-                        md = subMode.scan;
-                        res += c;
+                            }
                         break;
                     }
                 i++;
-            }
+                }
             if (md == subMode.sub) {
-                if (allowmatch) lt.nxt = new SubList(SubType.match, res.Length);
-                else {
-                    if (i > 1) res += pc;
-                    else res += '&';
-                    }
-            }
-            if (l.nxt != null) l.nxt.res = res;
-            else if (res != s) s = res;
+                if (allowmatch) lt.nxt = new SubList(SubType.match);
+                }
+            s = res;
 
             //MsgLn("/" + res + "/");
             //for (SubList x = l; x != null; x = x.nxt) MsgLn(x.loc.ToString() + " " + x.typ.ToString());
             return l.nxt;
-        }
-
-
-        string DoSubs(string m, SubList l)
-        {
-            string res = l.res;
-            int adj = 0;
-            while (l != null) {
-                switch (l.typ) {
-                    case SubType.zero:
-                        string s = zero.ToString();
-                        res = res.Insert(l.loc + adj, s);
-                        adj += s.Length;
-                        zero++;
-                        break;
-                    case SubType.one:
-                        s = one.ToString();
-                        res = res.Insert(l.loc + adj, s);
-                        adj += s.Length;
-                        one++;
-                        break;
-                    case SubType.alphaUpper:
-                        s = ToAlphaString(alphaUpper, 'A');
-                        res = res.Insert(l.loc + adj, s);
-                        adj += s.Length;
-                        alphaUpper++;
-                        break;
-                    case SubType.alphaLower:
-                        s = ToAlphaString(alphaLower, 'a');
-                        res = res.Insert(l.loc + adj, s);
-                        adj += s.Length;
-                        alphaLower++;
-                        break;
-                    case SubType.match:
-                        res = res.Insert(l.loc + adj, m);
-                        adj += m.Length;
-                        break;
-                }
-                l = l.nxt;
             }
-            return res;
-        }
 
+
+        string DoSubs(string m, SubList sl, string rep) {
+            string res = "";
+            foreach (char c in rep) {
+                if (c == '&' && sl != null) {
+                    switch (sl.typ) {
+                        case SubType.none:
+                            res += c;
+                            break;
+                        case SubType.match:
+                            res += m;
+                            break;
+                        case SubType.alphaLower:
+                            res += ToAlphaString(alphaLower, 'a');
+                            alphaLower++;
+                            break;
+                        case SubType.alphaUpper:
+                            res += ToAlphaString(alphaUpper, 'A');
+                            alphaUpper++;
+                            break;
+                        case SubType.one:
+                            res += one.ToString();
+                            one++;
+                            break;
+                        case SubType.zero:
+                            res += zero.ToString();
+                            zero++;
+                            break;
+                        }
+                    sl = sl.nxt;
+                    }
+                else res += c;
+                }
+            return res;
+            }
+        }
     }
-}

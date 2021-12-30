@@ -126,7 +126,7 @@ namespace ss {
                 InitAllSeqs();
                 SyncFormToTextAll();
                 Err(e.Message);
-                if (!(e is ssException)) throw e;
+                //if (!(e is ssException)) throw e;
                 }
             }
 
@@ -309,8 +309,9 @@ namespace ss {
                     else {
                         scn.SetDelim(pDelim());
                         scn.GetChar();
-                        t.s = Unescape(scn.GetStr());
+                        t.s = scn.GetStr();
                         t.subs = PrepForSub(ref t.s, c == 'c');
+                        t.s = Unescape(t.s);
                         }
                     CheckEOT();
                     break;
@@ -351,8 +352,9 @@ namespace ss {
                     scn.SetDelim(pDelim());
                     scn.GetChar();
                     t.s = SetPat(PreEscape(scn.GetStr()));
-                    t.rep = Unescape(scn.GetStr());
+                    t.rep = scn.GetStr();
                     t.subs = PrepForSub(ref t.rep, true);
+                    t.rep = Unescape(t.rep);
                     t.opt = scn.C;
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");
                     CheckEOT();

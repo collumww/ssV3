@@ -82,6 +82,12 @@ namespace ss {
                         res += c;
                         break;
                     case subMode.esc:
+                        switch (c) {
+                            case '&':
+                                lt.nxt = new SubList(SubType.none);
+                                lt = lt.nxt;
+                                break;
+                            }
                         res += c;
                         md = subMode.scan;
                         break;

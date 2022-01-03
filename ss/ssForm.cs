@@ -209,7 +209,8 @@ namespace ss {
         public void IncIndent() {
             string s;
             if (layout.expTabs) s = ("").PadLeft(layout.spInTab); else s = "\t";
-            s = @"-0,.,+0x/.*\N/i/" + s + "/";
+            //s = @"-0,.,+0x/.*\N/i/" + s + "/";
+            s = @"-0,.y/\N/i/" + s + "/";
             SaveCursor();
             ed.Do(s);
             RestoreCursor();
@@ -219,7 +220,7 @@ namespace ss {
 
         public void DecIndent() {
             SaveCursor();
-            ed.Do(@"-0,.,+0x/.*\N/x/^[ \t]/d");
+            ed.Do(@"-0,.y/\N/x/^[ \t]/d");
             RestoreCursor();
             }
 

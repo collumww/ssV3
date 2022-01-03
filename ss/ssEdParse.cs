@@ -356,6 +356,7 @@ namespace ss {
                     t.subs = PrepForSub(ref t.rep, true);
                     t.rep = Unescape(t.rep);
                     t.opt = scn.C;
+                    if (t.n > 1) t.opt = '\0';
                     if (t.opt != 'g' && t.opt != '\0') throw new ssException("expected newline");
                     CheckEOT();
                     break;

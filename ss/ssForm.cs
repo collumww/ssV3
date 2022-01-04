@@ -564,7 +564,7 @@ namespace ss {
 
 
         private bool TextUp(IntPtr hdc, int n) {
-            if (rngShown.r < txt.Length) {
+            if (n < linesUsed) { //(rngShown.r < txt.Length) {
                 n = Math.Min(n, linesUsed - 1);
                 LayoutLines(hdc, lines[n].rng.l, 0, lines, ref linesUsed, ref rngShown);
                 return true;

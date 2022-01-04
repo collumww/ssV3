@@ -1184,16 +1184,19 @@ namespace ss {
             int scry = Screen.GetWorkingArea(ed.Log.Frm.Location).Y;
             Size lsz = ed.Log.Frm.DesktopBounds.Size;
             Point lloc = ed.Log.Frm.Location;
+            int ly = lloc.Y;
             if (lsz.Width > lsz.Height) {
                 lloc.Y += lsz.Height;
                 Width = lsz.Width;
+                Height = scrh - scry - 2 * ly - lsz.Height;
                 }
             else {
                 lloc.X += lsz.Width;
                 Width = 600;
+                Height = scrh - scry - 2 * ly;
                 }
             Location = lloc;
-            Height = (scrh - (lloc.Y - scry)) * 19 / 20;
+            //Height = (scrh - (lloc.Y - scry)) * 19 / 20;
             }
 
 

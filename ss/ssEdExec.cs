@@ -555,7 +555,7 @@ namespace ss {
         }
 
         void xNoCmd() {
-            if (txt == null || txt.Length == 0) return;
+            if (txt == null) return;
             if (txt.RangeAligned(txt.dot)) txt.dot = txt.FindLine(txt.dot.r, 1, 1);
             else txt.AlignRange(ref txt.dot);
             PostEdDot();

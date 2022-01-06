@@ -1180,25 +1180,6 @@ namespace ss {
 
 
         private void SetFormLocSiz() {
-            //int scrh = Screen.GetWorkingArea(ed.Log.Frm.Location).Height;
-            //int scry = Screen.GetWorkingArea(ed.Log.Frm.Location).Y;
-            //Size lsz = ed.Log.Frm.DesktopBounds.Size;
-            //Point lloc = ed.Log.Frm.Location;
-            //int ly = lloc.Y - scry;
-            //if (lsz.Width > lsz.Height) {
-            //    lloc.Y += lsz.Height;
-            //    Width = lsz.Width;
-            //    Height = scrh - 2 * ly - lsz.Height;
-            //    }
-            //else {
-            //    lloc.X += lsz.Width;
-            //    Width = lsz.Width * 5 / 2;
-            //    Height = scrh - 2 * ly;
-            //    }
-            //Height = Math.Max(Height, 150);
-            //Width = Math.Max(Width, 150);
-            //Location = lloc;
-
             Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
             Size lsz = ed.Log.Frm.DesktopBounds.Size;
             Point lloc = ed.Log.Frm.Location;

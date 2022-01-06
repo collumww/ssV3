@@ -1180,23 +1180,57 @@ namespace ss {
 
 
         private void SetFormLocSiz() {
-            int scrh = Screen.GetWorkingArea(ed.Log.Frm.Location).Height;
-            int scry = Screen.GetWorkingArea(ed.Log.Frm.Location).Y;
+            //int scrh = Screen.GetWorkingArea(ed.Log.Frm.Location).Height;
+            //int scry = Screen.GetWorkingArea(ed.Log.Frm.Location).Y;
+            //Size lsz = ed.Log.Frm.DesktopBounds.Size;
+            //Point lloc = ed.Log.Frm.Location;
+            //int ly = lloc.Y - scry;
+            //if (lsz.Width > lsz.Height) {
+            //    lloc.Y += lsz.Height;
+            //    Width = lsz.Width;
+            //    Height = scrh - 2 * ly - lsz.Height;
+            //    }
+            //else {
+            //    lloc.X += lsz.Width;
+            //    Width = lsz.Width * 5 / 2;
+            //    Height = scrh - 2 * ly;
+            //    }
+            //Height = Math.Max(Height, 150);
+            //Width = Math.Max(Width, 150);
+            //Location = lloc;
+
+            Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
             Size lsz = ed.Log.Frm.DesktopBounds.Size;
             Point lloc = ed.Log.Frm.Location;
-            int ly = lloc.Y;
-            if (lsz.Width > lsz.Height) {
-                lloc.Y += lsz.Height;
+            int above = lloc.Y - scr.Y;
+            int below = (scr.Y + scr.Height) - (lloc.Y + lsz.Height);
+            int left = lloc.X - scr.X;
+            int right = (scr.X + scr.Width) - (lloc.X + lsz.Width);
+            if (lsz.Width >= lsz.Height) {
                 Width = lsz.Width;
-                Height = scrh - scry - 2 * ly - lsz.Height;
+                if (above > below) {
+                    Height = above - below;
+                    lloc.Y = below;
+                    }
+                else {
+                    Height = below - above;
+                    lloc.Y += lsz.Height;
+                    }
                 }
             else {
-                lloc.X += lsz.Width;
-                Width = 600;
-                Height = scrh - scry - 2 * ly;
+                Height = scr.Height - 2 * above;
+                if (right > left) {
+                    Width = (right - left) * 5 / 12;
+                    lloc.X += lsz.Width;
+                    }
+                else {
+                    Width = (left - right) * 5 / 12;
+                    lloc.X -= Width;
+                    }
                 }
             Location = lloc;
-            //Height = (scrh - (lloc.Y - scry)) * 19 / 20;
+            Height = Math.Max(Height, lsz.Height);
+            Width = Math.Max(Width, lsz.Width);
             }
 
 

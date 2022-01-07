@@ -335,6 +335,10 @@ namespace ss {
                     pAppend(t);
                     PushCmd(t, true);
                     pChar();
+                    if (t.cmd == 'x' || t.cmd == 'y') {
+                        if (char.IsDigit(scn.C)) t.n = scn.GetNum();
+                        else t.n = -1;
+                        }
                     scn.SetDelim(pDelim());
                     scn.GetChar();
                     t.s = SetPat(PreEscape(scn.GetStr()));

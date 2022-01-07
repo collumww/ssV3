@@ -93,11 +93,15 @@ namespace ss {
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
                     MatchCollection ms = Regex.Matches(txt.ToString(), t.s, opts);
                     ssRange strt = txt.dot;
+                    int cnt = 0;
                     foreach (Match m in ms) {
-                        txt.dot.l = strt.l + m.Index;
-                        txt.dot.len = m.Length;
-                        xCmd(t.sub);
-                    }
+                        cnt++;
+                        if (t.n == cnt || t.n == -1) {
+                            txt.dot.l = strt.l + m.Index;
+                            txt.dot.len = m.Length;
+                            xCmd(t.sub);
+                            }
+                        }
                     break;
                 case 'y':
                     if (t.sub.nxt.cmd == noCmd) t.sub.nxt.cmd = 'p';
@@ -106,11 +110,15 @@ namespace ss {
                     ms = Regex.Matches(txt.ToString(), t.s, opts);
                     strt = txt.dot;
                     int l = strt.l;
+                    cnt = 0;
                     foreach (Match m in ms) {
-                        txt.dot.l = l;
-                        txt.dot.r = m.Index + strt.l;
-                        xCmd(t.sub);
-                        l = strt.l + m.Index + m.Length;
+                        cnt++;
+                        if (t.n == cnt || t.n == -1) {
+                            txt.dot.l = l;
+                            txt.dot.r = m.Index + strt.l;
+                            xCmd(t.sub);
+                            l = strt.l + m.Index + m.Length;
+                            }
                     }
                     txt.dot.l = l;
                     txt.dot.r = strt.r;
@@ -140,7 +148,7 @@ namespace ss {
                     if (!defs.senseCase) opts |= RegexOptions.IgnoreCase;
                     ms = Regex.Matches(txt.ToString(), t.s, opts);
                     strt = txt.dot;
-                    int cnt = 0;
+                    cnt = 0;
                     foreach (Match m in ms) {
                         cnt++;
                         txt.dot.l = strt.l + m.Index;

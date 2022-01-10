@@ -118,7 +118,6 @@
     <EmbeddedResource Include="ssForm.resx">
       <DependentUpon>ssForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="backdb.ps1" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -133,11 +132,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="notes.txt" />
     <Content Include="rogerrafa.txt" />
     <Content Include="ssHelp.txt" />
     <Content Include="ssManual.txt" />
-    <Content Include="this.txt" />
     <Content Include="aaToDo.txt" />
     <Content Include="wasabi.txt" />
   </ItemGroup>

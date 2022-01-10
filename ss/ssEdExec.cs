@@ -113,15 +113,19 @@ namespace ss {
                     cnt = 0;
                     foreach (Match m in ms) {
                         cnt++;
-                        txt.dot.l = l;
-                        txt.dot.r = m.Index + strt.l;
-                        if (t.n == cnt || t.n == -1) xCmd(t.sub);
+                        if (t.n == cnt || t.n == -1) {
+                            txt.dot.l = l;
+                            txt.dot.r = m.Index + strt.l;
+                            xCmd(t.sub);
+                            }
                         l = strt.l + m.Index + m.Length;
                         }
                     cnt++;
-                    txt.dot.l = l;
-                    txt.dot.r = strt.r;
-                    if (t.n == cnt || t.n == -1) xCmd(t.sub);
+                    if (t.n == cnt || t.n == -1) {
+                        txt.dot.l = l;
+                        txt.dot.r = strt.r;
+                        xCmd(t.sub);
+                        }
                     break;
                 case 'X':
                 case 'Y':

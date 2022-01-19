@@ -391,6 +391,13 @@ namespace ss {
                 return txt.To(txt.AtBOW, txt.NxtLeft(i), -1);
             }
 
+        private int IndexToNextEOWLeft(int i) {
+            if (layout.programming)
+                return txt.To(txt.AtProgEOW, txt.NxtLeft(i), -1);
+            else
+                return txt.To(txt.AtEOW, txt.NxtLeft(i), -1);
+            }
+
         private int IndexToBOWRight(int i) {
             if (layout.programming)
                 return txt.To(txt.AtProgBOW, i, 1);
@@ -403,6 +410,21 @@ namespace ss {
                 return txt.To(txt.AtProgBOW, i, -1);
             else
                 return txt.To(txt.AtBOW, i, -1);
+            }
+
+
+        private int IndexToEOWRight(int i) {
+            if (layout.programming)
+                return txt.To(txt.AtProgEOW, i, 1);
+            else
+                return txt.To(txt.AtEOW, i, 1);
+            }
+
+        private int IndexToEOWLeft(int i) {
+            if (layout.programming)
+                return txt.To(txt.AtProgEOW, i, -1);
+            else
+                return txt.To(txt.AtEOW, i, -1);
             }
 
 

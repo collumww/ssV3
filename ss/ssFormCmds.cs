@@ -143,12 +143,28 @@ namespace ss {
             MoveCursor(cursor.l, IndexToNextBOWLeft);
             }
 
+        public void CmdCursorToNextEOWordRight() {
+            MoveCursor(cursor.r, IndexToNextEOWRight);
+            }
+
+        public void CmdCursorToNextEOWordLeft() {
+            MoveCursor(cursor.l, IndexToNextEOWLeft);
+            }
+
         public void CmdCursorToWordRight() {
             MoveCursor(cursor.r, IndexToBOWRight);
             }
 
         public void CmdCursorToWordLeft() {
             MoveCursor(cursor.l, IndexToBOWLeft);
+            }
+
+        public void CmdCursorToEOWordRight() {
+            MoveCursor(cursor.r, IndexToEOWRight);
+            }
+
+        public void CmdCursorToEOWordLeft() {
+            MoveCursor(cursor.l, IndexToEOWLeft);
             }
 
 

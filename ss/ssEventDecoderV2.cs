@@ -502,7 +502,7 @@ namespace ss {
 ;
 
 < WordArrows
-  Left down CursorToNextWordLeft 
+  Left down CursorToNextEOWordLeft 
 | Right down CursorToNextWordRight 
 | Up down CursorUpToNearestBOWord
 | Down down CursorDownToNearestBOWord

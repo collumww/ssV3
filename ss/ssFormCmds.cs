@@ -542,6 +542,15 @@ namespace ss {
             extending = false;
             }
 
+        public void CmdBackDeleteEOWord() {
+            if (cursor.Empty) {
+                extending = true;
+                CmdCursorToNextEOWordLeft();
+                }
+            Delete();
+            extending = false;
+            }
+
         public void CmdPrevText() {
             ed.PrevText();
             }

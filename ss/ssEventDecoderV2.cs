@@ -516,7 +516,7 @@ namespace ss {
 
 < WordMovement
   WordArrows		
-| Back down BackDeleteWord
+| Back down BackDeleteEOWord
 | Delete down DeleteWord
 ;
 

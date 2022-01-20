@@ -1223,11 +1223,11 @@ namespace ss {
             else {
                 Height = scr.Height - 2 * above;
                 if (right > left) {
-                    Width = Math.Min((right - left) * 5 / 12, lsz.Width * 4 / 2);
+                    Width = lsz.Width * 4 / 2;
                     lloc.X += lsz.Width;
                     }
                 else {
-                    Width = Math.Min((left - right) * 5 / 12, lsz.Width * 4 / 2);
+                    Width = lsz.Width * 4 / 2;
                     lloc.X -= Width;
                     }
                 }

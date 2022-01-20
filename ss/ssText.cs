@@ -268,7 +268,7 @@ namespace ss {
             return (!char.IsLetterOrDigit(txt[i]) && char.IsLetterOrDigit(txt[i - 1]))
                 || AtBOLN(i)
                 || AtEOLN(i)
-                || i < txt.Length && IsPunctuation(txt[i]);
+                || i < txt.Length && IsPunctuation(txt[i - 1]);
         }
 
         public bool RangeAligned(ssRange r) {

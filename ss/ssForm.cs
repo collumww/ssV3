@@ -93,8 +93,8 @@ namespace ss {
         bool crossOn;
 
         static long dTicks = 5000000;   // Timing and spacing for double clicks, etc.
-        static int dX = 5;
-        static int dY = 5;
+        static int dX = 7;
+        static int dY = 7;
 
         int mouIndex;
         bool firstVMove;

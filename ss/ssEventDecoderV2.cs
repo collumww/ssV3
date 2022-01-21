@@ -600,6 +600,8 @@ namespace ss {
 | I down ssCmdPreserveDot false {`i'/*'`a'*/'`}
 | U down ssCmdPreserveDot false y/\r\n/i/\/\//
 | E down ssCmdPreserveDot false x/^\/\//d
+| K down ssCmdPreserveDot false y/\r\n/i/-- /
+| J down ssCmdPreserveDot false x/^-- /d
 ;
 
 

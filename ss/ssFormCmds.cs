@@ -195,9 +195,7 @@ namespace ss {
             cursor.To(cursor.l);
             extending = false;
             MoveCursor(cursor.boat, txt.NxtRight);
-            typTimer.Stop();
-            typing = true;
-            typTimer.Start();
+            TypingOn();
             }
 
 
@@ -539,27 +537,31 @@ namespace ss {
         public void CmdBackDeleteWord() {
             if (typing) {
                 CmdBack();
-                return;
+                TypingOn();
                 }
-            if (cursor.Empty) {
-                extending = true;
-                CmdCursorToNextWordLeft();
+            else {
+                if (cursor.Empty) {
+                    extending = true;
+                    CmdCursorToNextWordLeft();
+                    }
+                Delete();
+                extending = false;
                 }
-            Delete();
-            extending = false;
             }
 
         public void CmdBackDeleteEOWord() {
             if (typing) {
                 CmdBack();
-                return;
+                TypingOn();
                 }
-            if (cursor.Empty) {
-                extending = true;
-                CmdCursorToNextEOWordLeft();
+            else {
+                if (cursor.Empty) {
+                    extending = true;
+                    CmdCursorToNextEOWordLeft();
+                    }
+                Delete();
+                extending = false;
                 }
-            Delete();
-            extending = false;
             }
 
         public void CmdPrevText() {

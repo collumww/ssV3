@@ -124,6 +124,12 @@ namespace ss {
             typing = false;
             }
 
+        private void TypingOn() {
+            typTimer.Stop();
+            typing = true;
+            typTimer.Start();
+            }
+
         public void AdjMarks(int loc, int chg, bool insert) {
             if (chg != 0) {
                 cursor.Adjust(loc, chg, insert);

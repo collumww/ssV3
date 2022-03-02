@@ -38,6 +38,10 @@ namespace ss {
             canMoveMouse = false;
             mouMaster = MouseButtons.None;
 
+            typTimer = new System.Timers.Timer(1000);
+            typTimer.Elapsed += OnTypTimer;
+            typing = false;
+
             crossX = 0;
             crossY = 0;
             crossOn = false;
@@ -88,6 +92,9 @@ namespace ss {
         bool useMouEntity;
         bool canMoveMouse;
 
+        System.Timers.Timer typTimer;
+        bool typing;
+
         int crossX;             // Crosshair items
         int crossY;
         bool crossOn;
@@ -111,6 +118,11 @@ namespace ss {
 
         ssForm nxt;
 
+
+
+        private void OnTypTimer(Object source, System.Timers.ElapsedEventArgs e) {
+            typing = false;
+            }
 
         public void AdjMarks(int loc, int chg, bool insert) {
             if (chg != 0) {

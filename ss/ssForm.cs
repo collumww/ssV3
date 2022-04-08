@@ -118,10 +118,11 @@ namespace ss {
 
         ssForm nxt;
 
-
+        delegate void TimerDelegate();
 
         private void OnTypTimer(Object source, System.Timers.ElapsedEventArgs e) {
             typing = false;
+            Invoke(new TimerDelegate(InvalidateCursor));
             }
 
         private void TypingOn() {
@@ -1455,7 +1456,8 @@ namespace ss {
             RangeRegion(hdc, r, cursor.rng, layout.xDrwInfl, layout.cursorYInfl);  // inflating x creates cursor when length of selection is 0. Same for mark.
             e.Graphics.ReleaseHdc(hdc);
             Brush cb = Brushes.Black;
-            if (cursor.l != cursor.r) cb = Brushes.Orange;
+            if (typing) cb = Brushes.LightGreen;
+            else if (cursor.l != cursor.r) cb = Brushes.Orange;
             else if (cursor.l == txt.Length) cb = Brushes.Red;
             e.Graphics.FillRegion(cb, r);
 

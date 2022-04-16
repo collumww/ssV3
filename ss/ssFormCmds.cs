@@ -179,6 +179,7 @@ namespace ss {
                     keyChar = '\t';
                     CmdInsertChar();
                     }
+                TypingOn();
                 }
             else {
                 IncIndent();
@@ -239,6 +240,7 @@ namespace ss {
                 //ed.WakeUpText(ed.txt);
                 //ed.Log.Activate();
                 }
+            TypingOn();
             }
 
 
@@ -526,12 +528,18 @@ namespace ss {
             }
 
         public void CmdDeleteWord() {
-            if (cursor.Empty) {
-                extending = true;
-                CmdCursorToNextWordRight();
+            if (typing) {
+                CmdDelete();
+                TypingOn();
                 }
-            Delete();
-            extending = false;
+            else { 
+                if (cursor.Empty) {
+                    extending = true;
+                    CmdCursorToNextWordRight();
+                    }
+                Delete();
+                extending = false;
+                }
             }
 
         public void CmdBackDeleteWord() {

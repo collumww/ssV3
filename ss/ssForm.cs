@@ -38,7 +38,7 @@ namespace ss {
             canMoveMouse = false;
             mouMaster = MouseButtons.None;
 
-            typTimer = new System.Timers.Timer(1000);
+            typTimer = new System.Timers.Timer(1200);
             typTimer.Elapsed += OnTypTimer;
             typing = false;
 

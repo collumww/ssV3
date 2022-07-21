@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
-
+//
 namespace ss {
     public partial class ssForm : Form {
         public ssForm(ssEd e, ssText t) {

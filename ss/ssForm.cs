@@ -1456,7 +1456,7 @@ namespace ss {
             RangeRegion(hdc, r, cursor.rng, layout.xDrwInfl, layout.cursorYInfl);  // inflating x creates cursor when length of selection is 0. Same for mark.
             e.Graphics.ReleaseHdc(hdc);
             Brush cb = Brushes.Black;
-            if (typing) cb = Brushes.LightGreen;
+            if (typing) cb = Brushes.LightSeaGreen;
             else if (cursor.l != cursor.r) cb = Brushes.Orange;
             else if (cursor.l == txt.Length) cb = Brushes.Red;
             e.Graphics.FillRegion(cb, r);

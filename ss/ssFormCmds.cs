@@ -108,11 +108,11 @@ namespace ss {
             }
 
         public void CmdScrollTextDownOnePage() {
-            MoveTextUpDown(TextDown, lines.Length);
+            MoveTextUpDown(TextDown, lines.Length - 1);
             }
 
         public void CmdScrollTextUpOnePage() {
-            MoveTextUpDown(TextUp, lines.Length);
+            MoveTextUpDown(TextUp, lines.Length - 1);
             }
 
         public void CmdCursorUp() {

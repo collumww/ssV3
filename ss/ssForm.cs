@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
-//xxx
+
 namespace ss {
     public partial class ssForm : Form {
         public ssForm(ssEd e, ssText t) {
@@ -1346,7 +1346,7 @@ namespace ss {
                     canSee |= DesktopBounds.IntersectsWith(s.Bounds);
                     }
                 if (!canSee) {
-                    DesktopBounds = new Rectangle(ssDefaults.defleft, ssDefaults.deftop, ssDefaults.defwidth, ssDefaults.defheight);
+                    DesktopBounds = new Rectangle(ssDefaults.defleft, ssDefaults.deftop, layout.width, layout.height);
                     }
                 }
 

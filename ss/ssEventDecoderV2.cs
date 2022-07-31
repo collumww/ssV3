@@ -104,6 +104,10 @@ namespace ss {
             }
 
         
+        public bool Shift {
+            get { return mShift; }
+            }
+
 
         public void Eat(Keys k, char c, ssEventType t) {
             if (curset == null) return;

@@ -134,7 +134,7 @@ namespace ss {
 
         void MenuLook(Object sender, EventArgs e) {
             InvalidateCursor();
-            ed.FindNextDot();
+            ed.FindDotNoRegEx(!evd.Shift);
             txt.SyncFormToText();
             InvalidateCursor();
             }

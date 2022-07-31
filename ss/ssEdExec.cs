@@ -470,6 +470,61 @@ namespace ss {
                 }
             }
 
+
+            private bool compWithCase(char a, char b) {
+            if (defs.senseCase) return a == b;
+            else return Char.ToLower(a) == Char.ToLower(b);
+            }
+
+
+            public void FindDotNoRegEx(bool forward) {
+            int len = txt.dot.len;
+            if (forward) {
+                int i = txt.dot.r;
+                int lim = txt.Length - len;
+                for (; ; ) {
+                    int j = txt.dot.l;
+                    int k = i;
+                    while (j < txt.dot.r && k < txt.Length) {
+                        if (!compWithCase(txt[j], txt[k])) break;
+                        j++;
+                        k++;
+                        }
+                    if (j == txt.dot.r) {
+                        txt.dot.l = i;
+                        txt.dot.len = len;
+                        return;
+                        }
+                    if (i >= lim)
+                        i = 0;
+                    else
+                        i++;
+                    }
+                }
+            else {
+                int i = txt.dot.l - 1;
+                int lim = len - 1;
+                for (; ; ) {
+                    int j = txt.dot.r - 1;
+                    int k = i;
+                    while (j >= txt.dot.l && k >= 0) {
+                        if (!compWithCase(txt[j], txt[k])) break;
+                        j--;
+                        k--;
+                        }
+                    if (j < txt.dot.l) {
+                        txt.dot.l = i + 1 - len;
+                        txt.dot.len = len;
+                        return;
+                        }
+                    if (i <= lim)
+                        i = txt.Length - 1;
+                    else
+                        i--;
+                    }
+                }
+            }
+
         public void FindNextDot() {
             string s = txt.ToString();
             string t = txt.ToString(txt.dot.r, txt.Length - txt.dot.r);

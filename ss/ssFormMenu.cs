@@ -137,6 +137,7 @@ namespace ss {
             ed.FindDotNoRegEx(!evd.Shift);
             txt.SyncFormToText();
             InvalidateCursor();
+            evd.Reset();
             }
 
 

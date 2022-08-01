@@ -525,22 +525,6 @@ namespace ss {
                 }
             }
 
-        public void FindNextDot() {
-            string s = txt.ToString();
-            string t = txt.ToString(txt.dot.r, txt.Length - txt.dot.r);
-            int loc = t.IndexOf(s);
-            if (loc < 0) {
-                t = txt.ToString(0, txt.dot.r);
-                loc = t.IndexOf(s);
-                }
-            else {
-                loc += txt.dot.r;
-                }
-            txt.dot.l = loc;
-            txt.dot.len = s.Length;
-            }
-
-
         ssAddress Search(ssAddress rt, string pat, bool forward) {
             Match m;
             Regex rex;

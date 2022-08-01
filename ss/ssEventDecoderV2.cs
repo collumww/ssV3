@@ -108,7 +108,6 @@ namespace ss {
             get { return mShift; }
             }
 
-
         public void Eat(Keys k, char c, ssEventType t) {
             if (curset == null) return;
             if (!enabled) {
@@ -632,6 +631,9 @@ namespace ss {
        | ControlHomeEnd
        | S down SaveAs
        ;
+    | RButton down
+        + RButtonActions
+        ;
     ;
 | Menu down
 	+ AltStuff
@@ -666,6 +668,9 @@ namespace ss {
        | ControlHomeEnd
        | S down SaveAs
        ;
+    | RButton down
+        + RButtonActions
+        ;
     ;
 | Menu down
 	+ AltStuff
@@ -700,6 +705,9 @@ namespace ss {
        | ControlHomeEnd
        | S down SaveAs
        ;
+    | RButton down
+        + RButtonActions
+        ;
     ;
 | Menu down
 	+ AltStuff
@@ -736,6 +744,9 @@ namespace ss {
        | ControlHomeEnd
        | S down SaveAs
        ;
+    | RButton down
+        + RButtonActions
+        ;
     ;
 | Menu down
 	+ AltStuff

@@ -536,8 +536,8 @@ namespace ss {
 | O down Open
 | N down New
 | D down NextFont
-| H down PrevText
-| T down NextText
+| B down PrevText
+| M down NextText
 | A down SelectAll
 | F down ssCmdBegin false /
 | X down Cut
@@ -547,6 +547,8 @@ namespace ss {
 | G down Xerox
 | W down ToggleWrap
 | U down ToggleToCommand
+| H down LookBackward
+| T down LookForward
 ;
 
 < AltStuff

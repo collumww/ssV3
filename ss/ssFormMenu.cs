@@ -33,7 +33,10 @@ namespace ss {
             if (txt == ed.Log)
                 m.MenuItems.Add("Exec", new System.EventHandler(MenuExec));
             m.MenuItems.Add("Case", new System.EventHandler(MenuToggleIgnoreCase)).Checked = ed.defs.senseCase;
-            m.MenuItems.Add("Look", new System.EventHandler(MenuLook));
+
+            if (evd.Shift) m.MenuItems.Add("Look", new System.EventHandler(MenuLookBackward));
+            else m.MenuItems.Add("Look", new System.EventHandler(MenuLookForward));
+
             m.MenuItems.Add("/" + Regex.Escape(ed.LastPat), new System.EventHandler(MenuSearch));
 
             mi = new MenuItem("New");
@@ -132,14 +135,21 @@ namespace ss {
             CmdUndo();
             }
 
-        void MenuLook(Object sender, EventArgs e) {
+        void MenuLookForward(Object sender, EventArgs e) {
             InvalidateCursor();
-            ed.FindDotNoRegEx(!evd.Shift);
+            ed.FindDotNoRegEx(true);
             txt.SyncFormToText();
             InvalidateCursor();
-            evd.Reset();
+            if (e != null) evd.Reset();
             }
 
+        void MenuLookBackward(Object sender, EventArgs e) {
+            InvalidateCursor();
+            ed.FindDotNoRegEx(false);
+            txt.SyncFormToText();
+            InvalidateCursor();
+            if (e != null) evd.Reset();
+            }
 
         void MenuExec(Object sender, EventArgs e) {
             if (cursor.Empty) {

@@ -579,5 +579,13 @@ namespace ss {
         public void CmdNextText() {
             ed.NextText();
             }
+
+        public void CmdLookForward() {
+            MenuLookForward(null, null);
+            }
+
+        public void CmdLookBackward() {
+            MenuLookBackward(null, null);
+            }
         }
     }

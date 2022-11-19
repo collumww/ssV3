@@ -82,6 +82,12 @@ namespace ss {
             alphaLower = 0;
             }
 
+        public void ResetConsolidation(ssText x) {
+            for (ssText t = txts; t != null; t = t.Nxt) {
+                if (t != x) t.TLog.DisableConsolidation();
+                }
+            }
+
         public void NewTransId() {
             curTransId++;
             }

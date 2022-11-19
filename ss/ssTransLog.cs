@@ -160,6 +160,7 @@ namespace ss {
         public void InitTrans() {
             getnewtrans = true;
             olddot = txt.dot;
+            ed.ResetConsolidation(txt);
             }
 
         public ssRange OldDot {
@@ -172,6 +173,10 @@ namespace ss {
             seqRoot.nxt = null;
             }
 
+
+        public void DisableConsolidation() {
+            canconsolidate = false;
+            }
 
         public bool Changed {
             get { return ts == null && savepoint != 0 ||

@@ -105,11 +105,16 @@ namespace ss {
 
         public void Do(string s) {
             try {
+                ssText lastcurtxt = txt;
                 ResetAffected();
                 InitAllSeqs();
                 NewTrans();
                 ParseAndExec(s);
                 Commit();
+                if (txt != lastcurtxt) {
+                    lastcurtxt.cmdaffected = true;
+                    txt.cmdaffected = true;
+                    }
                 UpdateAffected();
                 //win remove for non-windowed version
                 if (txt != null && txt.Frm != null) txt.Frm.CmdShowCursor();

@@ -299,6 +299,7 @@ namespace ss {
             InvalidateCursor();
             InvalidateMark();
             Invalidate(ChangedRect());
+            Invalidate(HScrollRect());
             }
 
         private void InvalidateCursor() {

@@ -299,6 +299,7 @@ namespace ss {
             InvalidateCursor();
             InvalidateMark();
             Invalidate(ChangedRect());
+            Invalidate(VScrollRect());
             Invalidate(HScrollRect());
             }
 
@@ -1366,6 +1367,12 @@ namespace ss {
                 ed.ProcessArgs(); // Just like above, this needs to happen after form is up and running.
                 }
             loaded = true;
+            }
+
+        private Rectangle VScrollRect() {
+            Rectangle rct = ClientRectangle;
+            rct.Width = layout.leftMargin;
+            return rct;
             }
 
 

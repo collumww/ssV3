@@ -1223,38 +1223,44 @@ namespace ss {
 
 
         private void SetFormLocSiz() {
-            Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
-            Size lsz = ed.Log.Frm.DesktopBounds.Size;
-            Point lloc = ed.Log.Frm.Location;
-            int above = lloc.Y - scr.Y;
-            int below = (scr.Y + scr.Height) - (lloc.Y + lsz.Height);
-            int left = lloc.X - scr.X;
-            int right = (scr.X + scr.Width) - (lloc.X + lsz.Width);
-            if (lsz.Width >= lsz.Height) {
-                Width = lsz.Width;
-                if (above > below) {
-                    Height = above - below;
-                    lloc.Y = below;
-                    }
-                else {
-                    Height = below - above;
-                    lloc.Y += lsz.Height;
-                    }
+            if (ed.cmdFrm != null && ed.cmdFrm != ed.Log.Frm) {
+                Location = ed.cmdFrm.Location;
+                Size = ed.cmdFrm.Size;
                 }
             else {
-                Height = scr.Height - 2 * above;
-                if (right > left) {
-                    Width = lsz.Width * 4 / 2;
-                    lloc.X += lsz.Width;
+                Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
+                Size lsz = ed.Log.Frm.DesktopBounds.Size;
+                Point lloc = ed.Log.Frm.Location;
+                int above = lloc.Y - scr.Y;
+                int below = (scr.Y + scr.Height) - (lloc.Y + lsz.Height);
+                int left = lloc.X - scr.X;
+                int right = (scr.X + scr.Width) - (lloc.X + lsz.Width);
+                if (lsz.Width >= lsz.Height) {
+                    Width = lsz.Width;
+                    if (above > below) {
+                        Height = above - below;
+                        lloc.Y = below;
+                        }
+                    else {
+                        Height = below - above;
+                        lloc.Y += lsz.Height;
+                        }
                     }
                 else {
-                    Width = lsz.Width * 4 / 2;
-                    lloc.X -= Width;
+                    Height = scr.Height - 2 * above;
+                    if (right > left) {
+                        Width = lsz.Width * 4 / 2;
+                        lloc.X += lsz.Width;
+                        }
+                    else {
+                        Width = lsz.Width * 4 / 2;
+                        lloc.X -= Width;
+                        }
                     }
+                Location = lloc;
+                Height = Math.Max(Height, lsz.Height);
+                Width = Math.Max(Width, lsz.Width);
                 }
-            Location = lloc;
-            Height = Math.Max(Height, lsz.Height);
-            Width = Math.Max(Width, lsz.Width);
             }
 
 
@@ -1605,6 +1611,7 @@ namespace ss {
 
 
         private void ssForm_FormClosing(object sender, FormClosingEventArgs e) {
+            typTimer.Stop();
             if (txt == ed.Log) {
                 e.Cancel = !ed.DeleteAllTexts();
                 UpdateDefs();

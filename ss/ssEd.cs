@@ -45,6 +45,10 @@ namespace ss {
         public ssText prvtxt;
         public ssDefaults defs;
 
+        //win remove for non-windowed version
+        public ssForm cmdFrm;
+        // remove for non-windowed version */
+
         public string WinRead(string nm, ref Encoding enc) {
             string s = null;
             try {

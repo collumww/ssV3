@@ -112,8 +112,8 @@ namespace ss {
                 ParseAndExec(s);
                 Commit();
                 if (txt != lastcurtxt) {
-                    lastcurtxt.cmdaffected = true;
-                    txt.cmdaffected = true;
+                    if (txt != null) txt.cmdaffected = true;
+                    if (lastcurtxt != null) lastcurtxt.cmdaffected = true;
                     }
                 UpdateAffected();
                 //win remove for non-windowed version

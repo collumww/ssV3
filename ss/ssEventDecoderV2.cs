@@ -142,6 +142,7 @@ namespace ss {
             else {
                 ematch = new eStack(e, ematch);
                 if (e.a != null || e.cmd != "") {
+                    frm.Ed.cmdFrm = frm;
                     if (e.a != null)
                         e.a.Invoke(frm, null);
                     else {

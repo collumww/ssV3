@@ -101,6 +101,8 @@ namespace ss {
 
         public uint opts;
 
+        public int formSpacing = 10;
+
         public int leftMargin = 25;
         public int rightMargin = 25;
 

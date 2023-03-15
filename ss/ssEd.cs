@@ -47,6 +47,8 @@ namespace ss {
 
         //win remove for non-windowed version
         public ssForm cmdFrm;
+        public int cmdX;
+        public int cmdY;
         // remove for non-windowed version */
 
         public string WinRead(string nm, ref Encoding enc) {

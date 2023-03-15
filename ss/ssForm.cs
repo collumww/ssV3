@@ -1226,6 +1226,8 @@ namespace ss {
             if (ed.cmdFrm != null && ed.cmdFrm != ed.Log.Frm) {
                 Location = ed.cmdFrm.Location;
                 Size = ed.cmdFrm.Size;
+                if (ed.cmdX <= Width / 3) Left -= Width + layout.formSpacing;
+                else if (ed.cmdX > Width * 2 / 3) Left += Width + layout.formSpacing;
                 }
             else {
                 Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
@@ -1523,6 +1525,8 @@ namespace ss {
                 }
             mouX = e.X;
             mouY = e.Y;
+            ed.cmdX = e.X;
+            ed.cmdY = e.Y;
 
             if (mouX < layout.scrollMargin)
                 ScrollV(e.Button, mouY);

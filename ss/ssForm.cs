@@ -532,6 +532,8 @@ namespace ss {
 
 
         private int IndexInLineBelow(int i) {
+            ssRange rng = lines[linesUsed - 1].rng;
+            if (i >= rng.l && rng.r == txt.Length) return i;
             return IndexInLine(TextUp, lines.Length - 1, linesUsed - 1, 1, i);
             }
 

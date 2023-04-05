@@ -18,8 +18,8 @@ namespace ss {
         public bool senseCase;
         public Encoding encoding;
         //win remove for non-windowed version
-        public static int defleft = 50;
-        public static int deftop = 50;
+        public static int defleft = 20;
+        public static int deftop = 20;
         public static int defwidth = 600;
         public static int defheight = 150;
         public static int fontCnt = 4;

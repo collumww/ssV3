@@ -1242,16 +1242,22 @@ namespace ss {
                 if (lsz.Width >= lsz.Height) {
                     Width = lsz.Width;
                     if (above > below) {
-                        Height = above - below;
-                        lloc.Y = below;
+                        lloc.Y = scr.Y + ssDefaults.deftop;
+                        Height = scr.Height - below - ssDefaults.deftop - lsz.Height;
                         }
                     else {
-                        Height = below - above;
                         lloc.Y += lsz.Height;
+                        Height = scr.Height - above - ssDefaults.deftop - lsz.Height;
                         }
                     }
                 else {
-                    Height = scr.Height - 2 * above;
+                    if (above > below) {
+                        lloc.Y = scr.Y + ssDefaults.deftop;
+                        Height = scr.Height - below - ssDefaults.deftop;
+                        }
+                    else {
+                        Height = scr.Height - above - ssDefaults.deftop;
+                        }
                     if (right > left) {
                         Width = lsz.Width * 4 / 2;
                         lloc.X += lsz.Width;

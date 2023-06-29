@@ -138,12 +138,14 @@ namespace ss {
             }
 
         public void CmdCursorUpToNearestBOWord() {
+            AdjCursorForUpAndDown();
             MoveCursor(cursor.l, IndexInLineAbove);
             MoveCursor(cursor.l, IndexToNearestBOWord);
             firstVMove = false;
             }
 
         public void CmdCursorDownToNearestBOWord() {
+            AdjCursorForUpAndDown();
             MoveCursor(cursor.l, IndexInLineBelow);
             MoveCursor(cursor.l, IndexToNearestBOWord);
             firstVMove = false;

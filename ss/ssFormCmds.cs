@@ -115,11 +115,25 @@ namespace ss {
             MoveTextUpDown(TextUp, lines.Length - 1);
             }
 
+        private void AdjCursorForUpAndDown() {
+            if (lastX <= layout.leftMargin) return;
+            int ln = IndexToLine(lines, cursor.l);
+            if (ln > 0) {
+                if (lines[ln - 1].rng.r == lines[ln].rng.l 
+                    && lines[ln].rng.l == cursor.l) {
+                    InvalidateCursor();
+                    cursor.To(txt.NxtLeft(cursor.l));
+                    }
+                }
+            }
+
         public void CmdCursorUp() {
+            AdjCursorForUpAndDown();
             MoveCursor(cursor.l, IndexInLineAbove);
             }
 
         public void CmdCursorDown() {
+            AdjCursorForUpAndDown();
             MoveCursor(cursor.r, IndexInLineBelow);
             }
 

@@ -32,18 +32,23 @@ namespace ss {
         public void FormLogTrans(ssTrans.Type typ, ssRange r, string s) {
             if (log) {
                 curChangeId++;
-                if (canconsolidate &&
-                    ts != null &&
-                    ts.typ == ssTrans.Type.delete &&
-                    typ == ssTrans.Type.delete &&
-                    ts.rng.r == r.l &&
-                    r.len == 1 &&
-                    ts.s != null && rex.IsMatch(ts.s) &&
-                    s != null && rex.IsMatch(s) &&
-                    ts.s != txt.Eoln &&
-                    s != txt.Eoln) {
+                if (canconsolidate
+                    && ts != null
+                    && ts.typ == ssTrans.Type.delete
+                    && typ == ssTrans.Type.delete
+                    && ts.rng.r == r.l
+                    && (
+                                (ts.s != null && rex.IsMatch(ts.s))
+                            && 
+                                (s != null && rex.IsMatch(s))
+                        || 
+                            s == txt.Eoln
+                        )
+                    ) {
                     ed.PrevTransId();
                     ts.rng.r = r.r;
+                    ts.s += s;
+                    canconsolidate = s != txt.Eoln;
                     ts.chgid = curChangeId;
                     }
                 else {

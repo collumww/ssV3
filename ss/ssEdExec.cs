@@ -585,22 +585,24 @@ namespace ss {
             }
 
         public void Undo(int n) {
+            if (txt == null) return;
+            if (txt.TLog.Ts == null) return;
+
             ssText t;
-            //long id = 0;
-            //long tid = 0;
             for (; n > 0; n--) {
-                //id = 0;
-                //for (t = txts; t != null; t = t.Nxt) {
-                //    if (t.TLog.Ts != null) {
-                //        tid = t.TLog.Ts.id;
-                //        if (tid > id) id = tid;
-                //        }
-                //    }
+                long tid = txt.TLog.Ts.id;
                 for (t = txts; t != null; t = t.Nxt)
-                    t.TLog.Undo(curTransId);
-                //t.TLog.Undo(id);
-                PrevTransId();
+                    if (t.TLog.Ts != null && t.TLog.Ts.id == tid)
+                        t.TLog.Undo(tid);
                 }
+
+
+            //ssText t;
+            //for (; n > 0; n--) {
+            //    for (t = txts; t != null; t = t.Nxt)
+            //        t.TLog.Undo(curTransId);
+            //    PrevTransId();
+            //    }
             SyncFormToTextAll();
             }
 

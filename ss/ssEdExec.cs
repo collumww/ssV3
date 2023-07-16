@@ -285,6 +285,9 @@ namespace ss {
                 case 'u':
                     Undo(t.n);
                     break;
+                case 'U':
+                    Redo(t.n);
+                    break;
                 case '\0':  // end of text
                     break;
                 case listHead:   // head of sub lists
@@ -595,17 +598,22 @@ namespace ss {
                     if (t.TLog.Ts != null && t.TLog.Ts.id == tid)
                         t.TLog.Undo(tid);
                 }
-
-
-            //ssText t;
-            //for (; n > 0; n--) {
-            //    for (t = txts; t != null; t = t.Nxt)
-            //        t.TLog.Undo(curTransId);
-            //    PrevTransId();
-            //    }
             SyncFormToTextAll();
             }
 
+        public void Redo(int n) {
+            if (txt == null) return;
+            if (txt.TLog.Rs == null) return;
+
+            ssText t;
+            for (; n > 0; n--) {
+                long tid = txt.TLog.Rs.id;
+                for (t = txts; t != null; t = t.Nxt)
+                    if (t.TLog.Rs != null && t.TLog.Rs.id == tid)
+                        t.TLog.Redo(tid);
+                }
+            SyncFormToTextAll();
+            }
         void xNoCmd() {
             if (txt == null) return;
             if (txt.RangeAligned(txt.dot)) txt.dot = txt.FindLine(txt.dot.r, 1, 1);

@@ -415,6 +415,7 @@ namespace ss {
                     t = new CTree(a, c);
                     break;
                 case 'u':
+                case 'U':
                     CheckTxt();
                     t = new CTree(a, c);
                     pChar();

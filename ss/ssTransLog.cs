@@ -9,6 +9,7 @@ namespace ss {
     public class ssTransLog {
         public ssTransLog(ssEd e, ssText t) {
             ts = null;
+            rs = null;
             log = true;
             ed = e;
             txt = t;
@@ -34,8 +35,8 @@ namespace ss {
                 curChangeId++;
                 if (canconsolidate
                     && ts != null
-                    && ts.typ == ssTrans.Type.delete
-                    && typ == ssTrans.Type.delete
+                    && ts.typ == ssTrans.Type.insert
+                    && typ == ssTrans.Type.insert
                     && ts.rng.r == r.l
                     && (
                                 (ts.s != null && rex.IsMatch(ts.s))
@@ -56,6 +57,7 @@ namespace ss {
                     canconsolidate = true;
                     ts.chgid = curChangeId;
                     }
+                rs = null;
                 }
             }
 
@@ -66,6 +68,7 @@ namespace ss {
                 t.nxt = ts;
                 ts = t;
                 curChangeId++;
+                rs = null;
                 }
             }
 
@@ -81,16 +84,14 @@ namespace ss {
                         t.s = n;
                         break;
                     case ssTrans.Type.delete:
-                        //CheckSeq(ref t.rng, false);
                         t.s = txt.ToString();
                         t.rng = txt.Delete();
-                        t.typ = ssTrans.Type.insert;
+                        //t.typ = ssTrans.Type.insert;
                         break;
                     case ssTrans.Type.insert:
-                        //CheckSeq(ref t.rng, true);
                         t.rng = txt.Insert(t.s);
-                        t.s = null;
-                        t.typ = ssTrans.Type.delete;
+                        //t.s = null;
+                        //t.typ = ssTrans.Type.delete;
                         break;
                     }
 
@@ -118,6 +119,7 @@ namespace ss {
             seqRoot.nxt = t;
             }
 
+
         public void Undo(long id) {
             if (ts == null) return;
             log = false;
@@ -127,18 +129,48 @@ namespace ss {
                     case ssTrans.Type.rename:
                         txt.Rename(ts.s);
                         break;
-                    case ssTrans.Type.delete:
-                        txt.Delete();
-                        break;
                     case ssTrans.Type.insert:
-                        txt.Insert(ts.s);
+                        ts.rng = txt.Delete();
+                        break;
+                    case ssTrans.Type.delete:
+                        ts.rng = txt.Insert(ts.s);
                         break;
                     case ssTrans.Type.dot:
                         txt.dot = ts.rng;
                         break;
                     }
-                //curChangeId -= ts.cnt;
+                ssTrans x = rs;
+                rs = ts;
                 ts = ts.nxt;
+                rs.nxt = x;
+                }
+            log = true;
+            txt.InvalidateMarks();
+            }
+
+        public void Redo(long id) {
+            if (rs == null) return;
+            log = false;
+            while (rs != null && rs.id == id) {
+                txt.dot = rs.rng;
+                switch (rs.typ) {
+                    case ssTrans.Type.rename:
+                        txt.Rename(rs.s);
+                        break;
+                    case ssTrans.Type.delete:
+                        rs.rng = txt.Delete();
+                        break;
+                    case ssTrans.Type.insert:
+                        rs.rng = txt.Insert(rs.s);
+                        break;
+                    case ssTrans.Type.dot:
+                        txt.dot = rs.rng;
+                        break;
+                    }
+                ssTrans x = ts;
+                ts = rs;
+                rs = rs.nxt;
+                ts.nxt = x;
                 }
             log = true;
             txt.InvalidateMarks();
@@ -160,6 +192,10 @@ namespace ss {
 
         public ssTrans Ts {
             get { return ts; }
+            }
+
+        public ssTrans Rs {
+            get { return rs; }
             }
 
         public void InitTrans() {
@@ -199,6 +235,7 @@ namespace ss {
         ssEd ed;
         ssText txt;
         ssTrans ts;
+        ssTrans rs;
         ssRange adjEdge;
         public long curChangeId;
         long savepoint;

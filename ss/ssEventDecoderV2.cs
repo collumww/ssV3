@@ -633,6 +633,7 @@ namespace ss {
        | CharMovement
        | ControlHomeEnd
        | S down SaveAs
+       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -670,6 +671,7 @@ namespace ss {
        | WordMovement
        | ControlHomeEnd
        | S down SaveAs
+       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -707,6 +709,7 @@ namespace ss {
        | CharMovement
        | ControlHomeEnd
        | S down SaveAs
+       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -746,6 +749,7 @@ namespace ss {
        | WordMovement
        | ControlHomeEnd
        | S down SaveAs
+       | Z down Redo
        ;
     | RButton down
         + RButtonActions

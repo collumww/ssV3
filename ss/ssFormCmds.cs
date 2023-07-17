@@ -493,6 +493,10 @@ namespace ss {
             ed.Do("u");
             }
 
+        public void CmdRedo() {
+            ed.Do("U");
+            }
+
         public void CmdToggleToCommand() {
             if (txt == ed.Log && ed.Txt != null && ed.Txt.Frm != null) ed.Txt.Activate();
             else {

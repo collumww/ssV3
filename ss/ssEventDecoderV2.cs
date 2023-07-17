@@ -550,6 +550,7 @@ namespace ss {
 | U down ToggleToCommand
 | H down LookBackward
 | T down LookForward
+| R down Redo
 ;
 
 < AltStuff
@@ -633,7 +634,6 @@ namespace ss {
        | CharMovement
        | ControlHomeEnd
        | S down SaveAs
-       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -671,7 +671,6 @@ namespace ss {
        | WordMovement
        | ControlHomeEnd
        | S down SaveAs
-       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -709,7 +708,6 @@ namespace ss {
        | CharMovement
        | ControlHomeEnd
        | S down SaveAs
-       | Z down Redo
        ;
     | RButton down
         + RButtonActions
@@ -749,7 +747,6 @@ namespace ss {
        | WordMovement
        | ControlHomeEnd
        | S down SaveAs
-       | Z down Redo
        ;
     | RButton down
         + RButtonActions

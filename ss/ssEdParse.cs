@@ -234,6 +234,10 @@ namespace ss {
             do { scn.GetChar(); } while (!scn.EOT() && char.IsWhiteSpace(scn.C));
             }
 
+        void pCharNoSkipSp() {
+            scn.GetChar();
+            }
+
         void pSpOrEot() {
             scn.GetChar();
             if (scn.C != ' ' && scn.C != '\0') throw new ssException("blank expected");
@@ -555,7 +559,7 @@ namespace ss {
                     return new ATree(c, n, "", fnm);
                 case '/':
                 case '?':
-                    pChar();
+                    pCharNoSkipSp();
                     scn.SetDelim(c);
                     string s = SetPat(PreEscape(scn.GetStr()));
                     pSkipSp();

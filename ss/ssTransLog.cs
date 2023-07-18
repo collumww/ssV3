@@ -46,7 +46,6 @@ namespace ss {
                             s == txt.Eoln
                         )
                     ) {
-                    ed.PrevTransId();
                     ts.rng.r = r.r;
                     ts.s += s;
                     canconsolidate = s != txt.Eoln;

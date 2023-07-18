@@ -230,6 +230,58 @@ namespace ss {
 
 
         public void CmdEnter() {
+            string s;
+            InvalidateMarks();
+            BeginFormTrans();
+
+            //Delete();
+            if (!cursor.Empty) {
+                s = txt.ToString();
+                cursor.To(txt.Delete());
+                if (txt != ed.Log) txt.TLog.FormLogTrans(ssTrans.Type.delete, txt.dot, s);
+                }
+
+            int b = cursor.boat;
+
+            //Insert(txt.Eoln);
+            cursor.To(txt.Insert(txt.Eoln));
+            if (txt != ed.Log) txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, txt.Eoln);
+            txt.InvalidateMarksAndChange(cursor.l);
+
+            int oldl = cursor.l;
+            extending = false;
+            MoveCursor(cursor.boat, IndexCursorRight);
+            if (layout.autoIndent) {
+                int l = txt.To(txt.AtBOLN, b, -1);
+                if (l != oldl && l + 1 < txt.Length) {
+                    int r = l;
+                    while (r < txt.Length
+                        && !txt.AtEOLN(r)
+                        && char.IsWhiteSpace(txt[r]))
+                        r = txt.NxtRight(r);
+
+                    //Insert(txt.ToString(l, r - l));
+                    if (r - l > 0) {
+                        s = txt.ToString(l, r - l);
+                        cursor.To(txt.Insert(s));
+                        if (txt != ed.Log) txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, s);
+                        }
+                    txt.InvalidateMarksAndChange(cursor.l);
+
+                    MoveCursor(cursor.r, IndexCursorRight);
+                    }
+                }
+            if ((cursor.boat == txt.Length && txt == ed.Log)) {
+                int a = txt.To(txt.AtBOLN, b, -1);
+                Cursor.Current = Cursors.WaitCursor;
+                ed.Do(txt.ToString(a, b - a)); // Exclude the line ending for cases where line ending is set weird.
+                Cursor.Current = Cursors.Default;
+                }
+            TypingOn();
+            }
+
+
+        public void CmdEnterV1() {
             Delete();
             int b = cursor.boat;
             Insert(txt.Eoln);
@@ -238,7 +290,7 @@ namespace ss {
             MoveCursor(cursor.boat, IndexCursorRight);
             if (layout.autoIndent) {
                 int l = txt.To(txt.AtBOLN, b, -1);
-                if (l != oldl && l+1 < txt.Length) {
+                if (l != oldl && l + 1 < txt.Length) {
                     int r = l;
                     while (r < txt.Length
                         && !txt.AtEOLN(r)

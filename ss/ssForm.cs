@@ -203,7 +203,7 @@ namespace ss {
             txt.InvalidateMarksAndChange(cursor.l);
             if (txt != ed.Log) {
                 BeginFormTrans();
-                txt.TLog.FormLogTrans(ssTrans.Type.delete, txt.dot, s);  // you log what the undo will do, not what was just done.
+                txt.TLog.FormLogTrans(ssTrans.Type.delete, txt.dot, s);
                 }
             }
 
@@ -220,7 +220,7 @@ namespace ss {
             txt.InvalidateMarksAndChange(cursor.l);
             if (txt != ed.Log) {
                 BeginFormTrans();
-                txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, s);  // you log what the undo will do, not what was just done.
+                txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, s);
                 }
             }
 

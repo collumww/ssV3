@@ -48,14 +48,13 @@ namespace ss {
                     ) {
                     ts.rng.r = r.r;
                     ts.s += s;
-                    canconsolidate = s != txt.Eoln;
                     ts.chgid = curChangeId;
                     }
                 else {
                     ts = new ssTrans(typ, ed.CurTransId, r, s, ts);
-                    canconsolidate = true;
                     ts.chgid = curChangeId;
                     }
+                canconsolidate = s != txt.Eoln;
                 rs = null;
                 }
             }

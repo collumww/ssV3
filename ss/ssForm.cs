@@ -217,7 +217,6 @@ namespace ss {
             InvalidateMarks();
             BeginFormTrans();
 
-            //Delete();
             if (!cursor.Empty) {
                 string sd = txt.ToString();
                 cursor.To(txt.Delete());

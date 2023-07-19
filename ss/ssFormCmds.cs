@@ -281,37 +281,6 @@ namespace ss {
             }
 
 
-        public void CmdEnterV1() {
-            Delete();
-            int b = cursor.boat;
-            Insert(txt.Eoln);
-            int oldl = cursor.l;
-            extending = false;
-            MoveCursor(cursor.boat, IndexCursorRight);
-            if (layout.autoIndent) {
-                int l = txt.To(txt.AtBOLN, b, -1);
-                if (l != oldl && l + 1 < txt.Length) {
-                    int r = l;
-                    while (r < txt.Length
-                        && !txt.AtEOLN(r)
-                        && char.IsWhiteSpace(txt[r]))
-                        r = txt.NxtRight(r);
-                    Insert(txt.ToString(l, r - l));
-                    MoveCursor(cursor.r, IndexCursorRight);
-                    }
-                }
-            if ((cursor.boat == txt.Length && txt == ed.Log)) {
-                int a = txt.To(txt.AtBOLN, b, -1);
-                Cursor.Current = Cursors.WaitCursor;
-                ed.Do(txt.ToString(a, b - a)); // Exclude the line ending for cases where line ending is set weird.
-                Cursor.Current = Cursors.Default;
-                //ed.WakeUpText(ed.txt);
-                //ed.Log.Activate();
-                }
-            TypingOn();
-            }
-
-
         public void CmdDelete() {
             if (!cursor.Empty) Delete();
             else {

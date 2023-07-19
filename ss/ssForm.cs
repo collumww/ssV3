@@ -215,13 +215,17 @@ namespace ss {
         public void Insert(string s) {
             txt.DoMaint();
             InvalidateMarks();
-            if (!txt.dot.Empty) Delete();
+            BeginFormTrans();
+
+            //Delete();
+            if (!cursor.Empty) {
+                string sd = txt.ToString();
+                cursor.To(txt.Delete());
+                if (txt != ed.Log) txt.TLog.FormLogTrans(ssTrans.Type.delete, txt.dot, sd);
+                }
             cursor.To(txt.Insert(s));
             txt.InvalidateMarksAndChange(cursor.l);
-            if (txt != ed.Log) {
-                BeginFormTrans();
-                txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, s);
-                }
+            if (txt != ed.Log) txt.TLog.FormLogTrans(ssTrans.Type.insert, txt.dot, s);
             }
 
 

@@ -1249,9 +1249,10 @@ namespace ss {
                         Height = scr.Height - below - ssDefaults.deftop - lsz.Height;
                         }
                     else {
-                        lloc.Y += lsz.Height;
+                        lloc.Y += lsz.Height + layout.formSpacing;
                         Height = scr.Height - above - ssDefaults.deftop - lsz.Height;
                         }
+                    Height -= layout.formSpacing;
                     }
                 else {
                     if (above > below) {
@@ -1263,11 +1264,11 @@ namespace ss {
                         }
                     if (right > left) {
                         Width = lsz.Width * 4 / 2;
-                        lloc.X += lsz.Width;
+                        lloc.X += lsz.Width + layout.formSpacing;
                         }
                     else {
                         Width = lsz.Width * 4 / 2;
-                        lloc.X -= Width;
+                        lloc.X -= Width + layout.formSpacing;
                         }
                     }
                 Location = lloc;

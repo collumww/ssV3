@@ -377,13 +377,13 @@ namespace ss {
 
         private int IndexToNearestBOWord(int i) {
             if (layout.programming) {
-                int r = txt.To(txt.AtProgBOW, i, 1);
-                int l = txt.To(txt.AtProgEOW, i, -1);
+                int r = txt.To(txt.AtProgEOW, i, 1);
+                int l = txt.To(txt.AtProgBOW, i, -1);
                 if ((r - i) <= (i - l)) return r; else return l;
                 }
             else {
-                int r = txt.To(txt.AtBOW, i, 1);
-                int l = txt.To(txt.AtEOW, i, -1);
+                int r = txt.To(txt.AtEOW, i, 1);
+                int l = txt.To(txt.AtBOW, i, -1);
                 if ((r - i) <= (i - l)) return r; else return l;
                 }
             }

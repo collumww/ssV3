@@ -283,10 +283,10 @@ namespace ss {
                     ShowHelp();
                     break;
                 case 'u':
-                    Undo(t.n);
+                    UndoRedo(false, t.n);
                     break;
                 case 'U':
-                    Redo(t.n);
+                    UndoRedo(true, t.n);
                     break;
                 case '\0':  // end of text
                     break;
@@ -587,33 +587,57 @@ namespace ss {
             for (ssText t = txts; t != null; t = t.Nxt) t.SyncFormToText();
             }
 
-        public void Undo(int n) {
+        public void UndoRedo(bool redo, int n) {
             if (txt == null) return;
-            if (txt.TLog.Ts == null) return;
+            ssTrans txtts = txt.TLog.Ts;
+            if (redo) txtts = txt.TLog.Rs;
+
+            if (txtts == null) return;
 
             ssText t;
             for (; n > 0; n--) {
-                long tid = txt.TLog.Ts.id;
-                for (t = txts; t != null; t = t.Nxt)
-                    if (t.TLog.Ts != null && t.TLog.Ts.id == tid)
-                        t.TLog.Undo(tid);
+                long tid = txtts.id;
+                for (t = txts; t != null; t = t.Nxt) {
+                    ssTrans ts = t.TLog.Ts;
+                    if (redo) ts = t.TLog.Rs;
+                    if (ts != null && ts.id == tid) {
+                        if (redo) t.TLog.Redo(tid);
+                        else t.TLog.Undo(tid);
+                        t.SyncFormToText();
+                        }
+                    }
                 }
-            SyncFormToTextAll();
             }
 
-        public void Redo(int n) {
-            if (txt == null) return;
-            if (txt.TLog.Rs == null) return;
+        //public void Undo(int n) {
+        //    if (txt == null) return;
+        //    if (txt.TLog.Ts == null) return;
 
-            ssText t;
-            for (; n > 0; n--) {
-                long tid = txt.TLog.Rs.id;
-                for (t = txts; t != null; t = t.Nxt)
-                    if (t.TLog.Rs != null && t.TLog.Rs.id == tid)
-                        t.TLog.Redo(tid);
-                }
-            SyncFormToTextAll();
-            }
+        //    ssText t;
+        //    for (; n > 0; n--) {
+        //        long tid = txt.TLog.Ts.id;
+        //        for (t = txts; t != null; t = t.Nxt)
+        //            if (t.TLog.Ts != null && t.TLog.Ts.id == tid) {
+        //                t.TLog.Undo(tid);
+        //                t.SyncFormToText();
+        //                }
+        //        }
+        //    }
+
+        //public void Redo(int n) {
+        //    if (txt == null) return;
+        //    if (txt.TLog.Rs == null) return;
+
+        //    ssText t;
+        //    for (; n > 0; n--) {
+        //        long tid = txt.TLog.Rs.id;
+        //        for (t = txts; t != null; t = t.Nxt)
+        //            if (t.TLog.Rs != null && t.TLog.Rs.id == tid) {
+        //                t.TLog.Redo(tid);
+        //                t.SyncFormToText();
+        //                }
+        //        }
+        //    }
         void xNoCmd() {
             if (txt == null) return;
             if (txt.RangeAligned(txt.dot)) txt.dot = txt.FindLine(txt.dot.r, 1, 1);

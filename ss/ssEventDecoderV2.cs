@@ -602,13 +602,14 @@ namespace ss {
 < RButtonActions
   RButton up ShowMenu
 | LButton down PastePreserveSelection
-| P down ssCmdPreserveDot false y/\r\n/i/#/
-| OemPeriod down ssCmdPreserveDot false x/^#/d
-| I down ssCmdPreserveDot false {`i'/*'`a'*/'`}
-| U down ssCmdPreserveDot false y/\r\n/i/\/\//
-| E down ssCmdPreserveDot false x/^\/\//d
-| K down ssCmdPreserveDot false y/\r\n/i/-- /
-| J down ssCmdPreserveDot false x/^-- /d
+| P down ssCmdPreserveDot false -0,+0x/.*\N/i/#/
+| OemPeriod down ssCmdPreserveDot false -0,+0x/^#/d
+| Y down ssCmdPreserveDot true -0,+0{`i'<#\N'`a'#>\N'`}
+| I down ssCmdPreserveDot true -0,+0{`i'/*\N'`a'*/\N'`}
+| U down ssCmdPreserveDot false -0,+0x/.*\N/i/\/\//
+| E down ssCmdPreserveDot false -0,+0x/^\/\//d
+| K down ssCmdPreserveDot false -0,+0x/.*\N/i/--/
+| J down ssCmdPreserveDot false -0,+0x/^--/d
 ;
 
 

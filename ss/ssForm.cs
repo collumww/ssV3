@@ -1591,7 +1591,7 @@ namespace ss {
                 }
             e.Graphics.FillRectangle(Brushes.LightSalmon, rct);
 
-            int[] brackets = { 1, 2, 5, 6 };
+            int[] brackets = { 1, 2, 5, 6 };                            // brackets
             int dx = (ClientRectangle.Width - layout.leftMargin) / 7;
             rct.Height = 3;
             rct.Width = 3;

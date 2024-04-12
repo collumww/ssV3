@@ -743,8 +743,9 @@ namespace ss {
             r.top = i * layout.lineht;
             r.bottom = r.top + layout.lineht;
             r.left = layout.leftMargin - xOrg;
+            r.right = ClientRectangle.Right - xOrg;
             if (wrap) {
-                r.right = ClientRectangle.Right - layout.rightMargin - xOrg;
+                r.right -= layout.rightMargin;
                 }
             else r.right = 1000000;  // Really big numbers do strange things with the graphics. A million works.
             return r;
@@ -1226,7 +1227,130 @@ namespace ss {
             }
 
 
+        private void CalcFormFromLogWindow() {
+            Rectangle scr = Screen.GetWorkingArea(ed.Log.Frm.Location);
+            Size lsz = ed.Log.Frm.DesktopBounds.Size;
+            Point lloc = ed.Log.Frm.Location;
+            int above = lloc.Y - scr.Y;
+            int below = (scr.Y + scr.Height) - (lloc.Y + lsz.Height);
+            int left = lloc.X - scr.X;
+            int right = (scr.X + scr.Width) - (lloc.X + lsz.Width);
+            if (lsz.Width >= lsz.Height) {
+                Width = lsz.Width;
+                if (above > below) {
+                    lloc.Y = scr.Y + ssDefaults.deftop;
+                    Height = scr.Height - below - ssDefaults.deftop - lsz.Height;
+                    }
+                else {
+                    lloc.Y += lsz.Height + layout.formSpacing;
+                    Height = scr.Height - above - ssDefaults.deftop - lsz.Height;
+                    }
+                Height -= layout.formSpacing;
+                }
+            else {
+                if (above > below) {
+                    lloc.Y = scr.Y + ssDefaults.deftop;
+                    Height = scr.Height - below - ssDefaults.deftop;
+                    }
+                else {
+                    Height = scr.Height - above - ssDefaults.deftop;
+                    }
+                if (right > left) {
+                    Width = lsz.Width * 4 / 2;
+                    lloc.X += lsz.Width + layout.formSpacing;
+                    }
+                else {
+                    Width = lsz.Width * 4 / 2;
+                    lloc.X -= Width + layout.formSpacing;
+                    }
+                }
+            Location = lloc;
+            Height = Math.Max(Height, lsz.Height);
+            Width = Math.Max(Width, lsz.Width);
+            }
+
+        
+
         private void SetFormLocSiz() {
+            if (ed.cmdFrm == null) {
+                CalcFormFromLogWindow();
+                }
+            else {
+                Rectangle scr = Screen.GetWorkingArea(ed.cmdFrm.Location);
+                Location = ed.cmdFrm.Location;
+                Size = ed.cmdFrm.Size;
+                Point loc = Location;
+                Size sz = Size;
+                int x7 = (ed.cmdX - layout.leftMargin) * 7 / 
+                    (ed.cmdFrm.ClientRectangle.Width - layout.leftMargin) - 3;
+                int y7 = ed.cmdY * 7 / ed.cmdFrm.ClientRectangle.Height - 3;
+
+                ed.MsgLn(x7.ToString() + ", " + y7.ToString());
+
+                switch (x7) {
+                    case -3:
+                        loc.X -= Width + layout.formSpacing;
+                        break;
+                    case -2:
+                        sz.Width = loc.X + sz.Width - ssDefaults.defleft;
+                        loc.X = ssDefaults.defleft;
+                        break;
+                    case -1:
+                    case 0:
+                    case 1:
+                        break;
+                    case 2:
+                        sz.Width = scr.Right - loc.X - layout.formSpacing;
+                        break;
+                    case 3:
+                        loc.X += Width + layout.formSpacing;
+                        break;
+                    }
+                switch (y7) {
+                    case -3:
+                        loc.Y -= Height + layout.formSpacing;
+                        break;
+                    case -2:
+                        sz.Height = loc.Y + sz.Height - ssDefaults.deftop;
+                        loc.Y = ssDefaults.deftop;
+                        break;
+                    case -1:
+                    case 0:
+                    case 1:
+                        break;
+                    case 2:
+                        sz.Height = scr.Bottom - loc.Y - layout.formSpacing;
+                        break;
+                    case 3:
+                        loc.Y += Height + layout.formSpacing;
+                        break;
+                    }
+
+                if (Location == loc && Size == sz && ed.cmdFrm == ed.Log.Frm)
+                    CalcFormFromLogWindow();
+                else {
+                    if (loc.Y < scr.Y) {
+                        sz.Height -= (scr.Y - loc.Y) + ssDefaults.deftop;
+                        loc.Y = scr.Y + ssDefaults.deftop;
+                        }
+                    if (loc.Y + sz.Height > scr.Y + scr.Height) {
+                        sz.Height -= (loc.Y + sz.Height) - (scr.Y + scr.Height) + layout.formSpacing;
+                        }
+                    if (loc.X < scr.X) {
+                        sz.Width -= (scr.X - loc.X) + ssDefaults.defleft;
+                        loc.X = scr.X + ssDefaults.defleft;
+                        }
+                    if (loc.X + sz.Width > scr.X + scr.Width) {
+                        sz.Width -= (loc.X + sz.Width) - (scr.X + scr.Width) + layout.formSpacing;
+                        }
+                    Location = loc;
+                    Size = sz;
+                    }
+                }
+            }
+
+
+        private void SetFormLocSizV1() {
             if (ed.cmdFrm != null && ed.cmdFrm != ed.Log.Frm) {
                 Location = ed.cmdFrm.Location;
                 Size = ed.cmdFrm.Size;
@@ -1449,11 +1573,11 @@ namespace ss {
                 rct = ClientRectangle;
                 rct.X = ClientRectangle.Right - layout.scrollMargin;
                 rct.Width = 2;
-                e.Graphics.FillRectangle(Brushes.Chocolate, rct);
+                e.Graphics.FillRectangle(Brushes.Chocolate, rct);       // wrap edge
                 }
 
             if (txt.TLog.Changed) {
-                e.Graphics.FillRectangle(Brushes.Red, ChangedRect());
+                e.Graphics.FillRectangle(Brushes.Red, ChangedRect());   // change edge
                 }
 
             rct = ClientRectangle;
@@ -1466,6 +1590,31 @@ namespace ss {
                 if (rct.Height < 4) { rct.Height = 4; }
                 }
             e.Graphics.FillRectangle(Brushes.LightSalmon, rct);
+
+            int[] brackets = { 1, 2, 5, 6 };
+            int dx = (ClientRectangle.Width - layout.leftMargin) / 7;
+            rct.Height = 3;
+            rct.Width = 3;
+            foreach (int x in brackets)
+            {
+                rct.X = layout.leftMargin + x * dx;
+                rct.Y = 0;
+                e.Graphics.FillRectangle(Brushes.Brown, rct);
+                rct.Y = ClientRectangle.Bottom - rct.Height;
+                e.Graphics.FillRectangle(Brushes.Brown, rct);
+            }
+
+            int dy = ClientRectangle.Height / 7;
+            rct.Height = 3;
+            rct.Width = 3;
+            foreach (int y in brackets)
+            {
+                rct.X = 0;
+                rct.Y = y * dy;
+                e.Graphics.FillRectangle(Brushes.Brown, rct);
+                rct.X = ClientRectangle.Width - rct.Width;
+                e.Graphics.FillRectangle(Brushes.Brown, rct);
+            }
 
             IntPtr hdc = e.Graphics.GetHdc();                           // The mark
             RangeRegion(hdc, r, mark, layout.xDrwInfl, layout.markYInfl);
@@ -1490,7 +1639,7 @@ namespace ss {
 
             hdc = e.Graphics.GetHdc();
             IntPtr oldfnt = ssGDI.SelectObject(hdc, layout.hfont);
-            DrawLines(hdc, e.ClipRectangle);
+            DrawLines(hdc, e.ClipRectangle);                        // The actual text
             ssGDI.SelectObject(hdc, oldfnt);
             e.Graphics.ReleaseHdc(hdc);
             r.Dispose();

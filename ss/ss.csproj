@@ -154,9 +154,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>	copy "$(TargetPath)" c:\util
-	copy "$(TargetDir)sshelp.txt" c:\util
-	copy "$(TargetDir)ssmanual.txt" c:\util
+    <PostBuildEvent>copy "$(TargetPath)" c:\util
+copy "$(TargetDir)sshelp.txt" c:\util
+copy "$(TargetDir)ssmanual.txt" c:\util
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

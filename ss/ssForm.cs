@@ -1599,7 +1599,7 @@ namespace ss {
             {
                 rct.X = layout.leftMargin + x * dx;
                 rct.Y = 0;
-                e.Graphics.FillRectangle(Brushes.Brown, rct);
+                //e.Graphics.FillRectangle(Brushes.Brown, rct);
                 rct.Y = ClientRectangle.Bottom - rct.Height;
                 e.Graphics.FillRectangle(Brushes.Brown, rct);
             }

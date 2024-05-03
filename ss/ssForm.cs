@@ -1493,6 +1493,8 @@ namespace ss {
                 if (!canSee) {
                     DesktopBounds = new Rectangle(ssDefaults.defleft, ssDefaults.deftop, layout.width, layout.height);
                     }
+                ed.cmdX = ClientRectangle.Left + ClientRectangle.Width;
+                ed.cmdY = ClientRectangle.Top + ClientRectangle.Height;
                 }
 
             lines = MakeLines(true);

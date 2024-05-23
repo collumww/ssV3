@@ -1292,7 +1292,7 @@ namespace ss {
                         loc.X -= Width + layout.formSpacing;
                         break;
                     case -2:
-                        sz.Width = loc.X + sz.Width - ssDefaults.defleft;
+                        sz.Width = loc.X - ssDefaults.defleft;
                         loc.X = ssDefaults.defleft;
                         break;
                     case -1:
@@ -1300,6 +1300,7 @@ namespace ss {
                     case 1:
                         break;
                     case 2:
+                        loc.X += Width + layout.formSpacing;
                         sz.Width = scr.Right - loc.X - layout.formSpacing;
                         break;
                     case 3:
@@ -1311,7 +1312,7 @@ namespace ss {
                         loc.Y -= Height + layout.formSpacing;
                         break;
                     case -2:
-                        sz.Height = loc.Y + sz.Height - ssDefaults.deftop;
+                        sz.Height = loc.Y - ssDefaults.deftop;
                         loc.Y = ssDefaults.deftop;
                         break;
                     case -1:
@@ -1319,6 +1320,7 @@ namespace ss {
                     case 1:
                         break;
                     case 2:
+                        loc.Y += Height + layout.formSpacing;
                         sz.Height = scr.Bottom - loc.Y - layout.formSpacing;
                         break;
                     case 3:

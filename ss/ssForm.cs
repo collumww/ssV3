@@ -1281,19 +1281,21 @@ namespace ss {
                 Size = ed.cmdFrm.Size;
                 Point loc = Location;
                 Size sz = Size;
-                int x7 = (ed.cmdX - layout.leftMargin) * 7 / 
-                    (ed.cmdFrm.ClientRectangle.Width - layout.leftMargin) - 3;
+                int maxX = ed.cmdFrm.ClientRectangle.Width - layout.rightMargin;
+                ed.cmdX = Math.Min(Math.Max(ed.cmdX - layout.leftMargin, 0), maxX);
+                int x7 = ed.cmdX * 7 / maxX - 3;
                 int y7 = ed.cmdY * 7 / ed.cmdFrm.ClientRectangle.Height - 3;
 
+                ed.MsgLn(ed.cmdX.ToString());
                 ed.MsgLn(x7.ToString() + ", " + y7.ToString());
 
                 switch (x7) {
                     case -3:
-                        loc.X -= Width + layout.formSpacing;
-                        break;
-                    case -2:
                         sz.Width = loc.X - ssDefaults.defleft;
                         loc.X = ssDefaults.defleft;
+                        break;
+                    case -2:
+                        loc.X -= Width + layout.formSpacing;
                         break;
                     case -1:
                     case 0:
@@ -1301,30 +1303,30 @@ namespace ss {
                         break;
                     case 2:
                         loc.X += Width + layout.formSpacing;
-                        sz.Width = scr.Right - loc.X - layout.formSpacing;
                         break;
                     case 3:
                         loc.X += Width + layout.formSpacing;
+                        sz.Width = scr.Right - loc.X - layout.formSpacing;
                         break;
                     }
                 switch (y7) {
                     case -3:
-                        loc.Y -= Height + layout.formSpacing;
-                        break;
-                    case -2:
                         sz.Height = loc.Y - ssDefaults.deftop;
                         loc.Y = ssDefaults.deftop;
                         break;
+                    case -2:
+                       loc.Y -= Height + layout.formSpacing;
+                       break;
                     case -1:
                     case 0:
                     case 1:
                         break;
                     case 2:
                         loc.Y += Height + layout.formSpacing;
-                        sz.Height = scr.Bottom - loc.Y - layout.formSpacing;
                         break;
                     case 3:
                         loc.Y += Height + layout.formSpacing;
+                        sz.Height = scr.Bottom - loc.Y - layout.formSpacing;
                         break;
                     }
 
@@ -1596,7 +1598,7 @@ namespace ss {
             e.Graphics.FillRectangle(Brushes.LightSalmon, rct);
 
             int[] brackets = { 1, 2, 5, 6 };                            // brackets
-            int dx = (ClientRectangle.Width - layout.leftMargin) / 7;
+            int dx = (ClientRectangle.Width - layout.leftMargin - layout.rightMargin) / 7;
             rct.Height = 3;
             rct.Width = 3;
             foreach (int x in brackets)
@@ -1606,7 +1608,7 @@ namespace ss {
                 //e.Graphics.FillRectangle(Brushes.Brown, rct);
                 rct.Y = ClientRectangle.Bottom - rct.Height;
                 e.Graphics.FillRectangle(Brushes.Brown, rct);
-            }
+                }
 
             int dy = ClientRectangle.Height / 7;
             rct.Height = 3;
@@ -1618,7 +1620,7 @@ namespace ss {
                 e.Graphics.FillRectangle(Brushes.Brown, rct);
                 rct.X = ClientRectangle.Width - rct.Width;
                 e.Graphics.FillRectangle(Brushes.Brown, rct);
-            }
+                }
 
             IntPtr hdc = e.Graphics.GetHdc();                           // The mark
             RangeRegion(hdc, r, mark, layout.xDrwInfl, layout.markYInfl);

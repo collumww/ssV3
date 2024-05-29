@@ -1281,9 +1281,9 @@ namespace ss {
                 Size = ed.cmdFrm.Size;
                 Point loc = Location;
                 Size sz = Size;
-                int maxX = ed.cmdFrm.ClientRectangle.Width - layout.rightMargin;
-                ed.cmdX = Math.Min(Math.Max(ed.cmdX - layout.leftMargin, 0), maxX);
-                int x7 = ed.cmdX * 7 / maxX - 3;
+                int maxX = ed.cmdFrm.ClientRectangle.Width - layout.leftMargin - layout.rightMargin;
+                int x7 = (ed.cmdX - layout.leftMargin) * 7 / maxX - 3;
+                x7 = Math.Min(Math.Max(x7, -3), 3);
                 int y7 = ed.cmdY * 7 / ed.cmdFrm.ClientRectangle.Height - 3;
 
                 ed.MsgLn(ed.cmdX.ToString());
@@ -1291,8 +1291,8 @@ namespace ss {
 
                 switch (x7) {
                     case -3:
-                        sz.Width = loc.X - ssDefaults.defleft;
-                        loc.X = ssDefaults.defleft;
+                        sz.Width = loc.X - ssDefaults.defleft - scr.Left - layout.formSpacing;
+                        loc.X = scr.X + ssDefaults.defleft;
                         break;
                     case -2:
                         loc.X -= Width + layout.formSpacing;
@@ -1311,8 +1311,8 @@ namespace ss {
                     }
                 switch (y7) {
                     case -3:
-                        sz.Height = loc.Y - ssDefaults.deftop;
-                        loc.Y = ssDefaults.deftop;
+                        sz.Height = loc.Y - ssDefaults.deftop - scr.Top - layout.formSpacing;
+                        loc.Y = scr.Y + ssDefaults.deftop;
                         break;
                     case -2:
                        loc.Y -= Height + layout.formSpacing;
@@ -1604,8 +1604,6 @@ namespace ss {
             foreach (int x in brackets)
             {
                 rct.X = layout.leftMargin + x * dx;
-                rct.Y = 0;
-                //e.Graphics.FillRectangle(Brushes.Brown, rct);
                 rct.Y = ClientRectangle.Bottom - rct.Height;
                 e.Graphics.FillRectangle(Brushes.Brown, rct);
                 }

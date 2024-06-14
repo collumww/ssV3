@@ -1286,8 +1286,8 @@ namespace ss {
                 x7 = Math.Min(Math.Max(x7, -3), 3);
                 int y7 = ed.cmdY * 7 / ed.cmdFrm.ClientRectangle.Height - 3;
 
-                ed.MsgLn(ed.cmdX.ToString());
-                ed.MsgLn(x7.ToString() + ", " + y7.ToString());
+                //ed.MsgLn(ed.cmdX.ToString());
+                //ed.MsgLn(x7.ToString() + ", " + y7.ToString());
 
                 switch (x7) {
                     case -3:
@@ -1497,8 +1497,8 @@ namespace ss {
                 if (!canSee) {
                     DesktopBounds = new Rectangle(ssDefaults.defleft, ssDefaults.deftop, layout.width, layout.height);
                     }
-                ed.cmdX = ClientRectangle.Left + ClientRectangle.Width;
-                ed.cmdY = ClientRectangle.Top + ClientRectangle.Height;
+                ed.cmdX = ClientRectangle.Left + ClientRectangle.Width / 2;
+                ed.cmdY = ClientRectangle.Top + ClientRectangle.Height / 2;
                 }
 
             lines = MakeLines(true);
